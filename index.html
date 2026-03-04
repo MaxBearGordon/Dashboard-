@@ -1,78 +1,1001 @@
-GOOD AFTERNOON
-MR. GORDON
-WEDNESDAY — DAY OFF
-1:23 PM
-WEDNESDAY · MAR 4, 2026
-"No discipline seems pleasant at the time, but painful — later it produces a harvest of righteousness."
-— Hebrews 12:11
-DAILY NON-NEGOTIABLES
-0 / 5
-🏋️ ✓
-LIFT
-🥩 ✓
-MEALS
-✝️ ✓
-FAITH
-📋 ✓
-TASKS
-♟️ ✓
-CHESS
-TODAY'S SCHEDULE
-WEDNESDAY
-10:00 AM
-Lift
-FREE
-Day Off
-+
-PLYMOUTH, MN
-47°F
-Scattered Clouds
-Feels 42°F
-Humidity 73%
-Wind 10 mph
-LIFTING STREAK
-0
-DAYS COMPLETE
-−
-+
-NEXT SESSION
-TODAY
-10:00 – 11:00 AM · LIFT
-MEALS TODAY
-0 / 4
-M1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Gordon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══ CORE TOKENS ════════════════════════════════════════ */
+:root {
+  --void:   #05050a;
+  --border: rgba(220,140,70,0.1);
+  --b2:     rgba(220,140,70,0.2);
+  --amber:  #f5a623;
+  --orange: #e8723a;
+  --ember:  #c4561e;
+  --red:    #e05252;
+  --green:  #3a8f68;
+  --purple: #9d7de8;
+  --cyan:   #e09060;
+  --text:   #ecdcc8;
+  --text2:  #c4a882;
+  --dim:    #6a5843;
+}
 
-M2
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-M3
+body {
+  background: var(--void);
+  color: var(--text2);
+  font-family: 'JetBrains Mono', monospace;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  font-size: 13px;
+  overflow-x: hidden;
+}
 
-M4
+/* Depth layers */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 55% at 15% 5%,  rgba(232,114,58,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 45% at 85% 95%, rgba(245,166,35,0.04) 0%, transparent 55%);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(232,114,58,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,114,58,0.018) 1px, transparent 1px);
+  background-size: 52px 52px;
+  pointer-events: none; z-index: 0;
+}
 
-MACROS TODAY
-P
+.shell {
+  position: relative; z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 28px 24px 40px;
+}
 
-0 / 200g
-C
+/* ── GLASS CARD ─────────────────────────────────────────── */
+.card {
+  background: linear-gradient(150deg,
+    rgba(255,255,255,0.042) 0%,
+    rgba(255,255,255,0.016) 60%,
+    rgba(232,114,58,0.012) 100%
+  );
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.055),
+    0 24px 64px rgba(0,0,0,0.45);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  border-color: rgba(232,114,58,0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.07),
+    0 24px 64px rgba(0,0,0,0.55),
+    0 0 40px rgba(232,114,58,0.04);
+}
 
-0 / 400g
-F
+.label {
+  font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 16px;
+}
 
-0 / 90g
-MISSION ANCHOR
-220–230 lbs lean · marathon capable · elite strength
-$10K/month net · multiple income streams
-God first · daily Word · faith-centered household
-Secure leader · emotionally regulated · ready for marriage
-Sharp mind · systems builder · self-mastery
-AI INTEL
-↻ Refresh
-Anthropic Release Notes - March 2026 Latest Updates - Releasebot
-... Fixed prompt suggestion cache ... ... No date parsed from source. ... Claude enhances memory with auto-save, adds a /copy pick
-Claude Code Changelog: Complete Version History
-Claude Fast | Complete Claude Code version history with all releases, features, bug fixes, and breaking changes from v0.2 beta thr
-The Creator’s Edge: How AI Tools Will Redefine Productivity in 2026
-What if the biggest productivity breakthrough of the decade is not working harder but working alongside intelligence that thinks w
-NOTES — PERSISTS UNTIL CLEARED
+/* ── GRID ──────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+.col-3  { grid-column: span 3; }
+.col-4  { grid-column: span 4; }
+.col-5  { grid-column: span 5; }
+.col-6  { grid-column: span 6; }
+.col-7  { grid-column: span 7; }
+.col-8  { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
 
-nothing saved
-CLEAR
+@media (max-width: 960px) {
+  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8 { grid-column: span 12; }
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────────── */
+.fade { animation: up 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.d1 { animation-delay: 0.04s; }
+.d2 { animation-delay: 0.09s; }
+.d3 { animation-delay: 0.14s; }
+.d4 { animation-delay: 0.19s; }
+.d5 { animation-delay: 0.24s; }
+.d6 { animation-delay: 0.29s; }
+.d7 { animation-delay: 0.34s; }
+.d8 { animation-delay: 0.40s; }
+@keyframes up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 14px; padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+.greet-line {
+  font-size: 9px; letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 6px;
+}
+.greet-main {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 4vw, 48px); font-weight: 800;
+  letter-spacing: -1.5px; line-height: 0.92; color: var(--text);
+}
+.greet-main .accent {
+  color: var(--orange);
+  text-shadow: 0 0 48px rgba(232,114,58,0.45);
+}
+.day-status {
+  margin-top: 9px; font-size: 8.5px; color: var(--dim);
+  letter-spacing: 2.5px; text-transform: uppercase;
+}
+.clock-block { text-align: right; }
+.clock {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 5.2vw, 58px); font-weight: 700;
+  color: var(--text); line-height: 1; letter-spacing: -2.5px;
+}
+.clock-date {
+  font-size: 8.5px; color: var(--dim); margin-top: 7px;
+  letter-spacing: 2px; text-transform: uppercase;
+}
+
+/* ── VERSE STRIP ─────────────────────────────────────────── */
+.verse {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 13px 20px;
+  background: rgba(232,114,58,0.035);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(232,114,58,0.1);
+  border-left: 2px solid var(--orange);
+  border-radius: 7px; margin-bottom: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.3);
+}
+.verse-text {
+  font-size: 11px; font-style: italic;
+  color: var(--text2); opacity: 0.82; line-height: 1.65;
+}
+.verse-ref {
+  font-size: 9px; color: var(--orange); white-space: nowrap;
+  flex-shrink: 0; letter-spacing: 0.8px; opacity: 0.75;
+}
+
+/* ═══ ACTIVITY RINGS ═════════════════════════════════════ */
+.rings-banner {
+  background: linear-gradient(150deg,
+    rgba(255,255,255,0.038) 0%,
+    rgba(255,255,255,0.014) 60%,
+    rgba(232,114,58,0.01) 100%
+  );
+  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 28px 20px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.055), 0 24px 64px rgba(0,0,0,0.45);
+}
+.rings-progress-wrap { margin-bottom: 20px; }
+.rings-progress-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 7px;
+}
+.rings-progress-title {
+  font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--dim);
+}
+.rings-progress-count {
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800;
+  color: var(--orange); text-shadow: 0 0 20px rgba(232,114,58,0.4);
+}
+.rings-progress-bg {
+  height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden;
+}
+.rings-progress-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--ember), var(--orange), var(--amber));
+  box-shadow: 0 0 10px rgba(232,114,58,0.6);
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+.rings-row {
+  display: flex; justify-content: space-around; align-items: center; gap: 12px;
+}
+.ring-item {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; user-select: none; gap: 8px; flex: 1;
+}
+.ring-svg-wrap {
+  position: relative; width: 84px; height: 84px; flex-shrink: 0;
+}
+.ring-svg-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.ring-track { fill: none; stroke-width: 8; opacity: 0.12; }
+.ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s;
+}
+.ring-fill.done { filter: drop-shadow(0 0 6px currentColor); }
+.ring-icon {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  transition: transform 0.3s, filter 0.3s;
+}
+.ring-item.done .ring-icon {
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+  transform: translate(-50%, -50%) scale(1.1);
+}
+.ring-check {
+  position: absolute; top: 4px; right: 4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--orange); border: 2px solid rgba(5,5,10,0.8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; color: #fff; font-weight: 700;
+  opacity: 0; transform: scale(0.5);
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.ring-item.done .ring-check { opacity: 1; transform: scale(1); }
+.ring-label {
+  font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--dim); text-align: center; transition: color 0.3s;
+}
+.ring-item.done .ring-label { color: var(--text2); }
+.ring-lift  { color: #e8723a; stroke: #e8723a; }
+.ring-meals { color: #3a8f68; stroke: #3a8f68; }
+.ring-faith { color: #9d7de8; stroke: #9d7de8; }
+.ring-tasks { color: #f5a623; stroke: #f5a623; }
+.ring-chess { color: #a8c8e8; stroke: #a8c8e8; }
+@keyframes ringPop {
+  0% { transform: scale(1); } 40% { transform: scale(0.92); }
+  70% { transform: scale(1.06); } 100% { transform: scale(1); }
+}
+.ring-svg-wrap.pop { animation: ringPop 0.45s ease; }
+
+/* ── SCHEDULE ───────────────────────────────────────────── */
+.sched-tag {
+  display: inline-flex; align-items: center;
+  background: rgba(232,114,58,0.1); border: 1px solid rgba(232,114,58,0.22);
+  color: var(--orange); font-size: 8px; font-weight: 500;
+  letter-spacing: 2.5px; padding: 3px 10px; border-radius: 3px;
+  margin-bottom: 14px; text-transform: uppercase;
+}
+.block {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid rgba(220,140,70,0.07);
+}
+.block:last-child { border-bottom: none; }
+.block-time { font-size: 10px; color: var(--dim); min-width: 64px; flex-shrink: 0; }
+.block-evt  { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); }
+.dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.dw { background: var(--red);    box-shadow: 0 0 7px rgba(224,82,82,0.6); }
+.dt { background: var(--green);  box-shadow: 0 0 7px rgba(58,143,104,0.6); }
+.dr { background: var(--purple); box-shadow: 0 0 7px rgba(157,125,232,0.6); }
+.dp { background: var(--dim); }
+.sched-add {
+  display: flex; gap: 6px; margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid rgba(220,140,70,0.07);
+}
+.sched-add input {
+  background: rgba(0,0,0,0.35); border: 1px solid rgba(220,140,70,0.1);
+  border-radius: 5px; color: var(--text2);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 10px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.sched-add input:focus {
+  border-color: rgba(232,114,58,0.4);
+  box-shadow: 0 0 0 3px rgba(232,114,58,0.07);
+}
+.sched-add input::placeholder { color: var(--dim); }
+.sched-time-in { width: 76px; flex-shrink: 0; }
+.sched-evt-in  { flex: 1; }
+.sched-add-btn {
+  background: linear-gradient(145deg, var(--orange), var(--ember));
+  color: #fff; border: none; border-radius: 5px;
+  padding: 0 13px; font-family: 'Syne', sans-serif;
+  font-size: 19px; font-weight: 700; cursor: pointer; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(232,114,58,0.35);
+  transition: opacity 0.2s, transform 0.12s;
+}
+.sched-add-btn:hover  { opacity: 0.82; transform: translateY(-1px); }
+.sched-add-btn:active { transform: translateY(0); }
+.block-del {
+  margin-left: auto; background: none; border: none;
+  color: var(--dim); cursor: pointer; font-size: 10px;
+  transition: color 0.15s;
+}
+.block-del:hover { color: var(--red); }
+
+/* ── WEATHER ────────────────────────────────────────────── */
+.w-temp {
+  font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 700;
+  color: var(--amber); line-height: 1;
+  text-shadow: 0 0 36px rgba(245,166,35,0.35);
+}
+.w-desc {
+  font-size: 10px; color: var(--dim); margin-top: 4px;
+  text-transform: capitalize; margin-bottom: 10px; letter-spacing: 1px;
+}
+.w-meta { font-size: 10px; color: var(--dim); line-height: 2.1; }
+
+/* ── STREAK / NEXT SESSION ──────────────────────────────── */
+.streak-n {
+  font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800;
+  color: var(--orange); line-height: 1; letter-spacing: -3px;
+  text-shadow: 0 0 60px rgba(232,114,58,0.35);
+}
+.streak-sub {
+  font-size: 8px; color: var(--dim); letter-spacing: 3px;
+  text-transform: uppercase; margin-top: 3px; margin-bottom: 16px;
+}
+.streak-btns { display: flex; gap: 6px; margin-bottom: 20px; }
+.sbtn {
+  flex: 1; background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(220,140,70,0.12); border-radius: 5px;
+  color: var(--text2); font-family: 'JetBrains Mono', monospace;
+  font-size: 20px; padding: 6px 0; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.sbtn:hover { border-color: rgba(232,114,58,0.32); background: rgba(232,114,58,0.08); color: var(--orange); }
+.next-sep { border-top: 1px solid rgba(220,140,70,0.08); padding-top: 14px; }
+.next-day { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--orange); line-height: 1; }
+.next-time { font-size: 10px; color: var(--dim); margin-top: 5px; letter-spacing: 0.5px; }
+
+/* ── MEALS ──────────────────────────────────────────────── */
+.meal-counter {
+  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+  color: var(--text); line-height: 1; margin-bottom: 4px;
+}
+.meal-counter .done-num { color: var(--green); }
+.meal-counter .denom    { color: var(--dim); font-size: 20px; }
+.meal-slots { margin-top: 14px; }
+.meal-slot  {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 0; border-bottom: 1px solid rgba(220,140,70,0.07);
+}
+.meal-slot:last-child { border-bottom: none; }
+.meal-slot-cb {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border: 1px solid rgba(220,140,70,0.22); border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.25);
+  transition: all 0.2s;
+}
+.meal-slot-cb.on {
+  border-color: var(--orange);
+  background: linear-gradient(135deg, var(--orange), var(--amber));
+  color: #fff; box-shadow: 0 0 14px rgba(232,114,58,0.45);
+}
+.meal-slot-num { font-size: 8px; color: var(--orange); letter-spacing: 2px; flex-shrink: 0; min-width: 22px; opacity: 0.75; }
+.meal-slot-input {
+  flex: 1; background: transparent; border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--text2); font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; padding: 2px 0; outline: none;
+  transition: border-color 0.2s;
+}
+.meal-slot-input:focus { border-bottom-color: rgba(232,114,58,0.38); }
+.meal-slot-input::placeholder { color: var(--dim); }
+.meal-slot.done .meal-slot-input { text-decoration: line-through; color: var(--dim); }
+
+/* ── MACROS ─────────────────────────────────────────────── */
+.macro-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.macro-row:last-child { margin-bottom: 0; }
+.macro-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); min-width: 14px; flex-shrink: 0; }
+.macro-nums  { font-size: 10px; color: var(--text2); min-width: 72px; flex-shrink: 0; text-align: right; }
+.macro-bar-bg   { flex: 1; height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+.macro-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.bar-p    { background: linear-gradient(90deg, var(--ember), var(--orange)); box-shadow: 0 0 8px rgba(232,114,58,0.4); }
+.bar-c    { background: linear-gradient(90deg, #a07820, var(--amber)); box-shadow: 0 0 8px rgba(245,166,35,0.4); }
+.bar-f    { background: linear-gradient(90deg, #226644, var(--green)); box-shadow: 0 0 8px rgba(58,143,104,0.4); }
+.bar-over { background: var(--red); box-shadow: 0 0 8px rgba(224,82,82,0.4); }
+.macro-input {
+  width: 52px; background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(220,140,70,0.12); border-radius: 5px;
+  color: var(--text2); font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; padding: 4px 7px; outline: none; text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.macro-input:focus { border-color: rgba(232,114,58,0.38); box-shadow: 0 0 0 3px rgba(232,114,58,0.07); }
+.macro-input::placeholder { color: var(--dim); }
+
+/* ── MISSION ANCHOR ─────────────────────────────────────── */
+.mission-title {
+  font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 800;
+  letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange);
+  margin-bottom: 14px; text-shadow: 0 0 20px rgba(232,114,58,0.35);
+}
+.mission-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  margin-bottom: 10px; font-size: 10px; color: var(--text2); line-height: 1.5;
+}
+.mission-item:last-child { margin-bottom: 0; }
+.mission-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+/* ── AI INTEL ───────────────────────────────────────────── */
+.ai-item { margin-bottom: 12px; }
+.ai-item:last-child { margin-bottom: 0; }
+.ai-title {
+  font-size: 11px; font-weight: 600; color: var(--text);
+  line-height: 1.35; margin-bottom: 4px;
+  text-decoration: none; display: block;
+  transition: color 0.2s;
+}
+.ai-title:hover { color: var(--purple); }
+.ai-desc { font-size: 10px; color: var(--dim); line-height: 1.55; }
+.ai-divider { border: none; border-top: 1px solid rgba(220,140,70,0.07); margin: 12px 0; }
+.ai-refresh {
+  background: none; border: 1px solid rgba(157,125,232,0.25);
+  border-radius: 5px; color: var(--purple);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1.5px;
+  padding: 3px 9px; cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.ai-refresh:hover { background: rgba(157,125,232,0.08); border-color: rgba(157,125,232,0.4); }
+
+/* ── NOTES ──────────────────────────────────────────────── */
+.notes-ta {
+  width: 100%; min-height: 96px;
+  background: rgba(0,0,0,0.28); border: 1px solid rgba(220,140,70,0.1);
+  border-radius: 6px; color: var(--text2);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  line-height: 1.72; padding: 13px 16px; resize: vertical; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.notes-ta:focus { border-color: rgba(232,114,58,0.35); box-shadow: 0 0 0 3px rgba(232,114,58,0.06); }
+.notes-ta::placeholder { color: var(--dim); }
+.notes-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+.notes-meta { font-size: 8px; color: var(--dim); letter-spacing: 1.5px; }
+.notes-clear {
+  background: none; border: none; color: var(--dim);
+  font-size: 8px; cursor: pointer; letter-spacing: 2px;
+  font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
+  transition: color 0.15s;
+}
+.notes-clear:hover { color: var(--red); }
+
+/* ── UTILITY ────────────────────────────────────────────── */
+.loading {
+  font-size: 9px; color: var(--dim); letter-spacing: 2px;
+  animation: pulse 1.6s infinite;
+}
+.notice { font-size: 10px; color: var(--amber); line-height: 1.7; opacity: 0.8; }
+@keyframes pulse { 0%,100%{opacity:0.2} 50%{opacity:0.65} }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<header class="header fade">
+  <div>
+    <div class="greet-line" id="tod">GOOD MORNING</div>
+    <div class="greet-main">MR. <span class="accent">GORDON</span></div>
+    <div class="day-status" id="dayStatus"></div>
+  </div>
+  <div class="clock-block">
+    <div class="clock" id="clock">--:--</div>
+    <div class="clock-date" id="clockDate">--</div>
+  </div>
+</header>
+
+<!-- ── VERSE ──────────────────────────────────────────── -->
+<div class="verse fade d1">
+  <div class="verse-text" id="verseText"></div>
+  <div class="verse-ref"  id="verseRef"></div>
+</div>
+
+<!-- ── ACTIVITY RINGS ─────────────────────────────────── -->
+<div class="rings-banner fade d2">
+  <div class="rings-progress-wrap">
+    <div class="rings-progress-label">
+      <span class="rings-progress-title">Daily Non-Negotiables</span>
+      <span class="rings-progress-count" id="ringsCount">0 / 5</span>
+    </div>
+    <div class="rings-progress-bg">
+      <div class="rings-progress-fill" id="ringsProgressFill" style="width:0%"></div>
+    </div>
+  </div>
+  <div class="rings-row">
+    <!-- LIFT -->
+    <div class="ring-item" id="ring-0" onclick="toggleRing(0)">
+      <div class="ring-svg-wrap" id="rsvg-0">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-track ring-lift" cx="50" cy="50" r="42"/>
+          <circle class="ring-fill ring-lift" id="rfill-0" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+        </svg>
+        <div class="ring-icon">🏋️</div>
+        <div class="ring-check">✓</div>
+      </div>
+      <div class="ring-label">Lift</div>
+    </div>
+    <!-- MEALS -->
+    <div class="ring-item" id="ring-1" onclick="toggleRing(1)">
+      <div class="ring-svg-wrap" id="rsvg-1">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-track ring-meals" cx="50" cy="50" r="42"/>
+          <circle class="ring-fill ring-meals" id="rfill-1" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+        </svg>
+        <div class="ring-icon">🥩</div>
+        <div class="ring-check">✓</div>
+      </div>
+      <div class="ring-label">Meals</div>
+    </div>
+    <!-- FAITH -->
+    <div class="ring-item" id="ring-2" onclick="toggleRing(2)">
+      <div class="ring-svg-wrap" id="rsvg-2">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-track ring-faith" cx="50" cy="50" r="42"/>
+          <circle class="ring-fill ring-faith" id="rfill-2" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+        </svg>
+        <div class="ring-icon">✝️</div>
+        <div class="ring-check">✓</div>
+      </div>
+      <div class="ring-label">Faith</div>
+    </div>
+    <!-- TASKS -->
+    <div class="ring-item" id="ring-3" onclick="toggleRing(3)">
+      <div class="ring-svg-wrap" id="rsvg-3">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-track ring-tasks" cx="50" cy="50" r="42"/>
+          <circle class="ring-fill ring-tasks" id="rfill-3" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+        </svg>
+        <div class="ring-icon">📋</div>
+        <div class="ring-check">✓</div>
+      </div>
+      <div class="ring-label">Tasks</div>
+    </div>
+    <!-- CHESS -->
+    <div class="ring-item" id="ring-4" onclick="toggleRing(4)">
+      <div class="ring-svg-wrap" id="rsvg-4">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-track ring-chess" cx="50" cy="50" r="42"/>
+          <circle class="ring-fill ring-chess" id="rfill-4" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+        </svg>
+        <div class="ring-icon">♟️</div>
+        <div class="ring-check">✓</div>
+      </div>
+      <div class="ring-label">Chess</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN GRID ───────────────────────────────────────── -->
+<div class="grid">
+
+  <!-- ROW 1: Schedule | Weather | Streak -->
+  <div class="card col-5 fade d3">
+    <div class="label">Today's Schedule</div>
+    <div class="sched-tag" id="schedDay"></div>
+    <div id="schedBlocks"></div>
+    <div class="sched-add">
+      <input type="text" class="sched-time-in" id="schedTimeIn" placeholder="10:00 AM">
+      <input type="text" class="sched-evt-in"  id="schedEvtIn"  placeholder="Add event...">
+      <button class="sched-add-btn" onclick="addSchedBlock()">+</button>
+    </div>
+  </div>
+
+  <div class="card col-3 fade d4">
+    <div class="label">Plymouth, MN</div>
+    <div id="weatherWrap"><div class="loading">FETCHING...</div></div>
+  </div>
+
+  <div class="card col-4 fade d4">
+    <div class="label">Lifting Streak</div>
+    <div class="streak-n" id="streakN">0</div>
+    <div class="streak-sub">Days Complete</div>
+    <div class="streak-btns">
+      <button class="sbtn" onclick="adj(-1)">−</button>
+      <button class="sbtn" onclick="adj(1)">+</button>
+    </div>
+    <div class="next-sep">
+      <div class="label" style="margin-bottom:10px;">Next Session</div>
+      <div class="next-day"  id="nextDay">—</div>
+      <div class="next-time" id="nextTime">—</div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Meals | Macros | Mission -->
+  <div class="card col-5 fade d5" style="border-left:2px solid var(--green);">
+    <div class="label">Meals Today</div>
+    <div class="meal-counter">
+      <span class="done-num" id="mealDone">0</span><span class="denom"> / 4</span>
+    </div>
+    <div class="meal-slots" id="mealSlots"></div>
+  </div>
+
+  <div class="card col-4 fade d5" style="border-left:2px solid var(--amber);">
+    <div class="label">Macros Today</div>
+    <div class="macro-row">
+      <span class="macro-label">P</span>
+      <input class="macro-input" id="mp" type="number" min="0" placeholder="0" oninput="updateMacros()">
+      <div class="macro-bar-bg"><div class="macro-bar-fill bar-p" id="bp" style="width:0%"></div></div>
+      <span class="macro-nums" id="np">0 / 200g</span>
+    </div>
+    <div class="macro-row">
+      <span class="macro-label">C</span>
+      <input class="macro-input" id="mc" type="number" min="0" placeholder="0" oninput="updateMacros()">
+      <div class="macro-bar-bg"><div class="macro-bar-fill bar-c" id="bc" style="width:0%"></div></div>
+      <span class="macro-nums" id="nc">0 / 400g</span>
+    </div>
+    <div class="macro-row">
+      <span class="macro-label">F</span>
+      <input class="macro-input" id="mf" type="number" min="0" placeholder="0" oninput="updateMacros()">
+      <div class="macro-bar-bg"><div class="macro-bar-fill bar-f" id="bf" style="width:0%"></div></div>
+      <span class="macro-nums" id="nf">0 / 90g</span>
+    </div>
+  </div>
+
+  <div class="card col-3 fade d5" style="background:linear-gradient(150deg,rgba(255,255,255,0.042) 0%,rgba(232,114,58,0.055) 100%);border-left:2px solid var(--orange);">
+    <div class="mission-title">Mission Anchor</div>
+    <div class="mission-item">
+      <div class="mission-dot" style="background:var(--orange);box-shadow:0 0 6px rgba(232,114,58,0.5)"></div>
+      <span>220–230 lbs lean · marathon capable · elite strength</span>
+    </div>
+    <div class="mission-item">
+      <div class="mission-dot" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,0.5)"></div>
+      <span>$10K/month net · multiple income streams</span>
+    </div>
+    <div class="mission-item">
+      <div class="mission-dot" style="background:var(--purple);box-shadow:0 0 6px rgba(157,125,232,0.5)"></div>
+      <span>God first · daily Word · faith-centered household</span>
+    </div>
+    <div class="mission-item">
+      <div class="mission-dot" style="background:var(--green);box-shadow:0 0 6px rgba(58,143,104,0.5)"></div>
+      <span>Secure leader · emotionally regulated · ready for marriage</span>
+    </div>
+    <div class="mission-item">
+      <div class="mission-dot" style="background:var(--cyan);box-shadow:0 0 6px rgba(224,144,96,0.5)"></div>
+      <span>Sharp mind · systems builder · self-mastery</span>
+    </div>
+  </div>
+
+  <!-- ROW 3: AI Intel | Notes -->
+  <div class="card col-5 fade d7" style="border-left:2px solid var(--purple);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="label" style="margin-bottom:0;">AI Intel</div>
+      <button class="ai-refresh" onclick="refreshAI()">↻ Refresh</button>
+    </div>
+    <div id="aiContent"><div class="loading">FETCHING...</div></div>
+  </div>
+
+  <div class="card col-7 fade d7">
+    <div class="label">Notes — Persists Until Cleared</div>
+    <textarea class="notes-ta" id="notesTA" placeholder="Thoughts, reminders, follow-ups..."></textarea>
+    <div class="notes-foot">
+      <div class="notes-meta" id="notesMeta">nothing saved</div>
+      <button class="notes-clear" onclick="clearNotes()">Clear</button>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+</div><!-- /shell -->
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const WEATHER_KEY = 'f842102264de4c44adee09311e5a08d3';
+const PLY_LAT     = 44.9719;
+const PLY_LON     = -93.4569;
+const BRAVE_KEY   = 'BSAJdUNYJMpum3ufe3IkYLLLMFAUDfN';
+
+// ── STATE ─────────────────────────────────────────────────
+const SK    = 'mgd3';
+const TODAY = new Date().toDateString();
+
+function load() { try { return JSON.parse(localStorage.getItem(SK)) || {}; } catch { return {}; } }
+function save(s) { localStorage.setItem(SK, JSON.stringify(s)); }
+
+let S = load();
+if (S.date !== TODAY) {
+  S = {
+    date:         TODAY,
+    checks:       {},
+    mealSlots:    [{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false}],
+    customBlocks: [],
+    macros:       { p:0, c:0, f:0 },
+    notes:        S.notes || '',
+    streak:       S.allDone ? (parseInt(S.streak)||0) + 1 : (parseInt(S.streak)||0),
+    allDone:      false,
+    wc: S.wc, wt: S.wt,
+    aiCache: null,
+  };
+  save(S);
+}
+// Ensure nested objects exist for old state
+S.macros       = S.macros       || { p:0, c:0, f:0 };
+S.mealSlots    = S.mealSlots    || [{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false}];
+S.customBlocks = S.customBlocks || [];
+
+// ── CLOCK ─────────────────────────────────────────────────
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function tick() {
+  const n   = new Date();
+  const h   = n.getHours(), m = n.getMinutes();
+  const h12 = h % 12 || 12;
+  const ap  = h >= 12 ? 'PM' : 'AM';
+  document.getElementById('clock').textContent     = `${h12}:${String(m).padStart(2,'0')} ${ap}`;
+  document.getElementById('clockDate').textContent = `${DAYS[n.getDay()].toUpperCase()} · ${MONTHS[n.getMonth()]} ${n.getDate()}, ${n.getFullYear()}`;
+  document.getElementById('tod').textContent       = h < 12 ? 'GOOD MORNING' : h < 17 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
+}
+tick(); setInterval(tick, 1000);
+
+// ── VERSE ─────────────────────────────────────────────────
+const VERSES = [
+  { t:'I can do all things through Christ who strengthens me.',                                              r:'Philippians 4:13' },
+  { t:'Be strong and courageous. Do not be afraid, for the LORD your God will be with you wherever you go.', r:'Joshua 1:9' },
+  { t:'Commit your work to the LORD, and your plans will be established.',                                   r:'Proverbs 16:3' },
+  { t:'No discipline seems pleasant at the time, but painful — later it produces a harvest of righteousness.', r:'Hebrews 12:11' },
+  { t:'The soul of the diligent is richly supplied.',                                                        r:'Proverbs 13:4' },
+  { t:'For God gave us a spirit not of fear but of power and love and self-control.',                        r:'2 Timothy 1:7' },
+  { t:'Whatever you do, work heartily, as for the Lord and not for men.',                                    r:'Colossians 3:23' },
+];
+const dow = new Date().getDay();
+const vv  = VERSES[dow];
+document.getElementById('verseText').textContent = `"${vv.t}"`;
+document.getElementById('verseRef').textContent  = `— ${vv.r}`;
+
+// ── SCHEDULE ──────────────────────────────────────────────
+const STATUS_MAP = [
+  'SUNDAY — REST DAY',
+  'MONDAY — WORK · 9AM–8PM',
+  'TUESDAY — WORK · 12PM–8PM',
+  'WEDNESDAY — DAY OFF',
+  'THURSDAY — WORK · 9AM–5PM',
+  'FRIDAY — WORK · 9AM–6PM',
+  'SATURDAY — WORK · 8:30AM–5PM',
+];
+document.getElementById('dayStatus').textContent = STATUS_MAP[dow];
+document.getElementById('schedDay').textContent  = DAYS[dow].toUpperCase();
+
+const SCHEDS = {
+  0: [{ t:'FREE',     e:'Rest Day',       c:'dr' }],
+  1: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'8:00 PM',  e:'End of Shift',  c:'dw' }],
+  2: [{ t:'9:30 AM',  e:'Lift',           c:'dt' }, { t:'12:00 PM', e:'Work',           c:'dw' }, { t:'8:00 PM', e:'End of Shift', c:'dw' }],
+  3: [{ t:'10:00 AM', e:'Lift',           c:'dt' }, { t:'FREE',     e:'Day Off',        c:'dr' }],
+  4: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'5:00 PM',  e:'End of Shift',  c:'dw' }],
+  5: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'6:00 PM',  e:'End of Shift',  c:'dw' }, { t:'7:00 PM', e:'Lift', c:'dt' }],
+  6: [{ t:'8:30 AM',  e:'Work',           c:'dw' }, { t:'5:00 PM',  e:'End of Shift',  c:'dw' }, { t:'6:00 PM', e:'Lift', c:'dt' }],
+};
+
+const sb = document.getElementById('schedBlocks');
+function renderSched() {
+  sb.innerHTML = '';
+  (SCHEDS[dow]||[]).forEach(s => {
+    sb.innerHTML += `<div class="block">
+      <span class="block-time">${s.t}</span>
+      <div class="dot ${s.c}"></div>
+      <span class="block-evt">${s.e}</span>
+    </div>`;
+  });
+  (S.customBlocks||[]).forEach((s,i) => {
+    sb.innerHTML += `<div class="block">
+      <span class="block-time">${s.t}</span>
+      <div class="dot dp"></div>
+      <span class="block-evt">${s.e}</span>
+      <button class="block-del" onclick="delBlock(${i})">✕</button>
+    </div>`;
+  });
+}
+renderSched();
+
+function addSchedBlock() {
+  const t = document.getElementById('schedTimeIn').value.trim();
+  const e = document.getElementById('schedEvtIn').value.trim();
+  if (!e) return;
+  S.customBlocks.push({ t: t||'—', e });
+  save(S); renderSched();
+  document.getElementById('schedTimeIn').value = '';
+  document.getElementById('schedEvtIn').value  = '';
+}
+function delBlock(i) { S.customBlocks.splice(i,1); save(S); renderSched(); }
+document.getElementById('schedEvtIn').addEventListener('keydown', e => { if(e.key==='Enter') addSchedBlock(); });
+
+// ── ACTIVITY RINGS ────────────────────────────────────────
+const RING_COUNT    = 5;
+const CIRCUMFERENCE = 263.9;
+
+function renderRings() {
+  let done = 0;
+  for (let i = 0; i < RING_COUNT; i++) {
+    const on   = !!S.checks[i];
+    if (on) done++;
+    const item = document.getElementById(`ring-${i}`);
+    const fill = document.getElementById(`rfill-${i}`);
+    item.classList.toggle('done', on);
+    fill.classList.toggle('done', on);
+    fill.style.strokeDashoffset = on ? 0 : CIRCUMFERENCE;
+  }
+  document.getElementById('ringsCount').textContent         = `${done} / ${RING_COUNT}`;
+  document.getElementById('ringsProgressFill').style.width  = `${(done / RING_COUNT) * 100}%`;
+  S.allDone = done === RING_COUNT;
+}
+
+function toggleRing(i) {
+  S.checks[i] = !S.checks[i];
+  save(S);
+  const wrap = document.getElementById(`rsvg-${i}`);
+  wrap.classList.remove('pop');
+  void wrap.offsetWidth;
+  wrap.classList.add('pop');
+  setTimeout(() => wrap.classList.remove('pop'), 450);
+  renderRings();
+}
+renderRings();
+
+// ── MEAL TRACKER ──────────────────────────────────────────
+function renderMealSlots() {
+  const wrap = document.getElementById('mealSlots');
+  wrap.innerHTML = '';
+  let doneCount = 0;
+  S.mealSlots.forEach((m,i) => {
+    if (m.done) doneCount++;
+    const row = document.createElement('div');
+    row.className = `meal-slot${m.done?' done':''}`;
+    row.innerHTML = `
+      <div class="meal-slot-cb${m.done?' on':''}" onclick="toggleMeal(${i})">${m.done?'✓':''}</div>
+      <span class="meal-slot-num">M${i+1}</span>
+      <input class="meal-slot-input" type="text" placeholder="What did you eat?"
+             value="${m.text.replace(/"/g,'&quot;')}"
+             oninput="saveMealText(${i}, this.value)">`;
+    wrap.appendChild(row);
+  });
+  document.getElementById('mealDone').textContent = doneCount;
+}
+function toggleMeal(i)      { S.mealSlots[i].done = !S.mealSlots[i].done; save(S); renderMealSlots(); }
+function saveMealText(i, v) { S.mealSlots[i].text = v; save(S); }
+renderMealSlots();
+
+// ── STREAK ────────────────────────────────────────────────
+function renderStreak() { document.getElementById('streakN').textContent = S.streak||0; }
+function adj(d) { S.streak = Math.max(0,(parseInt(S.streak)||0)+d); save(S); renderStreak(); }
+renderStreak();
+
+// ── NEXT TRAINING ─────────────────────────────────────────
+const NEXT_TRAIN = [
+  { day:'TUESDAY', time:'9:30 – 10:30 AM · LIFT'  }, // Sun
+  { day:'TUESDAY', time:'9:30 – 10:30 AM · LIFT'  }, // Mon
+  { day:'TODAY',   time:'9:30 – 10:30 AM · LIFT'  }, // Tue
+  { day:'TODAY',   time:'10:00 – 11:00 AM · LIFT' }, // Wed
+  { day:'FRIDAY',  time:'7:00 – 8:00 PM · LIFT'   }, // Thu
+  { day:'TODAY',   time:'7:00 – 8:00 PM · LIFT'   }, // Fri
+  { day:'TODAY',   time:'6:00 – 7:00 PM · LIFT'   }, // Sat
+];
+document.getElementById('nextDay').textContent  = NEXT_TRAIN[dow].day;
+document.getElementById('nextTime').textContent = NEXT_TRAIN[dow].time;
+
+// ── MACROS ────────────────────────────────────────────────
+const MACRO_TARGETS = { p:200, c:400, f:90 };
+
+function initMacroInputs() {
+  document.getElementById('mp').value = S.macros.p > 0 ? S.macros.p : '';
+  document.getElementById('mc').value = S.macros.c > 0 ? S.macros.c : '';
+  document.getElementById('mf').value = S.macros.f > 0 ? S.macros.f : '';
+  updateMacros();
+}
+function updateMacros() {
+  ['p','c','f'].forEach(k => {
+    const val  = parseInt(document.getElementById('m'+k).value)||0;
+    const tgt  = MACRO_TARGETS[k];
+    const pct  = Math.min(val/tgt*100, 100);
+    const over = val > tgt;
+    S.macros[k] = val;
+    const bar = document.getElementById('b'+k);
+    bar.style.width = pct + '%';
+    bar.className   = `macro-bar-fill ${over ? 'bar-over' : 'bar-'+k}`;
+    document.getElementById('n'+k).textContent = `${val} / ${tgt}g`;
+  });
+  save(S);
+}
+initMacroInputs();
+
+// ── NOTES ─────────────────────────────────────────────────
+const ta = document.getElementById('notesTA');
+ta.value = S.notes||'';
+function syncNotesMeta() {
+  const l = ta.value.length;
+  document.getElementById('notesMeta').textContent = l > 0 ? `${l} chars · auto-saved` : 'nothing saved';
+}
+syncNotesMeta();
+ta.addEventListener('input', () => { S.notes = ta.value; save(S); syncNotesMeta(); });
+function clearNotes() {
+  if (!ta.value) return;
+  if (confirm('Clear all notes?')) { ta.value=''; S.notes=''; save(S); syncNotesMeta(); }
+}
+
+// ── WEATHER ───────────────────────────────────────────────
+async function fetchWeather() {
+  const el  = document.getElementById('weatherWrap');
+  const now = Date.now();
+  if (S.wc && S.wt && (now - S.wt) < 3600000) { renderWeather(S.wc); return; }
+  try {
+    const r = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${PLY_LAT}&lon=${PLY_LON}&appid=${WEATHER_KEY}&units=imperial`);
+    const d = await r.json();
+    S.wc = d; S.wt = now; save(S);
+    renderWeather(d);
+  } catch { el.innerHTML = '<div class="notice">WEATHER UNAVAILABLE</div>'; }
+}
+function renderWeather(d) {
+  const el    = document.getElementById('weatherWrap');
+  const temp  = Math.round(d.main?.temp||0);
+  const feels = Math.round(d.main?.feels_like||0);
+  const desc  = d.weather?.[0]?.description||'—';
+  const humid = d.main?.humidity||0;
+  const wind  = Math.round(d.wind?.speed||0);
+  el.innerHTML = `
+    <div class="w-temp">${temp}°F</div>
+    <div class="w-desc">${desc}</div>
+    <div class="w-meta">Feels ${feels}°F<br>Humidity ${humid}%<br>Wind ${wind} mph</div>`;
+}
+fetchWeather();
+
+// ── AI INTEL ──────────────────────────────────────────────
+async function fetchAIUpdates() {
+  if (S.aiCache && S.aiCache.date === TODAY && S.aiCache.items?.length) {
+    renderAI(S.aiCache.items); return;
+  }
+  document.getElementById('aiContent').innerHTML = '<div class="loading">FETCHING...</div>';
+  try {
+    const queries = [
+      'Anthropic Claude new features 2026',
+      'Claude Code update release 2026',
+      'AI productivity tools breakthrough 2026',
+    ];
+    const items = [];
+    for (const q of queries) {
+      const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(q)}&count=1&search_lang=en&country=us&text_decorations=false&freshness=pm`;
+      const res = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, {
+        headers: { 'Accept':'application/json', 'X-Subscription-Token': BRAVE_KEY }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const r = data.web?.results?.[0];
+      if (!r) continue;
+      items.push({
+        title: (r.title||'').substring(0, 75),
+        desc:  (r.description||'').substring(0, 130),
+        url:   r.url||'#'
+      });
+    }
+    S.aiCache = { date: TODAY, items };
+    save(S);
+    renderAI(items);
+  } catch(err) {
+    document.getElementById('aiContent').innerHTML =
+      `<div class="notice" style="font-size:9px;">Unavailable · ${err.message}</div>`;
+  }
+}
+function renderAI(items) {
+  document.getElementById('aiContent').innerHTML = items.map((item, i) => `
+    <div class="ai-item">
+      <a href="${item.url}" target="_blank" class="ai-title">${item.title}</a>
+      <div class="ai-desc">${item.desc}</div>
+      ${i < items.length-1 ? '<hr class="ai-divider">' : ''}
+    </div>
+  `).join('');
+}
+function refreshAI() { S.aiCache = null; save(S); fetchAIUpdates(); }
+fetchAIUpdates();
+</script>
+</body>
+</html>
