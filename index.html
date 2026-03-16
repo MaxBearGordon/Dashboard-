@@ -1,1001 +1,897 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mr. Gordon</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-/* ═══ CORE TOKENS ════════════════════════════════════════ */
-:root {
-  --void:   #05050a;
-  --border: rgba(220,140,70,0.1);
-  --b2:     rgba(220,140,70,0.2);
-  --amber:  #f5a623;
-  --orange: #e8723a;
-  --ember:  #c4561e;
-  --red:    #e05252;
-  --green:  #3a8f68;
-  --purple: #9d7de8;
-  --cyan:   #e09060;
-  --text:   #ecdcc8;
-  --text2:  #c4a882;
-  --dim:    #6a5843;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MR. GORDON">
+  <meta name="theme-color" content="#0e0e0e">
+  <title>MR. GORDON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0e0e0e; --surface:#181818; --surface-2:#202020;
+      --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.04);
+      --orange:#d97757; --orange-low:rgba(217,119,87,0.12); --orange-med:rgba(217,119,87,0.25);
+      --cream:#c8a882; --cream-low:rgba(200,168,130,0.10);
+      --text:#ede8e0; --text-2:#8a8278; --text-3:#3e3b37;
+      --green:#6db87a; --green-low:rgba(109,184,122,0.10);
+      --blue:#6aabdc; --blue-low:rgba(106,171,220,0.12);
+      --display:'Syne',sans-serif; --mono:'JetBrains Mono',monospace;
+      --si-top:env(safe-area-inset-top,0px); --si-bot:env(safe-area-inset-bottom,0px);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--display);overflow:hidden;-webkit-font-smoothing:antialiased}
+    .shell{display:flex;height:100vh;height:100dvh;overflow:hidden}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* SIDEBAR */
+    .sidebar{display:none;width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);flex-direction:column}
+    .sb-header{padding:28px 22px 20px;border-bottom:1px solid var(--border)}
+    .sb-eyebrow{font:700 10px/1 var(--mono);letter-spacing:.18em;color:var(--orange);text-transform:uppercase}
+    .sb-day{font:800 26px/1 var(--display);color:var(--text);margin-top:5px}
+    .sb-time{font:500 12px/1 var(--mono);color:var(--text-2);margin-top:4px}
+    .sb-date{font:400 11px/1 var(--mono);color:var(--text-3);margin-top:3px}
+    .sb-nav{padding:18px 10px;flex:1;display:flex;flex-direction:column;gap:3px}
+    .sb-nav-btn{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:10px;background:none;border:none;width:100%;cursor:pointer;transition:background .15s}
+    .sb-nav-btn.active{background:var(--orange-low);border:1px solid var(--orange-med)}
+    .sb-nav-btn .icon{font-size:16px;color:var(--text-3);transition:color .15s}
+    .sb-nav-btn .label{font:700 12px/1 var(--display);color:var(--text-3);letter-spacing:.03em;transition:color .15s}
+    .sb-nav-btn.active .icon,.sb-nav-btn.active .label{color:var(--orange)}
+    .sb-footer{padding:18px 22px;border-top:1px solid var(--border)}
+    .streak-row{display:flex;align-items:baseline;gap:6px}
+    .streak-num{font:700 26px/1 var(--mono);color:var(--orange)}
+    .streak-label{font:700 10px/1 var(--mono);color:var(--text-2);letter-spacing:.1em;text-transform:uppercase}
+    .sb-nn-mini{margin-top:10px;height:3px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+    .sb-nn-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .4s ease}
+    .sb-nn-text{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:5px}
 
-body {
-  background: var(--void);
-  color: var(--text2);
-  font-family: 'JetBrains Mono', monospace;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  font-size: 13px;
-  overflow-x: hidden;
-}
+    /* MAIN */
+    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
-/* Depth layers */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 90% 55% at 15% 5%,  rgba(232,114,58,0.06) 0%, transparent 65%),
-    radial-gradient(ellipse 70% 45% at 85% 95%, rgba(245,166,35,0.04) 0%, transparent 55%);
-  pointer-events: none; z-index: 0;
-}
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image:
-    linear-gradient(rgba(232,114,58,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232,114,58,0.018) 1px, transparent 1px);
-  background-size: 52px 52px;
-  pointer-events: none; z-index: 0;
-}
+    /* MOBILE HEADER */
+    .mob-header{flex-shrink:0;padding:calc(var(--si-top) + 12px) 16px 10px;background:var(--bg);border-bottom:1px solid var(--border)}
+    .mh-row1{display:flex;justify-content:space-between;align-items:flex-start}
+    .mh-eyebrow{font:700 9px/1 var(--mono);letter-spacing:.18em;color:var(--orange);text-transform:uppercase}
+    .mh-day{font:800 19px/1 var(--display);color:var(--text);margin-top:3px}
+    .mh-time{font:500 11px/1 var(--mono);color:var(--text-2);margin-top:2px}
+    .mh-streak{text-align:right}
+    .mh-streak-num{font:700 19px/1 var(--mono);color:var(--orange);display:block}
+    .mh-streak-lbl{font:700 8px/1 var(--mono);color:var(--text-2);letter-spacing:.08em;text-transform:uppercase}
+    .mh-bar-row{display:flex;align-items:center;gap:8px;margin-top:9px}
+    .mh-bar-track{flex:1;height:2px;background:var(--border);border-radius:1px;overflow:hidden}
+    .mh-bar-fill{height:100%;background:var(--orange);border-radius:1px;transition:width .4s ease}
+    .mh-bar-lbl{font:700 10px/1 var(--mono);color:var(--text-2);white-space:nowrap}
 
-.shell {
-  position: relative; z-index: 1;
-  max-width: 1380px;
-  margin: 0 auto;
-  padding: 28px 24px 40px;
-}
+    /* CONTENT */
+    .content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px 13px calc(var(--si-bot) + 74px);scroll-behavior:smooth}
+    .content::-webkit-scrollbar{width:3px}
+    .content::-webkit-scrollbar-thumb{background:var(--text-3);border-radius:2px}
 
-/* ── GLASS CARD ─────────────────────────────────────────── */
-.card {
-  background: linear-gradient(150deg,
-    rgba(255,255,255,0.042) 0%,
-    rgba(255,255,255,0.016) 60%,
-    rgba(232,114,58,0.012) 100%
-  );
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 20px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.055),
-    0 24px 64px rgba(0,0,0,0.45);
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.card:hover {
-  border-color: rgba(232,114,58,0.2);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.07),
-    0 24px 64px rgba(0,0,0,0.55),
-    0 0 40px rgba(232,114,58,0.04);
-}
+    /* MOBILE NAV */
+    .mob-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(14,14,14,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:7px 0 calc(var(--si-bot) + 7px);display:flex;justify-content:space-around;z-index:100}
+    .mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 10px;border-radius:8px;-webkit-tap-highlight-color:transparent}
+    .mob-nav-btn .icon{font-size:17px;color:var(--text-3);transition:color .15s}
+    .mob-nav-btn .label{font:700 7px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);transition:color .15s}
+    .mob-nav-btn.active .icon,.mob-nav-btn.active .label{color:var(--orange)}
 
-.label {
-  font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 16px;
-}
+    /* TABS */
+    .tab{display:none}
+    .tab.active{display:block;animation:fadeUp .2s ease}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
-/* ── GRID ──────────────────────────────────────────────── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 12px;
-}
-.col-3  { grid-column: span 3; }
-.col-4  { grid-column: span 4; }
-.col-5  { grid-column: span 5; }
-.col-6  { grid-column: span 6; }
-.col-7  { grid-column: span 7; }
-.col-8  { grid-column: span 8; }
-.col-12 { grid-column: span 12; }
+    .sec{font:700 9px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--text-2);margin:16px 0 7px}
+    .sec:first-child{margin-top:0}
+    .card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:8px}
+    .card-flush{padding:0}
 
-@media (max-width: 960px) {
-  .col-3,.col-4,.col-5,.col-6,.col-7,.col-8 { grid-column: span 12; }
-}
+    /* CLIENT GOAL BANNER */
+    .goal-banner{background:linear-gradient(135deg,rgba(200,168,130,.08),rgba(217,119,87,.12));border:1px solid rgba(217,119,87,.3);border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .goal-eyebrow{font:700 8px/1 var(--mono);letter-spacing:.15em;color:var(--orange);text-transform:uppercase}
+    .goal-main{font:800 18px/1 var(--display);color:var(--text);margin-top:4px}
+    .goal-sub{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:4px}
+    .goal-clients-row{display:flex;gap:7px}
+    .goal-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--text-3);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+    .goal-dot.won{background:var(--orange);border-color:var(--orange)}
+    .goal-dot-lbl{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.06em;text-transform:uppercase;margin-top:5px;text-align:center}
 
-/* ── ANIMATIONS ─────────────────────────────────────────── */
-.fade { animation: up 0.55s cubic-bezier(0.22,1,0.36,1) both; }
-.d1 { animation-delay: 0.04s; }
-.d2 { animation-delay: 0.09s; }
-.d3 { animation-delay: 0.14s; }
-.d4 { animation-delay: 0.19s; }
-.d5 { animation-delay: 0.24s; }
-.d6 { animation-delay: 0.29s; }
-.d7 { animation-delay: 0.34s; }
-.d8 { animation-delay: 0.40s; }
-@keyframes up {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
-}
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+    .stat-cell{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 11px;display:flex;flex-direction:column;align-items:center;gap:2px}
+    .stat-val{font:700 26px/1 var(--mono);color:var(--orange)}
+    .stat-lbl{font:700 8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+    .stat-sub{font:400 9px/1 var(--mono);color:var(--text-3)}
 
-/* ── HEADER ─────────────────────────────────────────────── */
-.header {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 14px; padding-bottom: 18px;
-  border-bottom: 1px solid var(--border);
-}
-.greet-line {
-  font-size: 9px; letter-spacing: 3.5px; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 6px;
-}
-.greet-main {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(30px, 4vw, 48px); font-weight: 800;
-  letter-spacing: -1.5px; line-height: 0.92; color: var(--text);
-}
-.greet-main .accent {
-  color: var(--orange);
-  text-shadow: 0 0 48px rgba(232,114,58,0.45);
-}
-.day-status {
-  margin-top: 9px; font-size: 8.5px; color: var(--dim);
-  letter-spacing: 2.5px; text-transform: uppercase;
-}
-.clock-block { text-align: right; }
-.clock {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(36px, 5.2vw, 58px); font-weight: 700;
-  color: var(--text); line-height: 1; letter-spacing: -2.5px;
-}
-.clock-date {
-  font-size: 8.5px; color: var(--dim); margin-top: 7px;
-  letter-spacing: 2px; text-transform: uppercase;
-}
+    /* NOW */
+    .now-card{background:var(--orange-low);border:1px solid var(--orange-med);border-radius:14px;padding:15px;margin-bottom:8px}
+    .now-eyebrow{font:700 9px/1 var(--mono);letter-spacing:.14em;color:var(--orange);text-transform:uppercase}
+    .now-task{font:800 19px/1.2 var(--display);color:var(--text);margin-top:4px}
+    .now-next{font:500 11px/1 var(--mono);color:var(--cream);margin-top:6px}
 
-/* ── VERSE STRIP ─────────────────────────────────────────── */
-.verse {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 24px; padding: 13px 20px;
-  background: rgba(232,114,58,0.035);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(232,114,58,0.1);
-  border-left: 2px solid var(--orange);
-  border-radius: 7px; margin-bottom: 14px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.3);
-}
-.verse-text {
-  font-size: 11px; font-style: italic;
-  color: var(--text2); opacity: 0.82; line-height: 1.65;
-}
-.verse-ref {
-  font-size: 9px; color: var(--orange); white-space: nowrap;
-  flex-shrink: 0; letter-spacing: 0.8px; opacity: 0.75;
-}
+    /* SCHEDULE */
+    .sched-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border-2)}
+    .sched-row:last-child{border-bottom:none}
+    .sched-dot{width:5px;height:5px;border-radius:50%;background:var(--text-3);margin-top:6px;flex-shrink:0;transition:all .2s}
+    .sched-row.is-now .sched-dot{background:var(--orange);box-shadow:0 0 6px var(--orange)}
+    .sched-time{font:500 10px/1 var(--mono);color:var(--text-2);white-space:nowrap;min-width:60px;padding-top:2px}
+    .sched-row.is-past .sched-time,.sched-row.is-past .sched-name{opacity:.28}
+    .sched-row.is-now .sched-name{color:var(--orange)}
+    .sched-name{font:600 13px/1.2 var(--display);color:var(--text)}
+    .sched-note{font:400 11px/1.3 var(--display);color:var(--text-2);margin-top:2px}
+    .sched-body{flex:1}
+    .sched-nn-btn{width:26px;height:26px;border-radius:8px;border:2px solid var(--text-3);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:12px;transition:all .15s;align-self:center;-webkit-tap-highlight-color:transparent}
+    .sched-nn-btn.done{background:var(--orange);border-color:var(--orange);color:#fff}
 
-/* ═══ ACTIVITY RINGS ═════════════════════════════════════ */
-.rings-banner {
-  background: linear-gradient(150deg,
-    rgba(255,255,255,0.038) 0%,
-    rgba(255,255,255,0.014) 60%,
-    rgba(232,114,58,0.01) 100%
-  );
-  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 22px 28px 20px;
-  margin-bottom: 14px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.055), 0 24px 64px rgba(0,0,0,0.45);
-}
-.rings-progress-wrap { margin-bottom: 20px; }
-.rings-progress-label {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 7px;
-}
-.rings-progress-title {
-  font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--dim);
-}
-.rings-progress-count {
-  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800;
-  color: var(--orange); text-shadow: 0 0 20px rgba(232,114,58,0.4);
-}
-.rings-progress-bg {
-  height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden;
-}
-.rings-progress-fill {
-  height: 100%; border-radius: 2px;
-  background: linear-gradient(90deg, var(--ember), var(--orange), var(--amber));
-  box-shadow: 0 0 10px rgba(232,114,58,0.6);
-  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
-}
-.rings-row {
-  display: flex; justify-content: space-around; align-items: center; gap: 12px;
-}
-.ring-item {
-  display: flex; flex-direction: column; align-items: center;
-  cursor: pointer; user-select: none; gap: 8px; flex: 1;
-}
-.ring-svg-wrap {
-  position: relative; width: 84px; height: 84px; flex-shrink: 0;
-}
-.ring-svg-wrap svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-.ring-track { fill: none; stroke-width: 8; opacity: 0.12; }
-.ring-fill {
-  fill: none; stroke-width: 8; stroke-linecap: round;
-  transition: stroke-dashoffset 0.7s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s;
-}
-.ring-fill.done { filter: drop-shadow(0 0 6px currentColor); }
-.ring-icon {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 22px; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px;
-  transition: transform 0.3s, filter 0.3s;
-}
-.ring-item.done .ring-icon {
-  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
-  transform: translate(-50%, -50%) scale(1.1);
-}
-.ring-check {
-  position: absolute; top: 4px; right: 4px;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: var(--orange); border: 2px solid rgba(5,5,10,0.8);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 8px; color: #fff; font-weight: 700;
-  opacity: 0; transform: scale(0.5);
-  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-}
-.ring-item.done .ring-check { opacity: 1; transform: scale(1); }
-.ring-label {
-  font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--dim); text-align: center; transition: color 0.3s;
-}
-.ring-item.done .ring-label { color: var(--text2); }
-.ring-lift  { color: #e8723a; stroke: #e8723a; }
-.ring-meals { color: #3a8f68; stroke: #3a8f68; }
-.ring-faith { color: #9d7de8; stroke: #9d7de8; }
-.ring-tasks { color: #f5a623; stroke: #f5a623; }
-.ring-chess { color: #a8c8e8; stroke: #a8c8e8; }
-@keyframes ringPop {
-  0% { transform: scale(1); } 40% { transform: scale(0.92); }
-  70% { transform: scale(1.06); } 100% { transform: scale(1); }
-}
-.ring-svg-wrap.pop { animation: ringPop 0.45s ease; }
+    /* QUOTE */
+    .quote-card{background:linear-gradient(135deg,var(--orange-low),var(--cream-low));border:1px solid rgba(217,119,87,.14);border-radius:14px;padding:16px;margin-bottom:8px;text-align:center}
+    .quote-text{font:700 13px/1.55 var(--display);color:var(--cream);font-style:italic}
+    .quote-src{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.1em;margin-top:7px;text-transform:uppercase}
 
-/* ── SCHEDULE ───────────────────────────────────────────── */
-.sched-tag {
-  display: inline-flex; align-items: center;
-  background: rgba(232,114,58,0.1); border: 1px solid rgba(232,114,58,0.22);
-  color: var(--orange); font-size: 8px; font-weight: 500;
-  letter-spacing: 2.5px; padding: 3px 10px; border-radius: 3px;
-  margin-bottom: 14px; text-transform: uppercase;
-}
-.block {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid rgba(220,140,70,0.07);
-}
-.block:last-child { border-bottom: none; }
-.block-time { font-size: 10px; color: var(--dim); min-width: 64px; flex-shrink: 0; }
-.block-evt  { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); }
-.dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.dw { background: var(--red);    box-shadow: 0 0 7px rgba(224,82,82,0.6); }
-.dt { background: var(--green);  box-shadow: 0 0 7px rgba(58,143,104,0.6); }
-.dr { background: var(--purple); box-shadow: 0 0 7px rgba(157,125,232,0.6); }
-.dp { background: var(--dim); }
-.sched-add {
-  display: flex; gap: 6px; margin-top: 12px; padding-top: 12px;
-  border-top: 1px solid rgba(220,140,70,0.07);
-}
-.sched-add input {
-  background: rgba(0,0,0,0.35); border: 1px solid rgba(220,140,70,0.1);
-  border-radius: 5px; color: var(--text2);
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  padding: 6px 10px; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.sched-add input:focus {
-  border-color: rgba(232,114,58,0.4);
-  box-shadow: 0 0 0 3px rgba(232,114,58,0.07);
-}
-.sched-add input::placeholder { color: var(--dim); }
-.sched-time-in { width: 76px; flex-shrink: 0; }
-.sched-evt-in  { flex: 1; }
-.sched-add-btn {
-  background: linear-gradient(145deg, var(--orange), var(--ember));
-  color: #fff; border: none; border-radius: 5px;
-  padding: 0 13px; font-family: 'Syne', sans-serif;
-  font-size: 19px; font-weight: 700; cursor: pointer; flex-shrink: 0;
-  box-shadow: 0 4px 14px rgba(232,114,58,0.35);
-  transition: opacity 0.2s, transform 0.12s;
-}
-.sched-add-btn:hover  { opacity: 0.82; transform: translateY(-1px); }
-.sched-add-btn:active { transform: translateY(0); }
-.block-del {
-  margin-left: auto; background: none; border: none;
-  color: var(--dim); cursor: pointer; font-size: 10px;
-  transition: color 0.15s;
-}
-.block-del:hover { color: var(--red); }
+    /* NON-NEGS */
+    .ring-wrap{display:flex;flex-direction:column;align-items:center;padding:14px 0 10px}
+    .ring-cont{position:relative;width:120px;height:120px}
+    .ring-svg{transform:rotate(-90deg)}
+    .ring-bg{fill:none;stroke:var(--surface-2);stroke-width:11}
+    .ring-fg{fill:none;stroke:var(--orange);stroke-width:11;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)}
+    .ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .ring-num{font:700 28px/1 var(--mono);color:var(--text)}
+    .ring-den{font:500 12px/1 var(--mono);color:var(--text-2)}
+    .ring-lbl{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-top:9px}
+    .nn-list{display:flex;flex-direction:column;gap:5px}
+    .nn-row{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--surface);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none}
+    .nn-row:active{opacity:.85}
+    .nn-row.done{background:var(--green-low);border-color:rgba(109,184,122,.22)}
+    .nn-row.done .nn-text{opacity:.45}
+    .nn-num-lbl{font:700 10px/1 var(--mono);color:var(--text-3);min-width:18px}
+    .nn-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--text-3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .15s}
+    .nn-row.done .nn-box{background:var(--green);border-color:var(--green)}
+    .nn-text{font:600 12px/1.35 var(--display);color:var(--text);flex:1}
+    .nn-cat{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
 
-/* ── WEATHER ────────────────────────────────────────────── */
-.w-temp {
-  font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 700;
-  color: var(--amber); line-height: 1;
-  text-shadow: 0 0 36px rgba(245,166,35,0.35);
-}
-.w-desc {
-  font-size: 10px; color: var(--dim); margin-top: 4px;
-  text-transform: capitalize; margin-bottom: 10px; letter-spacing: 1px;
-}
-.w-meta { font-size: 10px; color: var(--dim); line-height: 2.1; }
+    /* MACROS */
+    .macro-bars-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:8px}
+    .macro-bar-group{display:flex;flex-direction:column;gap:10px}
+    .mbar-row{display:flex;flex-direction:column;gap:4px}
+    .mbar-top{display:flex;justify-content:space-between;align-items:center}
+    .mbar-name{font:700 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+    .mbar-val{font:700 11px/1 var(--mono);color:var(--text)}
+    .mbar-track{height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+    .mbar-fill{height:100%;border-radius:3px;transition:width .4s ease}
+    .mbar-p{background:var(--orange)} .mbar-c{background:var(--cream)} .mbar-f{background:#8a7a6a}
 
-/* ── STREAK / NEXT SESSION ──────────────────────────────── */
-.streak-n {
-  font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800;
-  color: var(--orange); line-height: 1; letter-spacing: -3px;
-  text-shadow: 0 0 60px rgba(232,114,58,0.35);
-}
-.streak-sub {
-  font-size: 8px; color: var(--dim); letter-spacing: 3px;
-  text-transform: uppercase; margin-top: 3px; margin-bottom: 16px;
-}
-.streak-btns { display: flex; gap: 6px; margin-bottom: 20px; }
-.sbtn {
-  flex: 1; background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(220,140,70,0.12); border-radius: 5px;
-  color: var(--text2); font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; padding: 6px 0; cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
-}
-.sbtn:hover { border-color: rgba(232,114,58,0.32); background: rgba(232,114,58,0.08); color: var(--orange); }
-.next-sep { border-top: 1px solid rgba(220,140,70,0.08); padding-top: 14px; }
-.next-day { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--orange); line-height: 1; }
-.next-time { font-size: 10px; color: var(--dim); margin-top: 5px; letter-spacing: 0.5px; }
+    /* WATER */
+    .water-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px}
+    .water-row{display:flex;gap:10px;margin-bottom:10px}
+    .water-unit{flex:1;background:var(--surface-2);border:1.5px solid var(--border);border-radius:11px;padding:12px 10px;cursor:pointer;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
+    .water-unit.full{background:var(--blue-low);border-color:rgba(106,171,220,.35)}
+    .water-unit-icon{font-size:20px;display:block;margin-bottom:5px}
+    .water-unit-oz{font:700 14px/1 var(--mono);color:var(--text)}
+    .water-unit-lbl{font:500 8px/1 var(--mono);color:var(--text-2);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+    .water-unit.full .water-unit-oz,.water-unit.full .water-unit-lbl{color:var(--blue)}
+    .water-bottle-row{display:flex;align-items:center;gap:8px}
+    .water-bottle-btn{width:36px;height:36px;border-radius:10px;background:var(--surface-2);border:1.5px solid var(--border);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .12s;-webkit-tap-highlight-color:transparent}
+    .water-bottle-info{flex:1}
+    .water-bottle-fills{font:700 22px/1 var(--mono);color:var(--blue)}
+    .water-bottle-sub{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px}
+    .water-bar-row{display:flex;flex-direction:column;gap:4px}
+    .water-bar-top{display:flex;justify-content:space-between}
+    .water-oz-lbl{font:700 11px/1 var(--mono);color:var(--text)}
+    .water-tgt-lbl{font:500 10px/1 var(--mono);color:var(--text-2)}
+    .water-prog{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+    .water-prog-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .4s ease}
+    .water-checks{display:flex;gap:6px;margin-top:8px}
+    .wcheck{font:700 9px/1 var(--mono);padding:5px 9px;border-radius:6px;background:var(--surface-2);color:var(--text-3);letter-spacing:.04em}
+    .wcheck.hit{background:var(--blue-low);color:var(--blue)}
+    .wcheck.miss{color:#b85555}
 
-/* ── MEALS ──────────────────────────────────────────────── */
-.meal-counter {
-  font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
-  color: var(--text); line-height: 1; margin-bottom: 4px;
-}
-.meal-counter .done-num { color: var(--green); }
-.meal-counter .denom    { color: var(--dim); font-size: 20px; }
-.meal-slots { margin-top: 14px; }
-.meal-slot  {
-  display: flex; align-items: center; gap: 10px;
-  padding: 9px 0; border-bottom: 1px solid rgba(220,140,70,0.07);
-}
-.meal-slot:last-child { border-bottom: none; }
-.meal-slot-cb {
-  width: 16px; height: 16px; flex-shrink: 0;
-  border: 1px solid rgba(220,140,70,0.22); border-radius: 3px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 9px; background: rgba(0,0,0,0.25);
-  transition: all 0.2s;
-}
-.meal-slot-cb.on {
-  border-color: var(--orange);
-  background: linear-gradient(135deg, var(--orange), var(--amber));
-  color: #fff; box-shadow: 0 0 14px rgba(232,114,58,0.45);
-}
-.meal-slot-num { font-size: 8px; color: var(--orange); letter-spacing: 2px; flex-shrink: 0; min-width: 22px; opacity: 0.75; }
-.meal-slot-input {
-  flex: 1; background: transparent; border: none;
-  border-bottom: 1px solid transparent;
-  color: var(--text2); font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; padding: 2px 0; outline: none;
-  transition: border-color 0.2s;
-}
-.meal-slot-input:focus { border-bottom-color: rgba(232,114,58,0.38); }
-.meal-slot-input::placeholder { color: var(--dim); }
-.meal-slot.done .meal-slot-input { text-decoration: line-through; color: var(--dim); }
+    /* MEALS */
+    .meal-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;margin-bottom:6px;overflow:hidden}
+    .meal-hdr{display:flex;align-items:center;gap:11px;padding:12px 13px;cursor:pointer}
+    .meal-circle{width:27px;height:27px;border-radius:50%;border:2px solid var(--text-3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s}
+    .meal-card.logged .meal-circle{background:var(--orange);border-color:var(--orange)}
+    .meal-info{flex:1}
+    .meal-name{font:700 13px/1 var(--display);color:var(--text)}
+    .meal-target{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px}
+    .meal-macros-mini{font:700 10px/1 var(--mono);color:var(--orange)}
+    .meal-expand{display:none;border-top:1px solid var(--border);padding:13px}
+    .meal-card.open .meal-expand{display:block}
+    .macro-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
+    .macro-inp-grp{display:flex;flex-direction:column;gap:4px}
+    .macro-inp-lbl{font:700 8px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);text-align:center}
+    .macro-inp{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 7px;font:700 16px/1 var(--mono);color:var(--text);width:100%;text-align:center;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+    .macro-inp:focus{border-color:var(--orange)}
+    .macro-inp-unit{font:400 9px/1 var(--mono);color:var(--text-3);text-align:center}
+    .log-btn{width:100%;padding:11px;background:var(--orange);border:none;border-radius:10px;font:700 12px/1 var(--display);color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .15s}
+    .log-btn:active{opacity:.82}
 
-/* ── MACROS ─────────────────────────────────────────────── */
-.macro-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.macro-row:last-child { margin-bottom: 0; }
-.macro-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); min-width: 14px; flex-shrink: 0; }
-.macro-nums  { font-size: 10px; color: var(--text2); min-width: 72px; flex-shrink: 0; text-align: right; }
-.macro-bar-bg   { flex: 1; height: 5px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
-.macro-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
-.bar-p    { background: linear-gradient(90deg, var(--ember), var(--orange)); box-shadow: 0 0 8px rgba(232,114,58,0.4); }
-.bar-c    { background: linear-gradient(90deg, #a07820, var(--amber)); box-shadow: 0 0 8px rgba(245,166,35,0.4); }
-.bar-f    { background: linear-gradient(90deg, #226644, var(--green)); box-shadow: 0 0 8px rgba(58,143,104,0.4); }
-.bar-over { background: var(--red); box-shadow: 0 0 8px rgba(224,82,82,0.4); }
-.macro-input {
-  width: 52px; background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(220,140,70,0.12); border-radius: 5px;
-  color: var(--text2); font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; padding: 4px 7px; outline: none; text-align: center;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.macro-input:focus { border-color: rgba(232,114,58,0.38); box-shadow: 0 0 0 3px rgba(232,114,58,0.07); }
-.macro-input::placeholder { color: var(--dim); }
+    /* TRAINING */
+    .train-summary-card{background:var(--orange-low);border:1px solid var(--orange-med);border-radius:14px;padding:16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+    .tsm-num{font:700 46px/1 var(--mono);color:var(--orange)}
+    .tsm-of{font:500 14px/1 var(--mono);color:var(--cream)}
+    .tsm-status{font:700 11px/1 var(--mono);color:var(--text-2);letter-spacing:.06em;text-transform:uppercase;margin-top:5px}
+    .training-day-grid{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+    .training-day-row{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 14px;display:flex;align-items:center;gap:12px}
+    .td-check{width:36px;height:36px;border-radius:10px;border:2px solid var(--text-3);background:none;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent}
+    .training-day-row.done .td-check{background:var(--orange);border-color:var(--orange)}
+    .td-info{flex:1}
+    .td-day{font:700 14px/1 var(--display);color:var(--text)}
+    .td-win{font:500 11px/1 var(--mono);color:var(--text-2);margin-top:3px}
+    .training-day-row.done .td-day{color:var(--orange)}
+    .td-badge{font:700 9px/1 var(--mono);letter-spacing:.08em;padding:4px 9px;border-radius:6px;text-transform:uppercase}
+    .td-badge.today{background:var(--orange-low);color:var(--orange);border:1px solid var(--orange-med)}
+    .td-badge.done-badge{background:var(--green-low);color:var(--green)}
 
-/* ── MISSION ANCHOR ─────────────────────────────────────── */
-.mission-title {
-  font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 800;
-  letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange);
-  margin-bottom: 14px; text-shadow: 0 0 20px rgba(232,114,58,0.35);
-}
-.mission-item {
-  display: flex; align-items: flex-start; gap: 9px;
-  margin-bottom: 10px; font-size: 10px; color: var(--text2); line-height: 1.5;
-}
-.mission-item:last-child { margin-bottom: 0; }
-.mission-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    /* REVIEW */
+    .review-list{display:flex;flex-direction:column;gap:8px}
+    .rev-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px}
+    .rev-q{font:700 10px/1.4 var(--mono);color:var(--text-2);margin-bottom:7px;letter-spacing:.02em}
+    .rev-input{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font:600 13px/1.45 var(--display);color:var(--text);outline:none;resize:none;transition:border-color .2s}
+    .rev-input:focus{border-color:var(--orange)}
+    .rev-num{width:80px;text-align:center}
 
-/* ── AI INTEL ───────────────────────────────────────────── */
-.ai-item { margin-bottom: 12px; }
-.ai-item:last-child { margin-bottom: 0; }
-.ai-title {
-  font-size: 11px; font-weight: 600; color: var(--text);
-  line-height: 1.35; margin-bottom: 4px;
-  text-decoration: none; display: block;
-  transition: color 0.2s;
-}
-.ai-title:hover { color: var(--purple); }
-.ai-desc { font-size: 10px; color: var(--dim); line-height: 1.55; }
-.ai-divider { border: none; border-top: 1px solid rgba(220,140,70,0.07); margin: 12px 0; }
-.ai-refresh {
-  background: none; border: 1px solid rgba(157,125,232,0.25);
-  border-radius: 5px; color: var(--purple);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 1.5px;
-  padding: 3px 9px; cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-.ai-refresh:hover { background: rgba(157,125,232,0.08); border-color: rgba(157,125,232,0.4); }
+    /* UTIL */
+    .btn-primary{width:100%;padding:12px;background:var(--orange);border:none;border-radius:12px;font:700 13px/1 var(--display);color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .15s;margin-top:10px}
+    .btn-primary:active{opacity:.82}
+    .reset-link{display:block;text-align:center;margin-top:26px;padding-top:18px;border-top:1px solid var(--border);font:700 9px/1 var(--mono);color:var(--text-3);letter-spacing:.08em;cursor:pointer;background:none;border-bottom:none;width:100%}
 
-/* ── NOTES ──────────────────────────────────────────────── */
-.notes-ta {
-  width: 100%; min-height: 96px;
-  background: rgba(0,0,0,0.28); border: 1px solid rgba(220,140,70,0.1);
-  border-radius: 6px; color: var(--text2);
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
-  line-height: 1.72; padding: 13px 16px; resize: vertical; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.notes-ta:focus { border-color: rgba(232,114,58,0.35); box-shadow: 0 0 0 3px rgba(232,114,58,0.06); }
-.notes-ta::placeholder { color: var(--dim); }
-.notes-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-.notes-meta { font-size: 8px; color: var(--dim); letter-spacing: 1.5px; }
-.notes-clear {
-  background: none; border: none; color: var(--dim);
-  font-size: 8px; cursor: pointer; letter-spacing: 2px;
-  font-family: 'JetBrains Mono', monospace; text-transform: uppercase;
-  transition: color 0.15s;
-}
-.notes-clear:hover { color: var(--red); }
+    /* TOAST */
+    .toast{position:fixed;top:calc(var(--si-top) + 65px);left:50%;transform:translateX(-50%) translateY(-8px);background:var(--green);color:#fff;padding:8px 18px;border-radius:100px;font:700 12px/1 var(--display);pointer-events:none;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── UTILITY ────────────────────────────────────────────── */
-.loading {
-  font-size: 9px; color: var(--dim); letter-spacing: 2px;
-  animation: pulse 1.6s infinite;
-}
-.notice { font-size: 10px; color: var(--amber); line-height: 1.7; opacity: 0.8; }
-@keyframes pulse { 0%,100%{opacity:0.2} 50%{opacity:0.65} }
-</style>
+    @media(min-width:768px){
+      .sidebar{display:flex}
+      .mob-header{display:none}
+      .mob-nav{display:none}
+      .content{padding:26px 30px 30px}
+      .stats-grid{grid-template-columns:repeat(4,1fr)}
+      .macro-bar-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    }
+  </style>
 </head>
 <body>
 <div class="shell">
+  <aside class="sidebar">
+    <div class="sb-header">
+      <div class="sb-eyebrow">MR. GORDON</div>
+      <div class="sb-day" id="sb-day">Monday</div>
+      <div class="sb-time" id="sb-time">—</div>
+      <div class="sb-date" id="sb-date">March 16, 2026</div>
+    </div>
+    <nav class="sb-nav">
+      <button class="sb-nav-btn active" data-tab="today"    onclick="switchTab('today')"><span class="icon">⚡</span><span class="label">Today</span></button>
+      <button class="sb-nav-btn"        data-tab="nn"       onclick="switchTab('nn')"><span class="icon">✓</span><span class="label">Non-Negotiables</span></button>
+      <button class="sb-nav-btn"        data-tab="meals"    onclick="switchTab('meals')"><span class="icon">🍽</span><span class="label">Meals & Macros</span></button>
+      <button class="sb-nav-btn"        data-tab="training" onclick="switchTab('training')"><span class="icon">🔥</span><span class="label">Training</span></button>
+      <button class="sb-nav-btn"        data-tab="week"     onclick="switchTab('week')"><span class="icon">📅</span><span class="label">Week Review</span></button>
+    </nav>
+    <div class="sb-footer">
+      <div class="streak-row"><span class="streak-num" id="sb-streak">0</span><span class="streak-label">Perfect Days</span></div>
+      <div class="sb-nn-mini"><div class="sb-nn-fill" id="sb-nn-fill" style="width:0%"></div></div>
+      <div class="sb-nn-text" id="sb-nn-text">0 / 7 non-negotiables</div>
+    </div>
+  </aside>
 
-<!-- ── HEADER ─────────────────────────────────────────── -->
-<header class="header fade">
-  <div>
-    <div class="greet-line" id="tod">GOOD MORNING</div>
-    <div class="greet-main">MR. <span class="accent">GORDON</span></div>
-    <div class="day-status" id="dayStatus"></div>
-  </div>
-  <div class="clock-block">
-    <div class="clock" id="clock">--:--</div>
-    <div class="clock-date" id="clockDate">--</div>
-  </div>
-</header>
+  <div class="main">
+    <header class="mob-header">
+      <div class="mh-row1">
+        <div>
+          <div class="mh-eyebrow">MR. GORDON</div>
+          <div class="mh-day"  id="mh-day">Monday</div>
+          <div class="mh-time" id="mh-time">—</div>
+        </div>
+        <div class="mh-streak">
+          <span class="mh-streak-num" id="mh-streak">0</span>
+          <span class="mh-streak-lbl">Perfect Days</span>
+        </div>
+      </div>
+      <div class="mh-bar-row">
+        <div class="mh-bar-track"><div class="mh-bar-fill" id="mh-bar" style="width:0%"></div></div>
+        <div class="mh-bar-lbl" id="mh-bar-lbl">0 / 7</div>
+      </div>
+    </header>
 
-<!-- ── VERSE ──────────────────────────────────────────── -->
-<div class="verse fade d1">
-  <div class="verse-text" id="verseText"></div>
-  <div class="verse-ref"  id="verseRef"></div>
+    <div class="content" id="content">
+
+      <!-- TODAY -->
+      <div class="tab active" id="tab-today">
+        <div class="goal-banner">
+          <div>
+            <div class="goal-eyebrow">MARCH GOAL</div>
+            <div class="goal-main">3 NEW CLIENTS</div>
+            <div class="goal-sub" id="goal-sub">0 of 3 closed</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="goal-clients-row" id="goal-dots"></div>
+            <div class="goal-dot-lbl">TAP TO CLOSE</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-cell"><span class="stat-val" id="stat-nn">0</span><span class="stat-lbl">Non-Neg</span><span class="stat-sub">of 7</span></div>
+          <div class="stat-cell"><span class="stat-val" id="stat-water-oz">0</span><span class="stat-lbl">Ounces</span><span class="stat-sub">goal: 128oz</span></div>
+          <div class="stat-cell"><span class="stat-val" id="stat-meals">0</span><span class="stat-lbl">Meals</span><span class="stat-sub">logged today</span></div>
+          <div class="stat-cell"><span class="stat-val" id="stat-sessions">0</span><span class="stat-lbl">Sessions</span><span class="stat-sub">this week</span></div>
+        </div>
+
+        <div class="now-card">
+          <div class="now-eyebrow">▶ NOW</div>
+          <div class="now-task" id="now-task">—</div>
+          <div class="now-next" id="now-next">—</div>
+        </div>
+
+        <div class="sec">TODAY'S SCHEDULE</div>
+        <div class="card card-flush" style="padding:4px 13px"><div id="sched-list"></div></div>
+
+        <div class="quote-card" style="margin-top:8px">
+          <div class="quote-text" id="quote-text">"Comfort is never the goal. Progress is."</div>
+          <div class="quote-src"  id="quote-src">— MR. GORDON</div>
+        </div>
+      </div>
+
+      <!-- NON-NEGOTIABLES -->
+      <div class="tab" id="tab-nn">
+        <div class="ring-wrap">
+          <div class="ring-cont">
+            <svg width="120" height="120" class="ring-svg" viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="50"/>
+              <circle class="ring-fg" id="nn-ring" cx="60" cy="60" r="50" stroke-dasharray="314.2" stroke-dashoffset="314.2"/>
+            </svg>
+            <div class="ring-inner">
+              <span class="ring-num" id="ring-num">0</span>
+              <span class="ring-den">/ 7</span>
+            </div>
+          </div>
+          <div class="ring-lbl">Non-Negotiables Complete</div>
+        </div>
+        <div class="nn-list" id="nn-list"></div>
+        <button class="reset-link" onclick="confirmResetNN()">RESET TODAY'S NON-NEGOTIABLES</button>
+      </div>
+
+      <!-- MEALS -->
+      <div class="tab" id="tab-meals">
+        <div class="sec">DAILY MACROS</div>
+        <div class="macro-bars-card">
+          <div class="macro-bar-group">
+            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Protein</span><span class="mbar-val"><span id="tot-p">0</span> / 200g</span></div><div class="mbar-track"><div class="mbar-fill mbar-p" id="bar-p" style="width:0%"></div></div></div>
+            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Carbs</span><span class="mbar-val"><span id="tot-c">0</span> / 400g</span></div><div class="mbar-track"><div class="mbar-fill mbar-c" id="bar-c" style="width:0%"></div></div></div>
+            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Fat</span><span class="mbar-val"><span id="tot-f">0</span> / 90g</span></div><div class="mbar-track"><div class="mbar-fill mbar-f" id="bar-f" style="width:0%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="sec">HYDRATION</div>
+        <div class="water-card">
+          <div class="water-row">
+            <div class="water-unit" id="morning-water" onclick="toggleMorningWater()">
+              <span class="water-unit-icon">🌅</span>
+              <div class="water-unit-oz">32 oz</div>
+              <div class="water-unit-lbl">Morning</div>
+            </div>
+            <div style="flex:2;background:var(--surface-2);border:1.5px solid var(--border);border-radius:11px;padding:12px 13px">
+              <div style="font:700 8px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px">Water Bottle · 64oz each</div>
+              <div class="water-bottle-row">
+                <button class="water-bottle-btn" onclick="adjBottle(-1)" style="color:var(--text-2)">−</button>
+                <div class="water-bottle-info">
+                  <div class="water-bottle-fills" id="bottle-fills">0</div>
+                  <div class="water-bottle-sub" id="bottle-oz">0 oz from bottle</div>
+                </div>
+                <button class="water-bottle-btn" onclick="adjBottle(1)" style="background:var(--blue-low);border-color:rgba(106,171,220,.35)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="water-bar-row">
+            <div class="water-bar-top">
+              <span class="water-oz-lbl" id="water-oz-total">0 oz</span>
+              <span class="water-tgt-lbl">/ 128 oz (1 gallon)</span>
+            </div>
+            <div class="water-prog"><div class="water-prog-fill" id="water-prog-fill" style="width:0%"></div></div>
+          </div>
+          <div class="water-checks">
+            <span class="wcheck" id="wc-noon">½ by noon (64oz)</span>
+            <span class="wcheck" id="wc-eod">Full gallon</span>
+          </div>
+        </div>
+
+        <div class="sec">MEALS</div>
+        <div id="meal-cards"></div>
+      </div>
+
+      <!-- TRAINING -->
+      <div class="tab" id="tab-training">
+        <div class="train-summary-card">
+          <div>
+            <div style="font:700 9px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:6px">THIS WEEK</div>
+            <div style="display:flex;align-items:baseline;gap:8px">
+              <span class="tsm-num" id="tsm-num">0</span>
+              <span class="tsm-of">/ 4 sessions</span>
+            </div>
+            <div class="tsm-status" id="tsm-status">TARGET: 4 THIS WEEK</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:5px">STREAK</div>
+            <div style="font:700 32px/1 var(--mono);color:var(--orange)" id="train-streak">0</div>
+            <div style="font:500 9px/1 var(--mono);color:var(--text-2)">perfect weeks</div>
+          </div>
+        </div>
+
+        <div class="sec">LOG SESSIONS</div>
+        <div class="training-day-grid" id="training-day-grid"></div>
+
+        <div class="sec">TRAINING WINDOWS</div>
+        <div class="card" style="padding:12px 14px">
+          <div style="display:flex;flex-direction:column;gap:7px" id="train-windows"></div>
+        </div>
+        <button class="reset-link" onclick="resetTraining()">RESET WEEK'S SESSIONS</button>
+      </div>
+
+      <!-- WEEK REVIEW -->
+      <div class="tab" id="tab-week">
+        <div class="card card-flush" style="padding:12px 14px;margin-bottom:8px">
+          <div style="font:500 10px/1.5 var(--mono);color:var(--text-3)">Run every Sunday. Be honest. No skipping.</div>
+        </div>
+        <div class="review-list" id="review-list"></div>
+        <button class="btn-primary" onclick="saveReview()">SAVE REVIEW</button>
+      </div>
+    </div>
+
+    <nav class="mob-nav">
+      <button class="mob-nav-btn active" data-tab="today"    onclick="switchTab('today')"><span class="icon">⚡</span><span class="label">Today</span></button>
+      <button class="mob-nav-btn"        data-tab="nn"       onclick="switchTab('nn')"><span class="icon">✓</span><span class="label">Non-Neg</span></button>
+      <button class="mob-nav-btn"        data-tab="meals"    onclick="switchTab('meals')"><span class="icon">🍽</span><span class="label">Meals</span></button>
+      <button class="mob-nav-btn"        data-tab="training" onclick="switchTab('training')"><span class="icon">🔥</span><span class="label">Training</span></button>
+      <button class="mob-nav-btn"        data-tab="week"     onclick="switchTab('week')"><span class="icon">📅</span><span class="label">Review</span></button>
+    </nav>
+  </div>
 </div>
-
-<!-- ── ACTIVITY RINGS ─────────────────────────────────── -->
-<div class="rings-banner fade d2">
-  <div class="rings-progress-wrap">
-    <div class="rings-progress-label">
-      <span class="rings-progress-title">Daily Non-Negotiables</span>
-      <span class="rings-progress-count" id="ringsCount">0 / 5</span>
-    </div>
-    <div class="rings-progress-bg">
-      <div class="rings-progress-fill" id="ringsProgressFill" style="width:0%"></div>
-    </div>
-  </div>
-  <div class="rings-row">
-    <!-- LIFT -->
-    <div class="ring-item" id="ring-0" onclick="toggleRing(0)">
-      <div class="ring-svg-wrap" id="rsvg-0">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-track ring-lift" cx="50" cy="50" r="42"/>
-          <circle class="ring-fill ring-lift" id="rfill-0" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-        </svg>
-        <div class="ring-icon">🏋️</div>
-        <div class="ring-check">✓</div>
-      </div>
-      <div class="ring-label">Lift</div>
-    </div>
-    <!-- MEALS -->
-    <div class="ring-item" id="ring-1" onclick="toggleRing(1)">
-      <div class="ring-svg-wrap" id="rsvg-1">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-track ring-meals" cx="50" cy="50" r="42"/>
-          <circle class="ring-fill ring-meals" id="rfill-1" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-        </svg>
-        <div class="ring-icon">🥩</div>
-        <div class="ring-check">✓</div>
-      </div>
-      <div class="ring-label">Meals</div>
-    </div>
-    <!-- FAITH -->
-    <div class="ring-item" id="ring-2" onclick="toggleRing(2)">
-      <div class="ring-svg-wrap" id="rsvg-2">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-track ring-faith" cx="50" cy="50" r="42"/>
-          <circle class="ring-fill ring-faith" id="rfill-2" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-        </svg>
-        <div class="ring-icon">✝️</div>
-        <div class="ring-check">✓</div>
-      </div>
-      <div class="ring-label">Faith</div>
-    </div>
-    <!-- TASKS -->
-    <div class="ring-item" id="ring-3" onclick="toggleRing(3)">
-      <div class="ring-svg-wrap" id="rsvg-3">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-track ring-tasks" cx="50" cy="50" r="42"/>
-          <circle class="ring-fill ring-tasks" id="rfill-3" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-        </svg>
-        <div class="ring-icon">📋</div>
-        <div class="ring-check">✓</div>
-      </div>
-      <div class="ring-label">Tasks</div>
-    </div>
-    <!-- CHESS -->
-    <div class="ring-item" id="ring-4" onclick="toggleRing(4)">
-      <div class="ring-svg-wrap" id="rsvg-4">
-        <svg viewBox="0 0 100 100">
-          <circle class="ring-track ring-chess" cx="50" cy="50" r="42"/>
-          <circle class="ring-fill ring-chess" id="rfill-4" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-        </svg>
-        <div class="ring-icon">♟️</div>
-        <div class="ring-check">✓</div>
-      </div>
-      <div class="ring-label">Chess</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── MAIN GRID ───────────────────────────────────────── -->
-<div class="grid">
-
-  <!-- ROW 1: Schedule | Weather | Streak -->
-  <div class="card col-5 fade d3">
-    <div class="label">Today's Schedule</div>
-    <div class="sched-tag" id="schedDay"></div>
-    <div id="schedBlocks"></div>
-    <div class="sched-add">
-      <input type="text" class="sched-time-in" id="schedTimeIn" placeholder="10:00 AM">
-      <input type="text" class="sched-evt-in"  id="schedEvtIn"  placeholder="Add event...">
-      <button class="sched-add-btn" onclick="addSchedBlock()">+</button>
-    </div>
-  </div>
-
-  <div class="card col-3 fade d4">
-    <div class="label">Plymouth, MN</div>
-    <div id="weatherWrap"><div class="loading">FETCHING...</div></div>
-  </div>
-
-  <div class="card col-4 fade d4">
-    <div class="label">Lifting Streak</div>
-    <div class="streak-n" id="streakN">0</div>
-    <div class="streak-sub">Days Complete</div>
-    <div class="streak-btns">
-      <button class="sbtn" onclick="adj(-1)">−</button>
-      <button class="sbtn" onclick="adj(1)">+</button>
-    </div>
-    <div class="next-sep">
-      <div class="label" style="margin-bottom:10px;">Next Session</div>
-      <div class="next-day"  id="nextDay">—</div>
-      <div class="next-time" id="nextTime">—</div>
-    </div>
-  </div>
-
-  <!-- ROW 2: Meals | Macros | Mission -->
-  <div class="card col-5 fade d5" style="border-left:2px solid var(--green);">
-    <div class="label">Meals Today</div>
-    <div class="meal-counter">
-      <span class="done-num" id="mealDone">0</span><span class="denom"> / 4</span>
-    </div>
-    <div class="meal-slots" id="mealSlots"></div>
-  </div>
-
-  <div class="card col-4 fade d5" style="border-left:2px solid var(--amber);">
-    <div class="label">Macros Today</div>
-    <div class="macro-row">
-      <span class="macro-label">P</span>
-      <input class="macro-input" id="mp" type="number" min="0" placeholder="0" oninput="updateMacros()">
-      <div class="macro-bar-bg"><div class="macro-bar-fill bar-p" id="bp" style="width:0%"></div></div>
-      <span class="macro-nums" id="np">0 / 200g</span>
-    </div>
-    <div class="macro-row">
-      <span class="macro-label">C</span>
-      <input class="macro-input" id="mc" type="number" min="0" placeholder="0" oninput="updateMacros()">
-      <div class="macro-bar-bg"><div class="macro-bar-fill bar-c" id="bc" style="width:0%"></div></div>
-      <span class="macro-nums" id="nc">0 / 400g</span>
-    </div>
-    <div class="macro-row">
-      <span class="macro-label">F</span>
-      <input class="macro-input" id="mf" type="number" min="0" placeholder="0" oninput="updateMacros()">
-      <div class="macro-bar-bg"><div class="macro-bar-fill bar-f" id="bf" style="width:0%"></div></div>
-      <span class="macro-nums" id="nf">0 / 90g</span>
-    </div>
-  </div>
-
-  <div class="card col-3 fade d5" style="background:linear-gradient(150deg,rgba(255,255,255,0.042) 0%,rgba(232,114,58,0.055) 100%);border-left:2px solid var(--orange);">
-    <div class="mission-title">Mission Anchor</div>
-    <div class="mission-item">
-      <div class="mission-dot" style="background:var(--orange);box-shadow:0 0 6px rgba(232,114,58,0.5)"></div>
-      <span>220–230 lbs lean · marathon capable · elite strength</span>
-    </div>
-    <div class="mission-item">
-      <div class="mission-dot" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,0.5)"></div>
-      <span>$10K/month net · multiple income streams</span>
-    </div>
-    <div class="mission-item">
-      <div class="mission-dot" style="background:var(--purple);box-shadow:0 0 6px rgba(157,125,232,0.5)"></div>
-      <span>God first · daily Word · faith-centered household</span>
-    </div>
-    <div class="mission-item">
-      <div class="mission-dot" style="background:var(--green);box-shadow:0 0 6px rgba(58,143,104,0.5)"></div>
-      <span>Secure leader · emotionally regulated · ready for marriage</span>
-    </div>
-    <div class="mission-item">
-      <div class="mission-dot" style="background:var(--cyan);box-shadow:0 0 6px rgba(224,144,96,0.5)"></div>
-      <span>Sharp mind · systems builder · self-mastery</span>
-    </div>
-  </div>
-
-  <!-- ROW 3: AI Intel | Notes -->
-  <div class="card col-5 fade d7" style="border-left:2px solid var(--purple);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div class="label" style="margin-bottom:0;">AI Intel</div>
-      <button class="ai-refresh" onclick="refreshAI()">↻ Refresh</button>
-    </div>
-    <div id="aiContent"><div class="loading">FETCHING...</div></div>
-  </div>
-
-  <div class="card col-7 fade d7">
-    <div class="label">Notes — Persists Until Cleared</div>
-    <textarea class="notes-ta" id="notesTA" placeholder="Thoughts, reminders, follow-ups..."></textarea>
-    <div class="notes-foot">
-      <div class="notes-meta" id="notesMeta">nothing saved</div>
-      <button class="notes-clear" onclick="clearNotes()">Clear</button>
-    </div>
-  </div>
-
-</div><!-- /grid -->
-</div><!-- /shell -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────
-const WEATHER_KEY = 'f842102264de4c44adee09311e5a08d3';
-const PLY_LAT     = 44.9719;
-const PLY_LON     = -93.4569;
-const BRAVE_KEY   = 'BSAJdUNYJMpum3ufe3IkYLLLMFAUDfN';
-
-// ── STATE ─────────────────────────────────────────────────
-const SK    = 'mgd3';
-const TODAY = new Date().toDateString();
-
-function load() { try { return JSON.parse(localStorage.getItem(SK)) || {}; } catch { return {}; } }
-function save(s) { localStorage.setItem(SK, JSON.stringify(s)); }
-
-let S = load();
-if (S.date !== TODAY) {
-  S = {
-    date:         TODAY,
-    checks:       {},
-    mealSlots:    [{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false}],
-    customBlocks: [],
-    macros:       { p:0, c:0, f:0 },
-    notes:        S.notes || '',
-    streak:       S.allDone ? (parseInt(S.streak)||0) + 1 : (parseInt(S.streak)||0),
-    allDone:      false,
-    wc: S.wc, wt: S.wt,
-    aiCache: null,
-  };
-  save(S);
-}
-// Ensure nested objects exist for old state
-S.macros       = S.macros       || { p:0, c:0, f:0 };
-S.mealSlots    = S.mealSlots    || [{text:'',done:false},{text:'',done:false},{text:'',done:false},{text:'',done:false}];
-S.customBlocks = S.customBlocks || [];
-
-// ── CLOCK ─────────────────────────────────────────────────
-const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-function tick() {
-  const n   = new Date();
-  const h   = n.getHours(), m = n.getMinutes();
-  const h12 = h % 12 || 12;
-  const ap  = h >= 12 ? 'PM' : 'AM';
-  document.getElementById('clock').textContent     = `${h12}:${String(m).padStart(2,'0')} ${ap}`;
-  document.getElementById('clockDate').textContent = `${DAYS[n.getDay()].toUpperCase()} · ${MONTHS[n.getMonth()]} ${n.getDate()}, ${n.getFullYear()}`;
-  document.getElementById('tod').textContent       = h < 12 ? 'GOOD MORNING' : h < 17 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
-}
-tick(); setInterval(tick, 1000);
-
-// ── VERSE ─────────────────────────────────────────────────
-const VERSES = [
-  { t:'I can do all things through Christ who strengthens me.',                                              r:'Philippians 4:13' },
-  { t:'Be strong and courageous. Do not be afraid, for the LORD your God will be with you wherever you go.', r:'Joshua 1:9' },
-  { t:'Commit your work to the LORD, and your plans will be established.',                                   r:'Proverbs 16:3' },
-  { t:'No discipline seems pleasant at the time, but painful — later it produces a harvest of righteousness.', r:'Hebrews 12:11' },
-  { t:'The soul of the diligent is richly supplied.',                                                        r:'Proverbs 13:4' },
-  { t:'For God gave us a spirit not of fear but of power and love and self-control.',                        r:'2 Timothy 1:7' },
-  { t:'Whatever you do, work heartily, as for the Lord and not for men.',                                    r:'Colossians 3:23' },
+const NN_ITEMS = [
+  { text:'32oz water + L-Tyrosine 500mg + L-Theanine 200mg upon waking', cat:'MORNING' },
+  { text:'Prayer — 10 min, intentional, uninterrupted',                   cat:'MORNING' },
+  { text:'20 min non-fiction reading',                                     cat:'MORNING' },
+  { text:'25 Cold DMs — Bear Fitness',                                     cat:'WORK' },
+  { text:'Meal 1 eaten before leaving the house',                          cat:'NUTRITION' },
+  { text:'4 meals hit — 200P / 400C / 90F',                               cat:'NUTRITION' },
+  { text:'1 gallon of water — 64oz by noon, full by EOD',                 cat:'HYDRATION' },
 ];
-const dow = new Date().getDay();
-const vv  = VERSES[dow];
-document.getElementById('verseText').textContent = `"${vv.t}"`;
-document.getElementById('verseRef').textContent  = `— ${vv.r}`;
 
-// ── SCHEDULE ──────────────────────────────────────────────
-const STATUS_MAP = [
-  'SUNDAY — REST DAY',
-  'MONDAY — WORK · 9AM–8PM',
-  'TUESDAY — WORK · 12PM–8PM',
-  'WEDNESDAY — DAY OFF',
-  'THURSDAY — WORK · 9AM–5PM',
-  'FRIDAY — WORK · 9AM–6PM',
-  'SATURDAY — WORK · 8:30AM–5PM',
+const MEAL_INFO = [
+  { name:'MEAL 1', mth:'8:20 AM',  fs:'8:20 AM',  sun:'Flexible' },
+  { name:'MEAL 2', mth:'11:30 AM', fs:'12:00 PM', sun:'Flexible' },
+  { name:'MEAL 3', mth:'2:30 PM',  fs:'3:00 PM',  sun:'Flexible' },
+  { name:'MEAL 4', mth:'9:00 PM',  fs:'6:00 PM',  sun:'Flexible' },
 ];
-document.getElementById('dayStatus').textContent = STATUS_MAP[dow];
-document.getElementById('schedDay').textContent  = DAYS[dow].toUpperCase();
 
-const SCHEDS = {
-  0: [{ t:'FREE',     e:'Rest Day',       c:'dr' }],
-  1: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'8:00 PM',  e:'End of Shift',  c:'dw' }],
-  2: [{ t:'9:30 AM',  e:'Lift',           c:'dt' }, { t:'12:00 PM', e:'Work',           c:'dw' }, { t:'8:00 PM', e:'End of Shift', c:'dw' }],
-  3: [{ t:'10:00 AM', e:'Lift',           c:'dt' }, { t:'FREE',     e:'Day Off',        c:'dr' }],
-  4: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'5:00 PM',  e:'End of Shift',  c:'dw' }],
-  5: [{ t:'9:00 AM',  e:'Work',           c:'dw' }, { t:'6:00 PM',  e:'End of Shift',  c:'dw' }, { t:'7:00 PM', e:'Lift', c:'dt' }],
-  6: [{ t:'8:30 AM',  e:'Work',           c:'dw' }, { t:'5:00 PM',  e:'End of Shift',  c:'dw' }, { t:'6:00 PM', e:'Lift', c:'dt' }],
+const SCHEDULES = {
+  weekday:[
+    {t:'6:30 AM',   task:'Wake',                       note:'32oz water + L-Tyrosine + L-Theanine',   h:6.5,  nn:0},
+    {t:'6:30–6:40', task:'Prayer',                     note:'10 min — phone stays down',              h:6.5,  nn:1},
+    {t:'6:40–7:00', task:'Shower + Get Ready',         note:'20 minutes',                             h:6.67, nn:-1},
+    {t:'7:00–7:20', task:'Non-Fiction Reading',        note:'One full chapter — coffee in hand',      h:7.0,  nn:2},
+    {t:'7:20–8:20', task:'Media Hour + 25 Cold DMs',   note:'Music or podcast + outreach',            h:7.33, nn:3},
+    {t:'8:20–9:00', task:'Meal 1',                     note:'Sit down. Eat fully before leaving.',    h:8.33, nn:4},
+    {t:'9:00–9:30', task:'Buffer Block',               note:'Bag packed. Mentally locked in.',        h:9.0,  nn:-1},
+    {t:'9:30 AM',   task:'LEAVE',                      note:null,                                     h:9.5,  nn:-1},
+    {t:'10:00 AM',  task:'Arrive — Locked In',         note:null,                                     h:10.0, nn:-1},
+    {t:'11:30 AM',  task:'Meal 2',                     note:'Hydration check: 64oz hit?',             h:11.5, nn:-1},
+    {t:'2:30 PM',   task:'Meal 3',                     note:null,                                     h:14.5, nn:-1},
+    {t:'8:00 PM',   task:'Off Work',                   note:'Hydration check: full gallon hit?',      h:20.0, nn:-1},
+    {t:'8:30–9:00', task:'Decompress',                 note:'No screen spiral',                       h:20.5, nn:-1},
+    {t:'9:00 PM',   task:'Meal 4',                     note:null,                                     h:21.0, nn:-1},
+    {t:'9:00–10:00',task:'Relationship / Admin / Free',note:null,                                     h:21.0, nn:-1},
+    {t:'10:00 PM',  task:'Wind-Down',                  note:'Screens down — red light',               h:22.0, nn:-1},
+    {t:'10:30 PM',  task:'BED',                        note:null,                                     h:22.5, nn:-1},
+  ],
+  weekend:[
+    {t:'6:30 AM',   task:'Wake',                       note:'32oz water + L-Tyrosine + L-Theanine',   h:6.5,  nn:0},
+    {t:'6:30–6:40', task:'Prayer',                     note:'10 min — phone stays down',              h:6.5,  nn:1},
+    {t:'6:40–7:00', task:'Shower + Get Ready',         note:null,                                     h:6.67, nn:-1},
+    {t:'7:00–7:20', task:'Non-Fiction Reading',        note:'One full chapter',                       h:7.0,  nn:2},
+    {t:'7:20–8:20', task:'Media Hour + 25 Cold DMs',   note:null,                                     h:7.33, nn:3},
+    {t:'8:20–9:00', task:'Meal 1',                     note:'Eat fully before leaving',               h:8.33, nn:4},
+    {t:'9:00–9:30', task:'Buffer Block',               note:null,                                     h:9.0,  nn:-1},
+    {t:'9:30 AM',   task:'LEAVE',                      note:null,                                     h:9.5,  nn:-1},
+    {t:'10:00 AM',  task:'Arrive — Locked In',         note:null,                                     h:10.0, nn:-1},
+    {t:'12:00 PM',  task:'Meal 2',                     note:'Hydration check: 64oz hit?',             h:12.0, nn:-1},
+    {t:'2:00 PM',   task:'Off Work',                   note:'Hydration check: full gallon hit?',      h:14.0, nn:-1},
+    {t:'3:00 PM',   task:'Meal 3',                     note:null,                                     h:15.0, nn:-1},
+    {t:'2:30–6:00', task:'Open Block',                 note:'Relationship / recovery',                h:14.5, nn:-1},
+    {t:'6:00 PM',   task:'Meal 4',                     note:null,                                     h:18.0, nn:-1},
+    {t:'10:00 PM',  task:'Wind-Down',                  note:null,                                     h:22.0, nn:-1},
+    {t:'10:30 PM',  task:'BED',                        note:null,                                     h:22.5, nn:-1},
+  ],
+  sunday:[
+    {t:'6:30 AM',    task:'Wake',                         note:'Full morning routine',               h:6.5,  nn:0},
+    {t:'6:30–6:40',  task:'Prayer',                       note:'10 min',                             h:6.5,  nn:1},
+    {t:'6:40–7:00',  task:'Shower + Get Ready',           note:null,                                 h:6.67, nn:-1},
+    {t:'7:00–7:20',  task:'Non-Fiction Reading',          note:null,                                 h:7.0,  nn:2},
+    {t:'7:20–8:20',  task:'Media Hour + 25 Cold DMs',     note:null,                                 h:7.33, nn:3},
+    {t:'8:20–9:00',  task:'Meal 1',                       note:null,                                 h:8.33, nn:4},
+    {t:'Mid-Morning',task:'CHURCH',                       note:'Non-negotiable — every week',        h:10.5, nn:-1},
+    {t:'Afternoon',  task:'Meal Prep + Recovery',         note:null,                                 h:13.0, nn:-1},
+    {t:'Evening',    task:'WEEKLY REVIEW',                note:'Every week. No skipping.',           h:18.0, nn:-1},
+    {t:'10:00 PM',   task:'Wind-Down',                    note:null,                                 h:22.0, nn:-1},
+    {t:'10:30 PM',   task:'BED',                          note:null,                                 h:22.5, nn:-1},
+  ],
 };
 
-const sb = document.getElementById('schedBlocks');
-function renderSched() {
-  sb.innerHTML = '';
-  (SCHEDS[dow]||[]).forEach(s => {
-    sb.innerHTML += `<div class="block">
-      <span class="block-time">${s.t}</span>
-      <div class="dot ${s.c}"></div>
-      <span class="block-evt">${s.e}</span>
-    </div>`;
-  });
-  (S.customBlocks||[]).forEach((s,i) => {
-    sb.innerHTML += `<div class="block">
-      <span class="block-time">${s.t}</span>
-      <div class="dot dp"></div>
-      <span class="block-evt">${s.e}</span>
-      <button class="block-del" onclick="delBlock(${i})">✕</button>
-    </div>`;
-  });
-}
-renderSched();
-
-function addSchedBlock() {
-  const t = document.getElementById('schedTimeIn').value.trim();
-  const e = document.getElementById('schedEvtIn').value.trim();
-  if (!e) return;
-  S.customBlocks.push({ t: t||'—', e });
-  save(S); renderSched();
-  document.getElementById('schedTimeIn').value = '';
-  document.getElementById('schedEvtIn').value  = '';
-}
-function delBlock(i) { S.customBlocks.splice(i,1); save(S); renderSched(); }
-document.getElementById('schedEvtIn').addEventListener('keydown', e => { if(e.key==='Enter') addSchedBlock(); });
-
-// ── ACTIVITY RINGS ────────────────────────────────────────
-const RING_COUNT    = 5;
-const CIRCUMFERENCE = 263.9;
-
-function renderRings() {
-  let done = 0;
-  for (let i = 0; i < RING_COUNT; i++) {
-    const on   = !!S.checks[i];
-    if (on) done++;
-    const item = document.getElementById(`ring-${i}`);
-    const fill = document.getElementById(`rfill-${i}`);
-    item.classList.toggle('done', on);
-    fill.classList.toggle('done', on);
-    fill.style.strokeDashoffset = on ? 0 : CIRCUMFERENCE;
-  }
-  document.getElementById('ringsCount').textContent         = `${done} / ${RING_COUNT}`;
-  document.getElementById('ringsProgressFill').style.width  = `${(done / RING_COUNT) * 100}%`;
-  S.allDone = done === RING_COUNT;
-}
-
-function toggleRing(i) {
-  S.checks[i] = !S.checks[i];
-  save(S);
-  const wrap = document.getElementById(`rsvg-${i}`);
-  wrap.classList.remove('pop');
-  void wrap.offsetWidth;
-  wrap.classList.add('pop');
-  setTimeout(() => wrap.classList.remove('pop'), 450);
-  renderRings();
-}
-renderRings();
-
-// ── MEAL TRACKER ──────────────────────────────────────────
-function renderMealSlots() {
-  const wrap = document.getElementById('mealSlots');
-  wrap.innerHTML = '';
-  let doneCount = 0;
-  S.mealSlots.forEach((m,i) => {
-    if (m.done) doneCount++;
-    const row = document.createElement('div');
-    row.className = `meal-slot${m.done?' done':''}`;
-    row.innerHTML = `
-      <div class="meal-slot-cb${m.done?' on':''}" onclick="toggleMeal(${i})">${m.done?'✓':''}</div>
-      <span class="meal-slot-num">M${i+1}</span>
-      <input class="meal-slot-input" type="text" placeholder="What did you eat?"
-             value="${m.text.replace(/"/g,'&quot;')}"
-             oninput="saveMealText(${i}, this.value)">`;
-    wrap.appendChild(row);
-  });
-  document.getElementById('mealDone').textContent = doneCount;
-}
-function toggleMeal(i)      { S.mealSlots[i].done = !S.mealSlots[i].done; save(S); renderMealSlots(); }
-function saveMealText(i, v) { S.mealSlots[i].text = v; save(S); }
-renderMealSlots();
-
-// ── STREAK ────────────────────────────────────────────────
-function renderStreak() { document.getElementById('streakN').textContent = S.streak||0; }
-function adj(d) { S.streak = Math.max(0,(parseInt(S.streak)||0)+d); save(S); renderStreak(); }
-renderStreak();
-
-// ── NEXT TRAINING ─────────────────────────────────────────
-const NEXT_TRAIN = [
-  { day:'TUESDAY', time:'9:30 – 10:30 AM · LIFT'  }, // Sun
-  { day:'TUESDAY', time:'9:30 – 10:30 AM · LIFT'  }, // Mon
-  { day:'TODAY',   time:'9:30 – 10:30 AM · LIFT'  }, // Tue
-  { day:'TODAY',   time:'10:00 – 11:00 AM · LIFT' }, // Wed
-  { day:'FRIDAY',  time:'7:00 – 8:00 PM · LIFT'   }, // Thu
-  { day:'TODAY',   time:'7:00 – 8:00 PM · LIFT'   }, // Fri
-  { day:'TODAY',   time:'6:00 – 7:00 PM · LIFT'   }, // Sat
+const TRAINING_WINDOWS = [
+  {day:'Tuesday',  win:'9:30 – 10:30 AM', note:'Before work window'},
+  {day:'Wednesday',win:'10:00 – 11:00 AM',note:'Off day — use it'},
+  {day:'Friday',   win:'7:00 – 8:00 PM',  note:'Post-shift'},
+  {day:'Saturday', win:'6:00 – 7:00 PM',  note:'Post-shift'},
 ];
-document.getElementById('nextDay').textContent  = NEXT_TRAIN[dow].day;
-document.getElementById('nextTime').textContent = NEXT_TRAIN[dow].time;
 
-// ── MACROS ────────────────────────────────────────────────
-const MACRO_TARGETS = { p:200, c:400, f:90 };
+const REVIEW_QS = [
+  {q:'Training sessions completed this week?',               type:'number', ph:'0–7'},
+  {q:'Days hitting all 4 meals + macro targets?',            type:'number', ph:'0–7'},
+  {q:'Days hitting 1 gallon of water?',                      type:'number', ph:'0–7'},
+  {q:'Days all morning non-negotiables complete?',           type:'number', ph:'0–7'},
+  {q:'Made it to church this week?',                         type:'text',   ph:'Yes / No'},
+  {q:'Total DMs sent this week? (Target: 175)',              type:'number', ph:'0'},
+  {q:'New clients closed this week?',                        type:'number', ph:'0'},
+  {q:'One thing that slipped most this week?',               type:'ta',     ph:'Be specific. Be honest.'},
+  {q:'One thing to lock in tighter next week?',              type:'ta',     ph:'One. Not five.'},
+  {q:'Am I closer to my identity this week than last? Why?', type:'ta',     ph:'Answer honestly.'},
+];
 
-function initMacroInputs() {
-  document.getElementById('mp').value = S.macros.p > 0 ? S.macros.p : '';
-  document.getElementById('mc').value = S.macros.c > 0 ? S.macros.c : '';
-  document.getElementById('mf').value = S.macros.f > 0 ? S.macros.f : '';
-  updateMacros();
+const QUOTES = [
+  {t:'Comfort is never the goal. Progress is.',                            s:'— MR. GORDON'},
+  {t:'I can do all things through Christ who strengthens me.',             s:'— PHILIPPIANS 4:13'},
+  {t:'Discipline is choosing what you want most over what you want now.',  s:null},
+  {t:'For God gave us a spirit not of fear but of power and self-control.',s:'— 2 TIMOTHY 1:7'},
+  {t:'Win the morning. Win the day.',                                       s:null},
+  {t:'Be strong and courageous. Do not be afraid.',                        s:'— JOSHUA 1:9'},
+  {t:'The man who moves a mountain begins by carrying away small stones.', s:'— CONFUCIUS'},
+];
+
+// STATE
+const S = {
+  nn: new Array(7).fill(false),
+  meals: Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0})),
+  morningWater: false,
+  bottleFills: 0,
+  training: {weekStart:'', sessions:[]},
+  trainStreak: 0,
+  review: {},
+  streak: 0,
+  clients: 0,
+  date: '',
+};
+
+function weekStart() {
+  const d = new Date(), day = d.getDay();
+  const nd = new Date(d);
+  nd.setDate(d.getDate() - day + (day === 0 ? -6 : 1));
+  return nd.toDateString();
 }
-function updateMacros() {
-  ['p','c','f'].forEach(k => {
-    const val  = parseInt(document.getElementById('m'+k).value)||0;
-    const tgt  = MACRO_TARGETS[k];
-    const pct  = Math.min(val/tgt*100, 100);
-    const over = val > tgt;
-    S.macros[k] = val;
-    const bar = document.getElementById('b'+k);
-    bar.style.width = pct + '%';
-    bar.className   = `macro-bar-fill ${over ? 'bar-over' : 'bar-'+k}`;
-    document.getElementById('n'+k).textContent = `${val} / ${tgt}g`;
+function todayStr() { return new Date().toDateString(); }
+function totalOz() { return (S.morningWater ? 32 : 0) + S.bottleFills * 64; }
+
+function load() {
+  S.streak      = +(localStorage.getItem('mg_streak')      || 0);
+  S.trainStreak = +(localStorage.getItem('mg_trainStreak') || 0);
+  S.clients     = +(localStorage.getItem('mg_clients')     || 0);
+  const saved = localStorage.getItem('mg_date');
+  if (saved !== todayStr()) {
+    const prev = JSON.parse(localStorage.getItem('mg_nn') || '[]');
+    if (prev.length === 7 && prev.every(Boolean)) S.streak++;
+    else if (saved) S.streak = 0;
+    localStorage.setItem('mg_date',   todayStr());
+    localStorage.setItem('mg_streak', S.streak);
+    S.nn = new Array(7).fill(false);
+    S.meals = Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0}));
+    S.morningWater = false;
+    S.bottleFills  = 0;
+  } else {
+    S.nn           = JSON.parse(localStorage.getItem('mg_nn')     || '[]') || new Array(7).fill(false);
+    S.meals        = JSON.parse(localStorage.getItem('mg_meals')  || '[]') || Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0}));
+    S.morningWater = JSON.parse(localStorage.getItem('mg_mwater') || 'false');
+    S.bottleFills  = +(localStorage.getItem('mg_bottle')          || 0);
+  }
+  const t = JSON.parse(localStorage.getItem('mg_training') || 'null');
+  S.training = (t && t.weekStart === weekStart()) ? t : {weekStart:weekStart(), sessions:[]};
+  S.review   = JSON.parse(localStorage.getItem('mg_review') || '{}');
+  S.date     = todayStr();
+}
+
+function save() {
+  localStorage.setItem('mg_date',       S.date);
+  localStorage.setItem('mg_nn',         JSON.stringify(S.nn));
+  localStorage.setItem('mg_meals',      JSON.stringify(S.meals));
+  localStorage.setItem('mg_mwater',     JSON.stringify(S.morningWater));
+  localStorage.setItem('mg_bottle',     S.bottleFills);
+  localStorage.setItem('mg_training',   JSON.stringify(S.training));
+  localStorage.setItem('mg_streak',     S.streak);
+  localStorage.setItem('mg_trainStreak',S.trainStreak);
+  localStorage.setItem('mg_clients',    S.clients);
+}
+
+function renderAll() {
+  renderHeader(); renderStats(); renderClientGoal();
+  renderNN(); renderNNRing();
+  renderMacros(); renderWater(); renderMeals();
+  renderTraining(); renderTrainWindows();
+  renderReview(); renderSchedule(); renderNow(); renderQuote();
+}
+
+function renderHeader() {
+  const n = S.nn.filter(Boolean).length, pct = Math.round(n/7*100);
+  el('mh-bar').style.width     = pct+'%';
+  el('mh-bar-lbl').textContent = n+' / 7';
+  el('mh-streak').textContent  = S.streak;
+  el('sb-streak').textContent  = S.streak;
+  el('sb-nn-fill').style.width = pct+'%';
+  el('sb-nn-text').textContent = n+' / 7 non-negotiables';
+}
+
+function renderStats() {
+  el('stat-nn').textContent       = S.nn.filter(Boolean).length;
+  el('stat-water-oz').textContent = totalOz();
+  el('stat-meals').textContent    = S.meals.filter(m => m.logged).length;
+  el('stat-sessions').textContent = S.training.sessions.length;
+}
+
+function renderClientGoal() {
+  const dots = el('goal-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('div');
+    d.className = 'goal-dot'+(i < S.clients ? ' won' : '');
+    d.textContent = i < S.clients ? '✓' : '';
+    d.onclick = () => tapClient(i);
+    dots.appendChild(d);
+  }
+  el('goal-sub').textContent = S.clients+' of 3 closed';
+}
+
+function tapClient(i) {
+  S.clients = i < S.clients ? i : i+1;
+  save(); renderClientGoal();
+  toast(S.clients >= 3 ? '🏆 MARCH GOAL HIT!' : '✓ '+S.clients+' client'+(S.clients!==1?'s':'')+' closed');
+}
+
+function renderNN() {
+  const list = el('nn-list');
+  list.innerHTML = '';
+  NN_ITEMS.forEach((item,i) => {
+    const done = S.nn[i];
+    const div = document.createElement('div');
+    div.className = 'nn-row'+(done?' done':'');
+    div.innerHTML = `<span class="nn-num-lbl">${String(i+1).padStart(2,'0')}</span><div class="nn-box">${done?'✓':''}</div><div style="flex:1"><div class="nn-text">${item.text}</div><div class="nn-cat">${item.cat}</div></div>`;
+    div.onclick = () => toggleNN(i);
+    list.appendChild(div);
   });
-  save(S);
-}
-initMacroInputs();
-
-// ── NOTES ─────────────────────────────────────────────────
-const ta = document.getElementById('notesTA');
-ta.value = S.notes||'';
-function syncNotesMeta() {
-  const l = ta.value.length;
-  document.getElementById('notesMeta').textContent = l > 0 ? `${l} chars · auto-saved` : 'nothing saved';
-}
-syncNotesMeta();
-ta.addEventListener('input', () => { S.notes = ta.value; save(S); syncNotesMeta(); });
-function clearNotes() {
-  if (!ta.value) return;
-  if (confirm('Clear all notes?')) { ta.value=''; S.notes=''; save(S); syncNotesMeta(); }
 }
 
-// ── WEATHER ───────────────────────────────────────────────
-async function fetchWeather() {
-  const el  = document.getElementById('weatherWrap');
-  const now = Date.now();
-  if (S.wc && S.wt && (now - S.wt) < 3600000) { renderWeather(S.wc); return; }
-  try {
-    const r = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${PLY_LAT}&lon=${PLY_LON}&appid=${WEATHER_KEY}&units=imperial`);
-    const d = await r.json();
-    S.wc = d; S.wt = now; save(S);
-    renderWeather(d);
-  } catch { el.innerHTML = '<div class="notice">WEATHER UNAVAILABLE</div>'; }
+function renderNNRing() {
+  const n = S.nn.filter(Boolean).length;
+  el('nn-ring').style.strokeDashoffset = 314.2 - (n/7)*314.2;
+  el('ring-num').textContent = n;
 }
-function renderWeather(d) {
-  const el    = document.getElementById('weatherWrap');
-  const temp  = Math.round(d.main?.temp||0);
-  const feels = Math.round(d.main?.feels_like||0);
-  const desc  = d.weather?.[0]?.description||'—';
-  const humid = d.main?.humidity||0;
-  const wind  = Math.round(d.wind?.speed||0);
-  el.innerHTML = `
-    <div class="w-temp">${temp}°F</div>
-    <div class="w-desc">${desc}</div>
-    <div class="w-meta">Feels ${feels}°F<br>Humidity ${humid}%<br>Wind ${wind} mph</div>`;
-}
-fetchWeather();
 
-// ── AI INTEL ──────────────────────────────────────────────
-async function fetchAIUpdates() {
-  if (S.aiCache && S.aiCache.date === TODAY && S.aiCache.items?.length) {
-    renderAI(S.aiCache.items); return;
-  }
-  document.getElementById('aiContent').innerHTML = '<div class="loading">FETCHING...</div>';
-  try {
-    const queries = [
-      'Anthropic Claude new features 2026',
-      'Claude Code update release 2026',
-      'AI productivity tools breakthrough 2026',
-    ];
-    const items = [];
-    for (const q of queries) {
-      const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(q)}&count=1&search_lang=en&country=us&text_decorations=false&freshness=pm`;
-      const res = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`, {
-        headers: { 'Accept':'application/json', 'X-Subscription-Token': BRAVE_KEY }
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      const r = data.web?.results?.[0];
-      if (!r) continue;
-      items.push({
-        title: (r.title||'').substring(0, 75),
-        desc:  (r.description||'').substring(0, 130),
-        url:   r.url||'#'
-      });
-    }
-    S.aiCache = { date: TODAY, items };
-    save(S);
-    renderAI(items);
-  } catch(err) {
-    document.getElementById('aiContent').innerHTML =
-      `<div class="notice" style="font-size:9px;">Unavailable · ${err.message}</div>`;
+function toggleNN(i) {
+  S.nn[i] = !S.nn[i]; save();
+  renderNN(); renderNNRing(); renderStats(); renderHeader(); renderSchedule();
+  if (S.nn[i]) {
+    toast('✓ Done');
+    if (S.nn.every(Boolean)) { S.streak++; save(); setTimeout(()=>toast('🔥 ALL 7 — PERFECT DAY'),600); }
   }
 }
-function renderAI(items) {
-  document.getElementById('aiContent').innerHTML = items.map((item, i) => `
-    <div class="ai-item">
-      <a href="${item.url}" target="_blank" class="ai-title">${item.title}</a>
-      <div class="ai-desc">${item.desc}</div>
-      ${i < items.length-1 ? '<hr class="ai-divider">' : ''}
-    </div>
-  `).join('');
+
+function tapSchedNN(nnIdx) { toggleNN(nnIdx); }
+
+function renderWater() {
+  const oz = totalOz();
+  el('morning-water').className = 'water-unit'+(S.morningWater?' full':'');
+  el('bottle-fills').textContent  = S.bottleFills;
+  el('bottle-oz').textContent     = (S.bottleFills*64)+' oz from bottle';
+  el('water-oz-total').textContent = oz+' oz';
+  el('water-prog-fill').style.width = Math.min(100,(oz/128)*100)+'%';
+  const now = new Date(), pastNoon = now.getHours() >= 12;
+  const halfHit = oz >= 64, fullHit = oz >= 128;
+  const nc = el('wc-noon');
+  nc.className = 'wcheck'+(halfHit?' hit':(pastNoon&&!halfHit?' miss':''));
+  nc.textContent = (halfHit?'✓ ':(pastNoon&&!halfHit?'✗ ':'' ))+'½ by noon (64oz)';
+  const ec = el('wc-eod');
+  ec.className = 'wcheck'+(fullHit?' hit':'');
+  ec.textContent = (fullHit?'✓ ':'')+'Full gallon';
+  if (fullHit && !S.nn[6]) { S.nn[6]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); toast('💧 Gallon hit!'); }
+  el('stat-water-oz').textContent = oz;
 }
-function refreshAI() { S.aiCache = null; save(S); fetchAIUpdates(); }
-fetchAIUpdates();
+
+function toggleMorningWater() {
+  S.morningWater = !S.morningWater; save(); renderWater(); renderStats();
+  if (S.morningWater && !S.nn[0]) { S.nn[0]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); toast('✓ Morning 32oz — NN done'); }
+}
+
+function adjBottle(d) { S.bottleFills=Math.max(0,S.bottleFills+d); save(); renderWater(); renderStats(); }
+
+function renderMacros() {
+  let p=0,c=0,f=0;
+  S.meals.forEach(m => { if(m.logged){p+=m.p;c+=m.c;f+=m.f;} });
+  el('tot-p').textContent = p; el('tot-c').textContent = c; el('tot-f').textContent = f;
+  el('bar-p').style.width = Math.min(100,(p/200)*100)+'%';
+  el('bar-c').style.width = Math.min(100,(c/400)*100)+'%';
+  el('bar-f').style.width = Math.min(100,(f/90)*100)+'%';
+}
+
+function renderMeals() {
+  const dt = (() => { const d=new Date().getDay(); return d===0?'sun':d>=5?'fs':'mth'; })();
+  const cnt = el('meal-cards'); cnt.innerHTML = '';
+  MEAL_INFO.forEach((info,i) => {
+    const m = S.meals[i];
+    const card = document.createElement('div');
+    card.className = 'meal-card'+(m.logged?' logged':''); card.id='mc-'+i;
+    card.innerHTML = `<div class="meal-hdr" onclick="toggleMeal(${i})"><div class="meal-circle">${m.logged?'✓':''}</div><div class="meal-info"><div class="meal-name">${info.name}</div><div class="meal-target">Target: ${info[dt]}</div></div>${m.logged?`<div class="meal-macros-mini">${m.p}P ${m.c}C ${m.f}F</div>`:''}</div><div class="meal-expand"><div class="macro-inputs"><div class="macro-inp-grp"><div class="macro-inp-lbl">Protein</div><input class="macro-inp" type="number" id="p-${i}" value="${m.p||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div><div class="macro-inp-grp"><div class="macro-inp-lbl">Carbs</div><input class="macro-inp" type="number" id="c-${i}" value="${m.c||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div><div class="macro-inp-grp"><div class="macro-inp-lbl">Fat</div><input class="macro-inp" type="number" id="f-${i}" value="${m.f||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div></div><button class="log-btn" onclick="logMeal(${i})">LOG MEAL ${i+1}</button></div>`;
+    cnt.appendChild(card);
+  });
+}
+
+function toggleMeal(i) { document.getElementById('mc-'+i).classList.toggle('open'); }
+
+function logMeal(i) {
+  const p=+(document.getElementById('p-'+i).value)||0;
+  const c=+(document.getElementById('c-'+i).value)||0;
+  const f=+(document.getElementById('f-'+i).value)||0;
+  S.meals[i]={logged:true,p,c,f}; save(); renderMeals(); renderMacros(); renderStats();
+  toast('✓ Meal '+(i+1)+' logged');
+  if (i===0 && !S.nn[4]) { S.nn[4]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); }
+  if (S.meals.every(m=>m.logged) && !S.nn[5]) { S.nn[5]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); setTimeout(()=>toast('✓ 4 meals — NN auto-complete'),500); }
+}
+
+function renderTraining() {
+  const cnt = S.training.sessions.length;
+  el('tsm-num').textContent      = cnt;
+  el('train-streak').textContent = S.trainStreak;
+  el('tsm-status').textContent   = cnt>=4 ? '✓ WEEK TARGET HIT' : (4-cnt)+' MORE NEEDED';
+  const grid = el('training-day-grid'); grid.innerHTML = '';
+  for (let i=0;i<4;i++) {
+    const done = i<cnt;
+    const row = document.createElement('div');
+    row.className = 'training-day-row'+(done?' done':'');
+    const dateStr = done && S.training.sessions[i] ? new Date(S.training.sessions[i]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '';
+    row.innerHTML = `<div class="td-check" onclick="tapSession(${i})">${done?'🔥':''}</div><div class="td-info"><div class="td-day">Session ${i+1}</div><div class="td-win">${done?(dateStr||'Logged'):'Not yet logged'}</div></div>${done?'<span class="td-badge done-badge">DONE</span>':(i===cnt?'<span class="td-badge today">LOG IT</span>':'')}`;
+    grid.appendChild(row);
+  }
+}
+
+function renderTrainWindows() {
+  const box = el('train-windows'); if(!box) return; box.innerHTML='';
+  const todayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  TRAINING_WINDOWS.forEach(w => {
+    const isToday = w.day===todayName;
+    const row = document.createElement('div');
+    row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border-2)';
+    row.innerHTML=`<div><div style="font:700 13px/1 var(--display);color:${isToday?'var(--orange)':'var(--text)'}">${w.day}${isToday?' ◀':''}</div><div style="font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px">${w.note}</div></div><div style="font:700 11px/1 var(--mono);color:${isToday?'var(--orange)':'var(--text-2)'}">${w.win}</div>`;
+    box.appendChild(row);
+  });
+}
+
+function tapSession(i) {
+  const cnt = S.training.sessions.length;
+  if (i<cnt) S.training.sessions = S.training.sessions.slice(0,i);
+  else {
+    S.training.sessions.push(new Date().toISOString());
+    if (S.training.sessions.length>=4) { S.trainStreak++; save(); toast('🔥 4 sessions — week target hit!'); }
+  }
+  save(); renderTraining(); renderStats();
+}
+
+function getSchedule() {
+  const d = new Date().getDay();
+  return d===0 ? SCHEDULES.sunday : d>=5 ? SCHEDULES.weekend : SCHEDULES.weekday;
+}
+function nowH() { const n=new Date(); return n.getHours()+n.getMinutes()/60; }
+
+function renderSchedule() {
+  const sched=getSchedule(), h=nowH();
+  let ci=-1; sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
+  const list=el('sched-list'); list.innerHTML='';
+  sched.forEach((row,i) => {
+    const d=document.createElement('div');
+    d.className='sched-row'+(i<ci?' is-past':'')+(i===ci?' is-now':'');
+    const hasNN=row.nn>=0, nnDone=hasNN&&S.nn[row.nn];
+    d.innerHTML=`<div class="sched-dot"></div><div class="sched-time">${row.t}</div><div class="sched-body"><div class="sched-name">${row.task}</div>${row.note?`<div class="sched-note">${row.note}</div>`:''}</div>${hasNN?`<button class="sched-nn-btn${nnDone?' done':''}" onclick="event.stopPropagation();tapSchedNN(${row.nn})">${nnDone?'✓':''}</button>`:''}`;
+    list.appendChild(d);
+  });
+}
+
+function renderNow() {
+  const sched=getSchedule(), h=nowH();
+  let ci=-1; sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
+  if(ci>=0) {
+    el('now-task').textContent=sched[ci].task;
+    const nxt=sched[ci+1];
+    el('now-next').textContent=nxt?'Next: '+nxt.task+' — '+nxt.t:'Last block of the day';
+  } else {
+    el('now-task').textContent='Pre-schedule';
+    el('now-next').textContent='First block: '+sched[0].task+' at '+sched[0].t;
+  }
+}
+
+function renderQuote() {
+  const q=QUOTES[new Date().getDay()%QUOTES.length];
+  el('quote-text').textContent='"'+q.t+'"';
+  el('quote-src').textContent=q.s||'';
+}
+
+function renderReview() {
+  const list=el('review-list'); list.innerHTML='';
+  REVIEW_QS.forEach((q,i)=>{
+    const saved=S.review[i]||'';
+    let inp = q.type==='number'
+      ? `<input class="rev-input rev-num" type="number" id="rq-${i}" value="${saved}" placeholder="${q.ph}" min="0" inputmode="numeric">`
+      : q.type==='ta'
+      ? `<textarea class="rev-input" id="rq-${i}" rows="3" placeholder="${q.ph}">${saved}</textarea>`
+      : `<input class="rev-input" type="text" id="rq-${i}" value="${saved}" placeholder="${q.ph}">`;
+    const d=document.createElement('div'); d.className='rev-item';
+    d.innerHTML=`<div class="rev-q">${String(i+1).padStart(2,'0')}. ${q.q}</div>${inp}`;
+    list.appendChild(d);
+  });
+}
+
+function saveReview() {
+  REVIEW_QS.forEach((_,i)=>{ const e=document.getElementById('rq-'+i); if(e) S.review[i]=e.value; });
+  localStorage.setItem('mg_review',JSON.stringify(S.review));
+  toast('✓ Review saved');
+}
+
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function updateClock() {
+  const n=new Date();
+  const h12=n.getHours()%12||12, ampm=n.getHours()>=12?'PM':'AM';
+  const timeStr=h12+':'+n.getMinutes().toString().padStart(2,'0')+' '+ampm;
+  el('mh-day').textContent=DAYS[n.getDay()];
+  el('mh-time').textContent=timeStr;
+  el('sb-day').textContent=DAYS[n.getDay()];
+  el('sb-time').textContent=timeStr;
+  el('sb-date').textContent=MONTHS[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+  renderNow();
+  const sched=getSchedule(), h=nowH(); let ci=-1;
+  sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
+  document.querySelectorAll('.sched-row').forEach((r,i)=>{ r.classList.remove('is-past','is-now'); if(i<ci)r.classList.add('is-past'); if(i===ci)r.classList.add('is-now'); });
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el('tab-'+id).classList.add('active');
+  document.querySelectorAll('.mob-nav-btn,.sb-nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('[data-tab="'+id+'"]').forEach(b=>b.classList.add('active'));
+  el('content').scrollTo({top:0,behavior:'smooth'});
+}
+
+function confirmResetNN() {
+  if(confirm("Reset today's non-negotiables?")) {
+    S.nn=new Array(7).fill(false); save();
+    renderNN(); renderNNRing(); renderStats(); renderHeader(); renderSchedule();
+    toast('Reset complete');
+  }
+}
+
+function resetTraining() {
+  if(confirm("Reset all sessions for this week?")) {
+    S.training={weekStart:weekStart(),sessions:[]}; save();
+    renderTraining(); renderStats(); toast('Week reset');
+  }
+}
+
+let toastTimer;
+function toast(msg) {
+  const t=el('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function el(id) { return document.getElementById(id); }
+
+document.addEventListener('DOMContentLoaded', () => {
+  load(); renderAll(); updateClock();
+  setInterval(updateClock, 30000);
+});
 </script>
 </body>
 </html>
