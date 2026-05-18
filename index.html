@@ -6,889 +6,1309 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MR. GORDON">
-  <meta name="theme-color" content="#0e0e0e">
+  <meta name="theme-color" content="#0d0d0d">
   <title>MR. GORDON</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* ═══════════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════════ */
     :root {
-      --bg:#0e0e0e; --surface:#181818; --surface-2:#202020;
-      --border:rgba(255,255,255,0.07); --border-2:rgba(255,255,255,0.04);
-      --orange:#d97757; --orange-low:rgba(217,119,87,0.12); --orange-med:rgba(217,119,87,0.25);
-      --cream:#c8a882; --cream-low:rgba(200,168,130,0.10);
-      --text:#ede8e0; --text-2:#8a8278; --text-3:#3e3b37;
-      --green:#6db87a; --green-low:rgba(109,184,122,0.10);
-      --blue:#6aabdc; --blue-low:rgba(106,171,220,0.12);
-      --display:'Syne',sans-serif; --mono:'JetBrains Mono',monospace;
-      --si-top:env(safe-area-inset-top,0px); --si-bot:env(safe-area-inset-bottom,0px);
+      --bg:       #0d0d0d;
+      --s1:       #151515;
+      --s2:       #1c1c1c;
+      --s3:       #242424;
+      --b1:       rgba(255,255,255,0.06);
+      --b2:       rgba(255,255,255,0.03);
+      --o:        #d97757;
+      --o-lo:     rgba(217,119,87,0.10);
+      --o-md:     rgba(217,119,87,0.22);
+      --o-hi:     rgba(217,119,87,0.40);
+      --cream:    #c8a882;
+      --cr-lo:    rgba(200,168,130,0.08);
+      --txt:      #ede8e0;
+      --txt2:     #6e6860;
+      --txt3:     #313030;
+      --grn:      #5aaa68;
+      --grn-lo:   rgba(90,170,104,0.10);
+      --grn-md:   rgba(90,170,104,0.22);
+      --blu:      #5fa8d3;
+      --blu-lo:   rgba(95,168,211,0.10);
+      --blu-md:   rgba(95,168,211,0.22);
+      --D:        'Syne', sans-serif;
+      --M:        'JetBrains Mono', monospace;
+      --sit:      env(safe-area-inset-top, 0px);
+      --sib:      env(safe-area-inset-bottom, 0px);
+      --r:        13px;
+      --r-sm:     9px;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--display);overflow:hidden;-webkit-font-smoothing:antialiased}
-    .shell{display:flex;height:100vh;height:100dvh;overflow:hidden}
 
-    /* SIDEBAR */
-    .sidebar{display:none;width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);flex-direction:column}
-    .sb-header{padding:28px 22px 20px;border-bottom:1px solid var(--border)}
-    .sb-eyebrow{font:700 10px/1 var(--mono);letter-spacing:.18em;color:var(--orange);text-transform:uppercase}
-    .sb-day{font:800 26px/1 var(--display);color:var(--text);margin-top:5px}
-    .sb-time{font:500 12px/1 var(--mono);color:var(--text-2);margin-top:4px}
-    .sb-date{font:400 11px/1 var(--mono);color:var(--text-3);margin-top:3px}
-    .sb-nav{padding:18px 10px;flex:1;display:flex;flex-direction:column;gap:3px}
-    .sb-nav-btn{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:10px;background:none;border:none;width:100%;cursor:pointer;transition:background .15s}
-    .sb-nav-btn.active{background:var(--orange-low);border:1px solid var(--orange-med)}
-    .sb-nav-btn .icon{font-size:16px;color:var(--text-3);transition:color .15s}
-    .sb-nav-btn .label{font:700 12px/1 var(--display);color:var(--text-3);letter-spacing:.03em;transition:color .15s}
-    .sb-nav-btn.active .icon,.sb-nav-btn.active .label{color:var(--orange)}
-    .sb-footer{padding:18px 22px;border-top:1px solid var(--border)}
-    .streak-row{display:flex;align-items:baseline;gap:6px}
-    .streak-num{font:700 26px/1 var(--mono);color:var(--orange)}
-    .streak-label{font:700 10px/1 var(--mono);color:var(--text-2);letter-spacing:.1em;text-transform:uppercase}
-    .sb-nn-mini{margin-top:10px;height:3px;background:var(--surface-2);border-radius:2px;overflow:hidden}
-    .sb-nn-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .4s ease}
-    .sb-nn-text{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:5px}
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    /* MAIN */
-    .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+    html, body {
+      height: 100%; overflow: hidden;
+      background: var(--bg); color: var(--txt);
+      font-family: var(--D); -webkit-font-smoothing: antialiased;
+    }
 
-    /* MOBILE HEADER */
-    .mob-header{flex-shrink:0;padding:calc(var(--si-top) + 12px) 16px 10px;background:var(--bg);border-bottom:1px solid var(--border)}
-    .mh-row1{display:flex;justify-content:space-between;align-items:flex-start}
-    .mh-eyebrow{font:700 9px/1 var(--mono);letter-spacing:.18em;color:var(--orange);text-transform:uppercase}
-    .mh-day{font:800 19px/1 var(--display);color:var(--text);margin-top:3px}
-    .mh-time{font:500 11px/1 var(--mono);color:var(--text-2);margin-top:2px}
-    .mh-streak{text-align:right}
-    .mh-streak-num{font:700 19px/1 var(--mono);color:var(--orange);display:block}
-    .mh-streak-lbl{font:700 8px/1 var(--mono);color:var(--text-2);letter-spacing:.08em;text-transform:uppercase}
-    .mh-bar-row{display:flex;align-items:center;gap:8px;margin-top:9px}
-    .mh-bar-track{flex:1;height:2px;background:var(--border);border-radius:1px;overflow:hidden}
-    .mh-bar-fill{height:100%;background:var(--orange);border-radius:1px;transition:width .4s ease}
-    .mh-bar-lbl{font:700 10px/1 var(--mono);color:var(--text-2);white-space:nowrap}
+    /* Ambient depth */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 100% 50% at 50% -10%, rgba(217,119,87,0.05) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(200,168,130,0.03) 0%, transparent 50%);
+    }
 
-    /* CONTENT */
-    .content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px 13px calc(var(--si-bot) + 74px);scroll-behavior:smooth}
-    .content::-webkit-scrollbar{width:3px}
-    .content::-webkit-scrollbar-thumb{background:var(--text-3);border-radius:2px}
+    /* ═══════════════════════════════════════════
+       LAYOUT SHELL
+    ═══════════════════════════════════════════ */
+    .shell { display: flex; height: 100dvh; position: relative; z-index: 1; }
 
-    /* MOBILE NAV */
-    .mob-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(14,14,14,0.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:7px 0 calc(var(--si-bot) + 7px);display:flex;justify-content:space-around;z-index:100}
-    .mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 10px;border-radius:8px;-webkit-tap-highlight-color:transparent}
-    .mob-nav-btn .icon{font-size:17px;color:var(--text-3);transition:color .15s}
-    .mob-nav-btn .label{font:700 7px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);transition:color .15s}
-    .mob-nav-btn.active .icon,.mob-nav-btn.active .label{color:var(--orange)}
+    /* ─── SIDEBAR (desktop) ─── */
+    .sidebar {
+      display: none; width: 230px; flex-shrink: 0;
+      background: var(--s1); border-right: 1px solid var(--b1);
+      flex-direction: column; overflow: hidden;
+    }
+    .sb-top { padding: 32px 20px 24px; border-bottom: 1px solid var(--b1); }
+    .sb-brand { font: 700 9px/1 var(--M); letter-spacing: .2em; color: var(--o); text-transform: uppercase; }
+    .sb-day   { font: 800 28px/1 var(--D); color: var(--txt); margin-top: 6px; }
+    .sb-time  { font: 500 12px/1 var(--M); color: var(--txt2); margin-top: 5px; }
+    .sb-date  { font: 400 10px/1 var(--M); color: var(--txt3); margin-top: 3px; }
+    .sb-nav { padding: 16px 8px; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+    .sb-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--r-sm);
+      background: none; border: none; width: 100%; cursor: pointer; transition: all .15s;
+    }
+    .sb-btn.on { background: var(--o-lo); border: 1px solid var(--o-md); }
+    .sb-btn .i { font-size: 15px; color: var(--txt3); transition: color .15s; }
+    .sb-btn .l { font: 700 11px/1 var(--D); color: var(--txt3); letter-spacing: .03em; transition: color .15s; }
+    .sb-btn.on .i, .sb-btn.on .l { color: var(--o); }
+    .sb-foot { padding: 16px 20px; border-top: 1px solid var(--b1); }
+    .sb-streak { display: flex; align-items: baseline; gap: 5px; }
+    .sb-snum { font: 700 28px/1 var(--M); color: var(--o); }
+    .sb-slbl { font: 700 9px/1 var(--M); color: var(--txt2); letter-spacing: .1em; text-transform: uppercase; }
+    .sb-bar  { margin-top: 10px; height: 2px; background: var(--s3); border-radius: 1px; overflow: hidden; }
+    .sb-fill { height: 100%; background: var(--o); border-radius: 1px; transition: width .4s ease; }
+    .sb-nn   { font: 400 10px/1 var(--M); color: var(--txt2); margin-top: 6px; }
 
-    /* TABS */
-    .tab{display:none}
-    .tab.active{display:block;animation:fadeUp .2s ease}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    /* ─── MAIN COLUMN ─── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
 
-    .sec{font:700 9px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--text-2);margin:16px 0 7px}
-    .sec:first-child{margin-top:0}
-    .card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:14px;margin-bottom:8px}
-    .card-flush{padding:0}
+    /* ─── MOBILE HEADER ─── */
+    .mob-hdr {
+      flex-shrink: 0;
+      padding: calc(var(--sit) + 13px) 16px 11px;
+      background: rgba(13,13,13,0.97);
+      border-bottom: 1px solid var(--b1);
+    }
+    .mh-r1 { display: flex; align-items: flex-start; justify-content: space-between; }
+    .mh-left {}
+    .mh-brand { font: 700 8px/1 var(--M); letter-spacing: .2em; color: var(--o); text-transform: uppercase; }
+    .mh-day   { font: 800 20px/1 var(--D); color: var(--txt); margin-top: 3px; }
+    .mh-time  { font: 500 10px/1 var(--M); color: var(--txt2); margin-top: 2px; }
+    .mh-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .day-badge {
+      font: 700 8px/1 var(--M); letter-spacing: .1em; padding: 4px 9px; border-radius: 5px; text-transform: uppercase;
+    }
+    .badge-late  { background: var(--o-lo);   color: var(--o);   border: 1px solid var(--o-md); }
+    .badge-early { background: var(--blu-lo); color: var(--blu); border: 1px solid var(--blu-md); }
+    .badge-off   { background: var(--grn-lo); color: var(--grn); border: 1px solid var(--grn-md); }
+    .mh-streak { text-align: right; }
+    .mh-snum { font: 700 20px/1 var(--M); color: var(--o); display: block; }
+    .mh-slbl { font: 700 7px/1 var(--M); color: var(--txt2); letter-spacing: .1em; text-transform: uppercase; }
+    .mh-r2 { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+    .mh-track { flex: 1; height: 2px; background: var(--b1); border-radius: 1px; overflow: hidden; }
+    .mh-prog  { height: 100%; background: var(--o); border-radius: 1px; transition: width .5s ease; }
+    .mh-plbl  { font: 700 9px/1 var(--M); color: var(--txt2); white-space: nowrap; min-width: 32px; text-align: right; }
 
-    /* CLIENT GOAL BANNER */
-    .goal-banner{background:linear-gradient(135deg,rgba(200,168,130,.08),rgba(217,119,87,.12));border:1px solid rgba(217,119,87,.3);border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .goal-eyebrow{font:700 8px/1 var(--mono);letter-spacing:.15em;color:var(--orange);text-transform:uppercase}
-    .goal-main{font:800 18px/1 var(--display);color:var(--text);margin-top:4px}
-    .goal-sub{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:4px}
-    .goal-clients-row{display:flex;gap:7px}
-    .goal-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--text-3);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
-    .goal-dot.won{background:var(--orange);border-color:var(--orange)}
-    .goal-dot-lbl{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.06em;text-transform:uppercase;margin-top:5px;text-align:center}
+    /* ─── SCROLL AREA ─── */
+    .scroll {
+      flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+      padding: 14px 14px calc(var(--sib) + 76px);
+    }
+    .scroll::-webkit-scrollbar { width: 2px; }
+    .scroll::-webkit-scrollbar-thumb { background: var(--txt3); border-radius: 2px; }
 
-    /* STATS */
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
-    .stat-cell{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 11px;display:flex;flex-direction:column;align-items:center;gap:2px}
-    .stat-val{font:700 26px/1 var(--mono);color:var(--orange)}
-    .stat-lbl{font:700 8px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
-    .stat-sub{font:400 9px/1 var(--mono);color:var(--text-3)}
+    /* ─── BOTTOM NAV ─── */
+    .bot-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,13,13,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--b1);
+      padding: 8px 0 calc(var(--sib) + 8px);
+      display: flex; justify-content: space-around;
+    }
+    .bot-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      background: none; border: none; cursor: pointer; padding: 4px 12px;
+      transition: transform .1s;
+    }
+    .bot-btn:active { transform: scale(.9); }
+    .bot-btn .i { font-size: 18px; color: var(--txt3); transition: color .15s; }
+    .bot-btn .l { font: 700 7px/1 var(--D); letter-spacing: .08em; text-transform: uppercase; color: var(--txt3); transition: color .15s; }
+    .bot-btn.on .i, .bot-btn.on .l { color: var(--o); }
 
-    /* NOW */
-    .now-card{background:var(--orange-low);border:1px solid var(--orange-med);border-radius:14px;padding:15px;margin-bottom:8px}
-    .now-eyebrow{font:700 9px/1 var(--mono);letter-spacing:.14em;color:var(--orange);text-transform:uppercase}
-    .now-task{font:800 19px/1.2 var(--display);color:var(--text);margin-top:4px}
-    .now-next{font:500 11px/1 var(--mono);color:var(--cream);margin-top:6px}
+    /* ═══════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════ */
+    .tab { display: none; }
+    .tab.on { display: block; animation: rise .22s ease; }
+    @keyframes rise { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:none; } }
 
-    /* SCHEDULE */
-    .sched-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border-2)}
-    .sched-row:last-child{border-bottom:none}
-    .sched-dot{width:5px;height:5px;border-radius:50%;background:var(--text-3);margin-top:6px;flex-shrink:0;transition:all .2s}
-    .sched-row.is-now .sched-dot{background:var(--orange);box-shadow:0 0 6px var(--orange)}
-    .sched-time{font:500 10px/1 var(--mono);color:var(--text-2);white-space:nowrap;min-width:60px;padding-top:2px}
-    .sched-row.is-past .sched-time,.sched-row.is-past .sched-name{opacity:.28}
-    .sched-row.is-now .sched-name{color:var(--orange)}
-    .sched-name{font:600 13px/1.2 var(--display);color:var(--text)}
-    .sched-note{font:400 11px/1.3 var(--display);color:var(--text-2);margin-top:2px}
-    .sched-body{flex:1}
-    .sched-nn-btn{width:26px;height:26px;border-radius:8px;border:2px solid var(--text-3);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:12px;transition:all .15s;align-self:center;-webkit-tap-highlight-color:transparent}
-    .sched-nn-btn.done{background:var(--orange);border-color:var(--orange);color:#fff}
+    /* ═══════════════════════════════════════════
+       SHARED COMPONENTS
+    ═══════════════════════════════════════════ */
+    .eyebrow {
+      font: 700 8px/1 var(--M); letter-spacing: .16em; text-transform: uppercase;
+      color: var(--txt2); margin: 18px 0 7px;
+    }
+    .eyebrow:first-child { margin-top: 0; }
 
-    /* QUOTE */
-    .quote-card{background:linear-gradient(135deg,var(--orange-low),var(--cream-low));border:1px solid rgba(217,119,87,.14);border-radius:14px;padding:16px;margin-bottom:8px;text-align:center}
-    .quote-text{font:700 13px/1.55 var(--display);color:var(--cream);font-style:italic}
-    .quote-src{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.1em;margin-top:7px;text-transform:uppercase}
+    .card {
+      background: var(--s1); border: 1px solid var(--b1);
+      border-radius: var(--r); padding: 14px; margin-bottom: 8px;
+    }
 
-    /* NON-NEGS */
-    .ring-wrap{display:flex;flex-direction:column;align-items:center;padding:14px 0 10px}
-    .ring-cont{position:relative;width:120px;height:120px}
-    .ring-svg{transform:rotate(-90deg)}
-    .ring-bg{fill:none;stroke:var(--surface-2);stroke-width:11}
-    .ring-fg{fill:none;stroke:var(--orange);stroke-width:11;stroke-linecap:round;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)}
-    .ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .ring-num{font:700 28px/1 var(--mono);color:var(--text)}
-    .ring-den{font:500 12px/1 var(--mono);color:var(--text-2)}
-    .ring-lbl{font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-top:9px}
-    .nn-list{display:flex;flex-direction:column;gap:5px}
-    .nn-row{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--surface);border:1px solid var(--border);border-radius:11px;cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none}
-    .nn-row:active{opacity:.85}
-    .nn-row.done{background:var(--green-low);border-color:rgba(109,184,122,.22)}
-    .nn-row.done .nn-text{opacity:.45}
-    .nn-num-lbl{font:700 10px/1 var(--mono);color:var(--text-3);min-width:18px}
-    .nn-box{width:24px;height:24px;border-radius:7px;border:2px solid var(--text-3);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .15s}
-    .nn-row.done .nn-box{background:var(--green);border-color:var(--green)}
-    .nn-text{font:600 12px/1.35 var(--display);color:var(--text);flex:1}
-    .nn-cat{font:700 8px/1 var(--mono);color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+    /* ═══════════════════════════════════════════
+       TODAY TAB
+    ═══════════════════════════════════════════ */
 
-    /* MACROS */
-    .macro-bars-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:8px}
-    .macro-bar-group{display:flex;flex-direction:column;gap:10px}
-    .mbar-row{display:flex;flex-direction:column;gap:4px}
-    .mbar-top{display:flex;justify-content:space-between;align-items:center}
-    .mbar-name{font:700 9px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
-    .mbar-val{font:700 11px/1 var(--mono);color:var(--text)}
-    .mbar-track{height:5px;background:var(--surface-2);border-radius:3px;overflow:hidden}
-    .mbar-fill{height:100%;border-radius:3px;transition:width .4s ease}
-    .mbar-p{background:var(--orange)} .mbar-c{background:var(--cream)} .mbar-f{background:#8a7a6a}
+    /* Goal banner */
+    .goal {
+      background: linear-gradient(120deg, rgba(217,119,87,.08), rgba(200,168,130,.06));
+      border: 1px solid rgba(217,119,87,.25);
+      border-radius: var(--r); padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;
+    }
+    .goal-ey  { font: 700 7px/1 var(--M); letter-spacing: .15em; color: var(--o); text-transform: uppercase; }
+    .goal-ttl { font: 800 18px/1 var(--D); color: var(--txt); margin-top: 4px; }
+    .goal-sub { font: 500 9px/1 var(--M); color: var(--txt2); margin-top: 4px; }
+    .goal-dots { display: flex; gap: 7px; }
+    .gdot {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 2px solid var(--txt3); background: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; cursor: pointer; transition: all .2s; color: transparent;
+    }
+    .gdot.on { background: var(--o); border-color: var(--o); color: white; box-shadow: 0 0 14px rgba(217,119,87,.4); }
+    .goal-hint { font: 700 7px/1 var(--M); color: var(--txt3); letter-spacing: .08em; text-transform: uppercase; margin-top: 5px; text-align: center; }
 
-    /* WATER */
-    .water-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px}
-    .water-row{display:flex;gap:10px;margin-bottom:10px}
-    .water-unit{flex:1;background:var(--surface-2);border:1.5px solid var(--border);border-radius:11px;padding:12px 10px;cursor:pointer;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
-    .water-unit.full{background:var(--blue-low);border-color:rgba(106,171,220,.35)}
-    .water-unit-icon{font-size:20px;display:block;margin-bottom:5px}
-    .water-unit-oz{font:700 14px/1 var(--mono);color:var(--text)}
-    .water-unit-lbl{font:500 8px/1 var(--mono);color:var(--text-2);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
-    .water-unit.full .water-unit-oz,.water-unit.full .water-unit-lbl{color:var(--blue)}
-    .water-bottle-row{display:flex;align-items:center;gap:8px}
-    .water-bottle-btn{width:36px;height:36px;border-radius:10px;background:var(--surface-2);border:1.5px solid var(--border);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .12s;-webkit-tap-highlight-color:transparent}
-    .water-bottle-info{flex:1}
-    .water-bottle-fills{font:700 22px/1 var(--mono);color:var(--blue)}
-    .water-bottle-sub{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px}
-    .water-bar-row{display:flex;flex-direction:column;gap:4px}
-    .water-bar-top{display:flex;justify-content:space-between}
-    .water-oz-lbl{font:700 11px/1 var(--mono);color:var(--text)}
-    .water-tgt-lbl{font:500 10px/1 var(--mono);color:var(--text-2)}
-    .water-prog{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
-    .water-prog-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .4s ease}
-    .water-checks{display:flex;gap:6px;margin-top:8px}
-    .wcheck{font:700 9px/1 var(--mono);padding:5px 9px;border-radius:6px;background:var(--surface-2);color:var(--text-3);letter-spacing:.04em}
-    .wcheck.hit{background:var(--blue-low);color:var(--blue)}
-    .wcheck.miss{color:#b85555}
+    /* Stats */
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 8px; }
+    .stat {
+      background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r);
+      padding: 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      transition: border-color .2s;
+    }
+    .stat-v { font: 700 30px/1 var(--M); color: var(--o); }
+    .stat-l { font: 700 8px/1 var(--M); letter-spacing: .12em; text-transform: uppercase; color: var(--txt2); }
+    .stat-s { font: 400 8px/1 var(--M); color: var(--txt3); }
 
-    /* MEALS */
-    .meal-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;margin-bottom:6px;overflow:hidden}
-    .meal-hdr{display:flex;align-items:center;gap:11px;padding:12px 13px;cursor:pointer}
-    .meal-circle{width:27px;height:27px;border-radius:50%;border:2px solid var(--text-3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .15s}
-    .meal-card.logged .meal-circle{background:var(--orange);border-color:var(--orange)}
-    .meal-info{flex:1}
-    .meal-name{font:700 13px/1 var(--display);color:var(--text)}
-    .meal-target{font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px}
-    .meal-macros-mini{font:700 10px/1 var(--mono);color:var(--orange)}
-    .meal-expand{display:none;border-top:1px solid var(--border);padding:13px}
-    .meal-card.open .meal-expand{display:block}
-    .macro-inputs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}
-    .macro-inp-grp{display:flex;flex-direction:column;gap:4px}
-    .macro-inp-lbl{font:700 8px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);text-align:center}
-    .macro-inp{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 7px;font:700 16px/1 var(--mono);color:var(--text);width:100%;text-align:center;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
-    .macro-inp:focus{border-color:var(--orange)}
-    .macro-inp-unit{font:400 9px/1 var(--mono);color:var(--text-3);text-align:center}
-    .log-btn{width:100%;padding:11px;background:var(--orange);border:none;border-radius:10px;font:700 12px/1 var(--display);color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .15s}
-    .log-btn:active{opacity:.82}
+    /* Now block */
+    .now {
+      background: var(--o-lo); border: 1px solid var(--o-md);
+      border-radius: var(--r); padding: 16px; margin-bottom: 8px;
+      position: relative; overflow: hidden;
+    }
+    .now::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--o), rgba(217,119,87,0));
+    }
+    .now-ey   { font: 700 8px/1 var(--M); letter-spacing: .14em; color: var(--o); text-transform: uppercase; }
+    .now-task { font: 800 22px/1.15 var(--D); color: var(--txt); margin-top: 6px; }
+    .now-next { font: 500 10px/1 var(--M); color: var(--cream); margin-top: 8px; opacity: .8; }
 
-    /* TRAINING */
-    .train-summary-card{background:var(--orange-low);border:1px solid var(--orange-med);border-radius:14px;padding:16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
-    .tsm-num{font:700 46px/1 var(--mono);color:var(--orange)}
-    .tsm-of{font:500 14px/1 var(--mono);color:var(--cream)}
-    .tsm-status{font:700 11px/1 var(--mono);color:var(--text-2);letter-spacing:.06em;text-transform:uppercase;margin-top:5px}
-    .training-day-grid{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
-    .training-day-row{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:13px 14px;display:flex;align-items:center;gap:12px}
-    .td-check{width:36px;height:36px;border-radius:10px;border:2px solid var(--text-3);background:none;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex-shrink:0;transition:all .15s;-webkit-tap-highlight-color:transparent}
-    .training-day-row.done .td-check{background:var(--orange);border-color:var(--orange)}
-    .td-info{flex:1}
-    .td-day{font:700 14px/1 var(--display);color:var(--text)}
-    .td-win{font:500 11px/1 var(--mono);color:var(--text-2);margin-top:3px}
-    .training-day-row.done .td-day{color:var(--orange)}
-    .td-badge{font:700 9px/1 var(--mono);letter-spacing:.08em;padding:4px 9px;border-radius:6px;text-transform:uppercase}
-    .td-badge.today{background:var(--orange-low);color:var(--orange);border:1px solid var(--orange-med)}
-    .td-badge.done-badge{background:var(--green-low);color:var(--green)}
+    /* Schedule */
+    .sched { display: flex; flex-direction: column; }
+    .srow {
+      display: flex; align-items: flex-start; gap: 0;
+      padding: 0; position: relative;
+    }
+    .srow-inner {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 0; flex: 1; border-bottom: 1px solid var(--b2);
+    }
+    .srow:last-child .srow-inner { border-bottom: none; }
+    .sdot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; width: 10px; flex-shrink: 0; margin-right: 6px; }
+    .sdot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--txt3);
+      flex-shrink: 0; transition: all .25s;
+    }
+    .srow.now-row .sdot { background: var(--o); box-shadow: 0 0 0 3px rgba(217,119,87,.2), 0 0 10px rgba(217,119,87,.35); }
+    .stime { font: 500 9px/1 var(--M); color: var(--txt2); white-space: nowrap; min-width: 56px; padding-top: 2px; flex-shrink: 0; }
+    .sbody { flex: 1; }
+    .sname { font: 600 13px/1.2 var(--D); color: var(--txt); }
+    .snote { font: 400 10px/1.35 var(--D); color: var(--txt2); margin-top: 2px; }
+    .srow.past-row .stime, .srow.past-row .sname, .srow.past-row .snote { opacity: .22; }
+    .srow.now-row  .sname { color: var(--o); }
+    .snn-btn {
+      width: 26px; height: 26px; border-radius: 8px;
+      border: 2px solid var(--txt3); background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0; font-size: 12px;
+      transition: all .15s; align-self: center; color: transparent;
+    }
+    .snn-btn.done { background: var(--o); border-color: var(--o); color: white; box-shadow: 0 0 8px rgba(217,119,87,.3); }
 
-    /* REVIEW */
-    .review-list{display:flex;flex-direction:column;gap:8px}
-    .rev-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px}
-    .rev-q{font:700 10px/1.4 var(--mono);color:var(--text-2);margin-bottom:7px;letter-spacing:.02em}
-    .rev-input{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font:600 13px/1.45 var(--display);color:var(--text);outline:none;resize:none;transition:border-color .2s}
-    .rev-input:focus{border-color:var(--orange)}
-    .rev-num{width:80px;text-align:center}
+    /* Quote */
+    .quote {
+      background: linear-gradient(135deg, var(--o-lo), var(--cr-lo));
+      border: 1px solid rgba(217,119,87,.12);
+      border-radius: var(--r); padding: 18px; margin-bottom: 8px; text-align: center;
+    }
+    .quote-t { font: 700 13px/1.6 var(--D); color: var(--cream); font-style: italic; }
+    .quote-s { font: 700 8px/1 var(--M); color: var(--txt3); letter-spacing: .12em; text-transform: uppercase; margin-top: 9px; }
 
-    /* UTIL */
-    .btn-primary{width:100%;padding:12px;background:var(--orange);border:none;border-radius:12px;font:700 13px/1 var(--display);color:#fff;cursor:pointer;letter-spacing:.05em;transition:opacity .15s;margin-top:10px}
-    .btn-primary:active{opacity:.82}
-    .reset-link{display:block;text-align:center;margin-top:26px;padding-top:18px;border-top:1px solid var(--border);font:700 9px/1 var(--mono);color:var(--text-3);letter-spacing:.08em;cursor:pointer;background:none;border-bottom:none;width:100%}
+    /* ═══════════════════════════════════════════
+       NON-NEGOTIABLES TAB
+    ═══════════════════════════════════════════ */
+    .ring-area {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 18px 0 14px;
+    }
+    .ring-wrap { position: relative; width: 130px; height: 130px; }
+    .ring-svg  { transform: rotate(-90deg); filter: drop-shadow(0 0 8px rgba(217,119,87,.15)); }
+    .ring-track { fill: none; stroke: var(--s3); stroke-width: 10; }
+    .ring-arc   { fill: none; stroke: url(#rgrad); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.35,.07,.1,.97); }
+    .ring-inside { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .ring-n { font: 700 34px/1 var(--M); color: var(--txt); }
+    .ring-d { font: 500 12px/1 var(--M); color: var(--txt2); }
+    .ring-lbl { font: 700 8px/1 var(--M); letter-spacing: .14em; text-transform: uppercase; color: var(--txt2); margin-top: 11px; }
 
-    /* TOAST */
-    .toast{position:fixed;top:calc(var(--si-top) + 65px);left:50%;transform:translateX(-50%) translateY(-8px);background:var(--green);color:#fff;padding:8px 18px;border-radius:100px;font:700 12px/1 var(--display);pointer-events:none;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .nn-list { display: flex; flex-direction: column; gap: 5px; }
+    .nn-row {
+      display: flex; align-items: center; gap: 11px;
+      padding: 13px 13px; background: var(--s1); border: 1px solid var(--b1);
+      border-radius: var(--r); cursor: pointer; transition: all .15s;
+      -webkit-user-select: none; user-select: none;
+    }
+    .nn-row:active { transform: scale(.99); opacity: .85; }
+    .nn-row.done { background: var(--grn-lo); border-color: var(--grn-md); }
+    .nn-idx { font: 700 9px/1 var(--M); color: var(--txt3); min-width: 20px; }
+    .nn-box {
+      width: 24px; height: 24px; border-radius: 7px;
+      border: 2px solid var(--txt3); display: flex; align-items: center; justify-content: center;
+      font-size: 13px; flex-shrink: 0; transition: all .2s; color: transparent;
+    }
+    .nn-row.done .nn-box { background: var(--grn); border-color: var(--grn); color: white; box-shadow: 0 0 8px rgba(90,170,104,.3); }
+    .nn-info { flex: 1; }
+    .nn-txt { font: 600 12px/1.4 var(--D); color: var(--txt); }
+    .nn-row.done .nn-txt { opacity: .35; }
+    .nn-cat { font: 700 7px/1 var(--M); color: var(--txt3); letter-spacing: .1em; text-transform: uppercase; margin-top: 2px; }
 
-    @media(min-width:768px){
-      .sidebar{display:flex}
-      .mob-header{display:none}
-      .mob-nav{display:none}
-      .content{padding:26px 30px 30px}
-      .stats-grid{grid-template-columns:repeat(4,1fr)}
-      .macro-bar-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    /* ═══════════════════════════════════════════
+       MEALS TAB
+    ═══════════════════════════════════════════ */
+
+    /* Macro bars */
+    .mbars { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r); padding: 16px; margin-bottom: 8px; }
+    .mbar  { display: flex; flex-direction: column; gap: 5px; }
+    .mbar + .mbar { margin-top: 11px; }
+    .mbar-top { display: flex; justify-content: space-between; align-items: baseline; }
+    .mbar-nm  { font: 700 8px/1 var(--M); letter-spacing: .12em; text-transform: uppercase; color: var(--txt2); }
+    .mbar-val { font: 700 12px/1 var(--M); color: var(--txt); }
+    .mbar-trk { height: 4px; background: var(--s3); border-radius: 2px; overflow: hidden; }
+    .mbar-fl  { height: 100%; border-radius: 2px; transition: width .5s ease; }
+    .mp { background: linear-gradient(90deg, var(--o), #e8926a); }
+    .mc { background: linear-gradient(90deg, var(--cream), #d4b896); }
+    .mf { background: linear-gradient(90deg, #7a6a5a, #8a7a6a); }
+
+    /* Water */
+    .water { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r); padding: 14px; margin-bottom: 8px; }
+    .w-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .w-morning {
+      flex: 1; background: var(--s2); border: 1.5px solid var(--b1); border-radius: var(--r-sm);
+      padding: 13px 10px; text-align: center; cursor: pointer; transition: all .18s;
+    }
+    .w-morning.on { background: var(--blu-lo); border-color: var(--blu-md); }
+    .w-morning .wi { font-size: 20px; display: block; margin-bottom: 5px; }
+    .w-morning .wo { font: 700 12px/1 var(--M); color: var(--txt); }
+    .w-morning .wl { font: 500 7px/1 var(--M); color: var(--txt2); letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; }
+    .w-morning.on .wo, .w-morning.on .wl { color: var(--blu); }
+    .w-bottle { flex: 2; background: var(--s2); border: 1.5px solid var(--b1); border-radius: var(--r-sm); padding: 12px 13px; }
+    .w-blbl { font: 700 7px/1 var(--M); letter-spacing: .12em; text-transform: uppercase; color: var(--txt2); margin-bottom: 8px; }
+    .w-bcnt { display: flex; align-items: center; gap: 8px; }
+    .w-bbtn {
+      width: 34px; height: 34px; border-radius: 9px; background: var(--s3); border: 1px solid var(--b1);
+      cursor: pointer; font-size: 17px; display: flex; align-items: center; justify-content: center;
+      transition: all .12s; color: var(--txt2);
+    }
+    .w-bbtn:active { transform: scale(.9); }
+    .w-binfo { flex: 1; }
+    .w-bnum  { font: 700 22px/1 var(--M); color: var(--blu); }
+    .w-bsub  { font: 400 9px/1 var(--M); color: var(--txt2); margin-top: 2px; }
+    .w-prog-row { display: flex; flex-direction: column; gap: 4px; }
+    .w-prog-top { display: flex; justify-content: space-between; align-items: baseline; }
+    .w-ptot { font: 700 12px/1 var(--M); color: var(--txt); }
+    .w-ptgt { font: 500 9px/1 var(--M); color: var(--txt2); }
+    .w-trk  { height: 5px; background: var(--s3); border-radius: 3px; overflow: hidden; }
+    .w-fl   { height: 100%; background: linear-gradient(90deg, var(--blu), #7fc3e8); border-radius: 3px; transition: width .5s ease; }
+    .w-chks { display: flex; gap: 5px; margin-top: 8px; }
+    .wck {
+      font: 700 8px/1 var(--M); padding: 5px 10px; border-radius: 6px;
+      background: var(--s2); color: var(--txt3); letter-spacing: .04em;
+    }
+    .wck.hit  { background: var(--blu-lo); color: var(--blu); }
+    .wck.miss { color: #c04f4f; background: rgba(192,79,79,.08); }
+
+    /* Meal cards */
+    .mc-card { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r); margin-bottom: 6px; overflow: hidden; }
+    .mc-hdr  { display: flex; align-items: center; gap: 12px; padding: 13px 14px; cursor: pointer; }
+    .mc-circle {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2px solid var(--txt3); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; flex-shrink: 0; transition: all .2s; color: transparent;
+    }
+    .mc-card.logged .mc-circle { background: var(--o); border-color: var(--o); color: white; box-shadow: 0 0 10px rgba(217,119,87,.3); }
+    .mc-info { flex: 1; }
+    .mc-name { font: 700 13px/1 var(--D); color: var(--txt); }
+    .mc-tgt  { font: 500 9px/1 var(--M); color: var(--txt2); margin-top: 3px; }
+    .mc-logged-macros { font: 700 10px/1 var(--M); color: var(--o); }
+    .mc-expand { display: none; border-top: 1px solid var(--b1); padding: 14px; }
+    .mc-card.open .mc-expand { display: block; }
+    .mac-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+    .mac-grp  { display: flex; flex-direction: column; gap: 4px; }
+    .mac-lbl  { font: 700 7px/1 var(--M); letter-spacing: .12em; text-transform: uppercase; color: var(--txt2); text-align: center; }
+    .mac-inp  {
+      background: var(--s2); border: 1px solid var(--b1); border-radius: 8px;
+      padding: 9px 6px; font: 700 16px/1 var(--M); color: var(--txt);
+      width: 100%; text-align: center; outline: none; transition: border-color .2s;
+      -webkit-appearance: none; appearance: none;
+    }
+    .mac-inp:focus { border-color: var(--o); }
+    .mac-unit { font: 400 8px/1 var(--M); color: var(--txt3); text-align: center; }
+    .log-btn {
+      width: 100%; padding: 12px; background: var(--o); border: none; border-radius: var(--r-sm);
+      font: 700 12px/1 var(--D); color: white; cursor: pointer; letter-spacing: .05em; transition: all .15s;
+    }
+    .log-btn:active { transform: scale(.98); opacity: .88; }
+
+    /* ═══════════════════════════════════════════
+       TRAINING TAB
+    ═══════════════════════════════════════════ */
+    .train-hero {
+      background: var(--o-lo); border: 1px solid var(--o-md); border-radius: var(--r);
+      padding: 18px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .th-left {}
+    .th-eyebrow { font: 700 7px/1 var(--M); letter-spacing: .15em; text-transform: uppercase; color: var(--o); margin-bottom: 6px; }
+    .th-count { display: flex; align-items: baseline; gap: 8px; }
+    .th-num { font: 700 52px/1 var(--M); color: var(--o); }
+    .th-of  { font: 500 14px/1 var(--M); color: var(--cream); }
+    .th-status { font: 700 10px/1 var(--M); color: var(--txt2); letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
+    .th-right { text-align: right; }
+    .th-slbl { font: 700 7px/1 var(--M); letter-spacing: .12em; text-transform: uppercase; color: var(--txt2); margin-bottom: 5px; }
+    .th-snum { font: 700 36px/1 var(--M); color: var(--o); }
+    .th-ssub { font: 500 8px/1 var(--M); color: var(--txt2); margin-top: 3px; }
+
+    .sess-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .sess-row {
+      background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r);
+      display: flex; align-items: center; gap: 12px; padding: 13px 14px; transition: all .15s;
+    }
+    .sess-row.done { background: rgba(217,119,87,.06); border-color: var(--o-md); }
+    .sess-chk {
+      width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--txt3);
+      background: none; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; flex-shrink: 0; transition: all .18s; color: transparent;
+    }
+    .sess-chk:active { transform: scale(.9); }
+    .sess-row.done .sess-chk { background: var(--o); border-color: var(--o); color: white; box-shadow: 0 0 12px rgba(217,119,87,.3); }
+    .sess-info { flex: 1; }
+    .sess-name { font: 700 13px/1 var(--D); color: var(--txt); }
+    .sess-row.done .sess-name { color: var(--o); }
+    .sess-date { font: 400 10px/1 var(--M); color: var(--txt2); margin-top: 3px; }
+    .sess-badge {
+      font: 700 8px/1 var(--M); letter-spacing: .08em; padding: 4px 9px;
+      border-radius: 5px; text-transform: uppercase;
+    }
+    .badge-log  { background: var(--o-lo);   color: var(--o);   border: 1px solid var(--o-md); }
+    .badge-done { background: var(--grn-lo); color: var(--grn); border: 1px solid var(--grn-md); }
+
+    .win-list { display: flex; flex-direction: column; gap: 0; }
+    .win-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid var(--b2);
+    }
+    .win-row:last-child { border-bottom: none; }
+    .win-day  { font: 700 13px/1 var(--D); color: var(--txt); }
+    .win-day.today { color: var(--o); }
+    .win-note { font: 400 9px/1 var(--M); color: var(--txt2); margin-top: 3px; }
+    .win-time { font: 700 10px/1 var(--M); color: var(--txt2); }
+    .win-time.today { color: var(--o); }
+
+    /* ═══════════════════════════════════════════
+       WEEK REVIEW TAB
+    ═══════════════════════════════════════════ */
+    .rev-intro { background: var(--o-lo); border: 1px solid var(--o-md); border-radius: var(--r); padding: 14px; margin-bottom: 8px; }
+    .rev-intro-h { font: 700 13px/1 var(--D); color: var(--o); }
+    .rev-intro-b { font: 400 11px/1.5 var(--D); color: var(--txt2); margin-top: 4px; }
+    .rev-section { font: 700 8px/1 var(--M); letter-spacing: .16em; text-transform: uppercase; color: var(--o); margin: 16px 0 7px; padding-bottom: 6px; border-bottom: 1px solid var(--b1); }
+    .rev-card { background: var(--s1); border: 1px solid var(--b1); border-radius: var(--r); padding: 13px; margin-bottom: 6px; }
+    .rev-qn  { font: 700 8px/1 var(--M); color: var(--o); letter-spacing: .1em; margin-bottom: 5px; }
+    .rev-q   { font: 600 12px/1.4 var(--D); color: var(--txt); margin-bottom: 4px; }
+    .rev-ctx { font: 400 10px/1.4 var(--D); color: var(--txt2); margin-bottom: 7px; font-style: italic; }
+    .rev-inp {
+      width: 100%; background: var(--s2); border: 1px solid var(--b1); border-radius: var(--r-sm);
+      padding: 9px 11px; font: 500 12px/1.45 var(--D); color: var(--txt);
+      outline: none; resize: none; transition: border-color .2s;
+    }
+    .rev-inp:focus { border-color: var(--o); }
+    .rev-num { width: 80px; text-align: center; }
+    .save-btn {
+      width: 100%; padding: 14px; background: var(--o); border: none; border-radius: var(--r);
+      font: 700 13px/1 var(--D); color: white; cursor: pointer; letter-spacing: .06em;
+      transition: all .15s; margin-top: 10px;
+    }
+    .save-btn:active { transform: scale(.99); opacity: .88; }
+
+    /* ═══════════════════════════════════════════
+       UTILS
+    ═══════════════════════════════════════════ */
+    .rst-btn {
+      display: block; text-align: center; margin-top: 28px; padding-top: 18px;
+      border-top: 1px solid var(--b1);
+      font: 700 8px/1 var(--M); color: var(--txt3); letter-spacing: .1em;
+      cursor: pointer; background: none; border-bottom: none; width: 100%;
+      transition: color .15s;
+    }
+    .rst-btn:hover { color: var(--txt2); }
+
+    .toast {
+      position: fixed; top: calc(var(--sit) + 68px); left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      background: var(--s1); color: var(--txt); border: 1px solid var(--b1);
+      padding: 9px 20px; border-radius: 100px;
+      font: 700 11px/1 var(--D); pointer-events: none;
+      opacity: 0; transition: all .28s cubic-bezier(.2,.8,.4,1); z-index: 9999; white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.ok   { background: var(--grn-lo); border-color: var(--grn-md); color: var(--grn); }
+    .toast.fire { background: var(--o-lo);   border-color: var(--o-md);   color: var(--o); }
+
+    /* ═══════════════════════════════════════════
+       DESKTOP
+    ═══════════════════════════════════════════ */
+    @media (min-width: 768px) {
+      .sidebar { display: flex; }
+      .mob-hdr { display: none; }
+      .bot-nav { display: none; }
+      .scroll  { padding: 28px 32px 32px; }
+      .stats   { grid-template-columns: repeat(4,1fr); }
+      .mbars .mbar-inner { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+      .mbars .mbar + .mbar { margin-top: 0; }
     }
   </style>
 </head>
 <body>
 <div class="shell">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sb-header">
-      <div class="sb-eyebrow">MR. GORDON</div>
-      <div class="sb-day" id="sb-day">Monday</div>
+    <div class="sb-top">
+      <div class="sb-brand">MR. GORDON</div>
+      <div class="sb-day"  id="sb-day">Monday</div>
       <div class="sb-time" id="sb-time">—</div>
-      <div class="sb-date" id="sb-date">March 16, 2026</div>
+      <div class="sb-date" id="sb-date">May 2026</div>
     </div>
     <nav class="sb-nav">
-      <button class="sb-nav-btn active" data-tab="today"    onclick="switchTab('today')"><span class="icon">⚡</span><span class="label">Today</span></button>
-      <button class="sb-nav-btn"        data-tab="nn"       onclick="switchTab('nn')"><span class="icon">✓</span><span class="label">Non-Negotiables</span></button>
-      <button class="sb-nav-btn"        data-tab="meals"    onclick="switchTab('meals')"><span class="icon">🍽</span><span class="label">Meals & Macros</span></button>
-      <button class="sb-nav-btn"        data-tab="training" onclick="switchTab('training')"><span class="icon">🔥</span><span class="label">Training</span></button>
-      <button class="sb-nav-btn"        data-tab="week"     onclick="switchTab('week')"><span class="icon">📅</span><span class="label">Week Review</span></button>
+      <button class="sb-btn on" data-tab="today"    onclick="go('today')"><span class="i">⚡</span><span class="l">Today</span></button>
+      <button class="sb-btn"    data-tab="nn"       onclick="go('nn')"><span class="i">✓</span><span class="l">Non-Negotiables</span></button>
+      <button class="sb-btn"    data-tab="meals"    onclick="go('meals')"><span class="i">🍽</span><span class="l">Meals & Macros</span></button>
+      <button class="sb-btn"    data-tab="training" onclick="go('training')"><span class="i">🔥</span><span class="l">Training</span></button>
+      <button class="sb-btn"    data-tab="week"     onclick="go('week')"><span class="i">📅</span><span class="l">Week Review</span></button>
     </nav>
-    <div class="sb-footer">
-      <div class="streak-row"><span class="streak-num" id="sb-streak">0</span><span class="streak-label">Perfect Days</span></div>
-      <div class="sb-nn-mini"><div class="sb-nn-fill" id="sb-nn-fill" style="width:0%"></div></div>
-      <div class="sb-nn-text" id="sb-nn-text">0 / 7 non-negotiables</div>
+    <div class="sb-foot">
+      <div class="sb-streak"><span class="sb-snum" id="sb-snum">0</span><span class="sb-slbl">Perfect Days</span></div>
+      <div class="sb-bar"><div class="sb-fill" id="sb-fill" style="width:0%"></div></div>
+      <div class="sb-nn"  id="sb-nn">0 / 6 non-negotiables</div>
     </div>
   </aside>
 
   <div class="main">
-    <header class="mob-header">
-      <div class="mh-row1">
-        <div>
-          <div class="mh-eyebrow">MR. GORDON</div>
+
+    <!-- MOBILE HEADER -->
+    <header class="mob-hdr">
+      <div class="mh-r1">
+        <div class="mh-left">
+          <div class="mh-brand">MR. GORDON</div>
           <div class="mh-day"  id="mh-day">Monday</div>
           <div class="mh-time" id="mh-time">—</div>
         </div>
-        <div class="mh-streak">
-          <span class="mh-streak-num" id="mh-streak">0</span>
-          <span class="mh-streak-lbl">Perfect Days</span>
+        <div class="mh-right">
+          <span class="day-badge badge-late" id="day-badge">LATE START</span>
+          <div class="mh-streak">
+            <span class="mh-snum" id="mh-snum">0</span>
+            <span class="mh-slbl">Perfect Days</span>
+          </div>
         </div>
       </div>
-      <div class="mh-bar-row">
-        <div class="mh-bar-track"><div class="mh-bar-fill" id="mh-bar" style="width:0%"></div></div>
-        <div class="mh-bar-lbl" id="mh-bar-lbl">0 / 7</div>
+      <div class="mh-r2">
+        <div class="mh-track"><div class="mh-prog" id="mh-prog" style="width:0%"></div></div>
+        <div class="mh-plbl" id="mh-plbl">0 / 6</div>
       </div>
     </header>
 
-    <div class="content" id="content">
+    <!-- SCROLL AREA -->
+    <div class="scroll" id="scroll">
 
-      <!-- TODAY -->
-      <div class="tab active" id="tab-today">
-        <div class="goal-banner">
+      <!-- ══ TODAY ══════════════════════════════ -->
+      <div class="tab on" id="tab-today">
+
+        <div class="goal">
           <div>
-            <div class="goal-eyebrow">MARCH GOAL</div>
-            <div class="goal-main">3 NEW CLIENTS</div>
-            <div class="goal-sub" id="goal-sub">0 of 3 closed</div>
+            <div class="goal-ey">Monthly Goal — Bear Fitness</div>
+            <div class="goal-ttl">3 NEW CLIENTS</div>
+            <div class="goal-sub" id="g-sub">0 of 3 closed</div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center">
-            <div class="goal-clients-row" id="goal-dots"></div>
-            <div class="goal-dot-lbl">TAP TO CLOSE</div>
+            <div class="goal-dots" id="g-dots"></div>
+            <div class="goal-hint">TAP TO CLOSE</div>
           </div>
         </div>
 
-        <div class="stats-grid">
-          <div class="stat-cell"><span class="stat-val" id="stat-nn">0</span><span class="stat-lbl">Non-Neg</span><span class="stat-sub">of 7</span></div>
-          <div class="stat-cell"><span class="stat-val" id="stat-water-oz">0</span><span class="stat-lbl">Ounces</span><span class="stat-sub">goal: 128oz</span></div>
-          <div class="stat-cell"><span class="stat-val" id="stat-meals">0</span><span class="stat-lbl">Meals</span><span class="stat-sub">logged today</span></div>
-          <div class="stat-cell"><span class="stat-val" id="stat-sessions">0</span><span class="stat-lbl">Sessions</span><span class="stat-sub">this week</span></div>
+        <div class="stats">
+          <div class="stat"><span class="stat-v" id="s-nn">0</span><span class="stat-l">Non-Neg</span><span class="stat-s">of 6</span></div>
+          <div class="stat"><span class="stat-v" id="s-oz">0</span><span class="stat-l">Ounces</span><span class="stat-s">goal: 128oz</span></div>
+          <div class="stat"><span class="stat-v" id="s-ml">0</span><span class="stat-l">Meals</span><span class="stat-s">logged today</span></div>
+          <div class="stat"><span class="stat-v" id="s-tr">0</span><span class="stat-l">Sessions</span><span class="stat-s">this week</span></div>
         </div>
 
-        <div class="now-card">
-          <div class="now-eyebrow">▶ NOW</div>
-          <div class="now-task" id="now-task">—</div>
+        <div class="now">
+          <div class="now-ey">▶ NOW</div>
+          <div class="now-task" id="now-task">Loading...</div>
           <div class="now-next" id="now-next">—</div>
         </div>
 
-        <div class="sec">TODAY'S SCHEDULE</div>
-        <div class="card card-flush" style="padding:4px 13px"><div id="sched-list"></div></div>
-
-        <div class="quote-card" style="margin-top:8px">
-          <div class="quote-text" id="quote-text">"Comfort is never the goal. Progress is."</div>
-          <div class="quote-src"  id="quote-src">— MR. GORDON</div>
+        <div class="eyebrow">Today's Schedule</div>
+        <div class="card" style="padding:4px 14px">
+          <div class="sched" id="sched"></div>
         </div>
+
+        <div class="quote">
+          <div class="quote-t" id="q-txt">"Comfort is never the goal. Progress is."</div>
+          <div class="quote-s" id="q-src">— MR. GORDON</div>
+        </div>
+
       </div>
 
-      <!-- NON-NEGOTIABLES -->
+      <!-- ══ NON-NEGOTIABLES ════════════════════ -->
       <div class="tab" id="tab-nn">
-        <div class="ring-wrap">
-          <div class="ring-cont">
-            <svg width="120" height="120" class="ring-svg" viewBox="0 0 120 120">
-              <circle class="ring-bg" cx="60" cy="60" r="50"/>
-              <circle class="ring-fg" id="nn-ring" cx="60" cy="60" r="50" stroke-dasharray="314.2" stroke-dashoffset="314.2"/>
+        <div class="ring-area">
+          <div class="ring-wrap">
+            <svg width="130" height="130" class="ring-svg" viewBox="0 0 130 130">
+              <defs>
+                <linearGradient id="rgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#d97757"/>
+                  <stop offset="100%" stop-color="#e89a6a"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-track" cx="65" cy="65" r="54"/>
+              <circle class="ring-arc"   cx="65" cy="65" r="54"
+                stroke-dasharray="339.3" stroke-dashoffset="339.3" id="ring-arc"/>
             </svg>
-            <div class="ring-inner">
-              <span class="ring-num" id="ring-num">0</span>
-              <span class="ring-den">/ 7</span>
+            <div class="ring-inside">
+              <span class="ring-n" id="ring-n">0</span>
+              <span class="ring-d">/ 6</span>
             </div>
           </div>
           <div class="ring-lbl">Non-Negotiables Complete</div>
         </div>
         <div class="nn-list" id="nn-list"></div>
-        <button class="reset-link" onclick="confirmResetNN()">RESET TODAY'S NON-NEGOTIABLES</button>
+        <button class="rst-btn" onclick="resetNN()">RESET TODAY'S NON-NEGOTIABLES</button>
       </div>
 
-      <!-- MEALS -->
+      <!-- ══ MEALS ══════════════════════════════ -->
       <div class="tab" id="tab-meals">
-        <div class="sec">DAILY MACROS</div>
-        <div class="macro-bars-card">
-          <div class="macro-bar-group">
-            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Protein</span><span class="mbar-val"><span id="tot-p">0</span> / 200g</span></div><div class="mbar-track"><div class="mbar-fill mbar-p" id="bar-p" style="width:0%"></div></div></div>
-            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Carbs</span><span class="mbar-val"><span id="tot-c">0</span> / 400g</span></div><div class="mbar-track"><div class="mbar-fill mbar-c" id="bar-c" style="width:0%"></div></div></div>
-            <div class="mbar-row"><div class="mbar-top"><span class="mbar-name">Fat</span><span class="mbar-val"><span id="tot-f">0</span> / 90g</span></div><div class="mbar-track"><div class="mbar-fill mbar-f" id="bar-f" style="width:0%"></div></div></div>
+        <div class="eyebrow">Daily Macros</div>
+        <div class="mbars">
+          <div class="mbar-inner">
+            <div class="mbar">
+              <div class="mbar-top"><span class="mbar-nm">Protein</span><span class="mbar-val"><span id="tp">0</span> / 200g</span></div>
+              <div class="mbar-trk"><div class="mbar-fl mp" id="bp" style="width:0%"></div></div>
+            </div>
+            <div class="mbar">
+              <div class="mbar-top"><span class="mbar-nm">Carbs</span><span class="mbar-val"><span id="tc">0</span> / 400g</span></div>
+              <div class="mbar-trk"><div class="mbar-fl mc" id="bc" style="width:0%"></div></div>
+            </div>
+            <div class="mbar">
+              <div class="mbar-top"><span class="mbar-nm">Fat</span><span class="mbar-val"><span id="tf">0</span> / 90g</span></div>
+              <div class="mbar-trk"><div class="mbar-fl mf" id="bf" style="width:0%"></div></div>
+            </div>
           </div>
         </div>
 
-        <div class="sec">HYDRATION</div>
-        <div class="water-card">
-          <div class="water-row">
-            <div class="water-unit" id="morning-water" onclick="toggleMorningWater()">
-              <span class="water-unit-icon">🌅</span>
-              <div class="water-unit-oz">32 oz</div>
-              <div class="water-unit-lbl">Morning</div>
+        <div class="eyebrow">Hydration</div>
+        <div class="water">
+          <div class="w-row">
+            <div class="w-morning" id="w-morning" onclick="tapMorning()">
+              <span class="wi">🌅</span>
+              <div class="wo">2 glasses</div>
+              <div class="wl">Morning</div>
             </div>
-            <div style="flex:2;background:var(--surface-2);border:1.5px solid var(--border);border-radius:11px;padding:12px 13px">
-              <div style="font:700 8px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:8px">Water Bottle · 64oz each</div>
-              <div class="water-bottle-row">
-                <button class="water-bottle-btn" onclick="adjBottle(-1)" style="color:var(--text-2)">−</button>
-                <div class="water-bottle-info">
-                  <div class="water-bottle-fills" id="bottle-fills">0</div>
-                  <div class="water-bottle-sub" id="bottle-oz">0 oz from bottle</div>
+            <div class="w-bottle">
+              <div class="w-blbl">Water Bottle · 64 oz each</div>
+              <div class="w-bcnt">
+                <button class="w-bbtn" onclick="adjB(-1)">−</button>
+                <div class="w-binfo">
+                  <div class="w-bnum" id="b-fills">0</div>
+                  <div class="w-bsub" id="b-oz">0 oz from bottle</div>
                 </div>
-                <button class="water-bottle-btn" onclick="adjBottle(1)" style="background:var(--blue-low);border-color:rgba(106,171,220,.35)">+</button>
+                <button class="w-bbtn" onclick="adjB(1)" style="background:var(--blu-lo);border-color:var(--blu-md);color:var(--blu)">+</button>
               </div>
             </div>
           </div>
-          <div class="water-bar-row">
-            <div class="water-bar-top">
-              <span class="water-oz-lbl" id="water-oz-total">0 oz</span>
-              <span class="water-tgt-lbl">/ 128 oz (1 gallon)</span>
+          <div class="w-prog-row">
+            <div class="w-prog-top">
+              <span class="w-ptot" id="w-tot">0 oz</span>
+              <span class="w-ptgt">/ 128 oz (1 gallon)</span>
             </div>
-            <div class="water-prog"><div class="water-prog-fill" id="water-prog-fill" style="width:0%"></div></div>
+            <div class="w-trk"><div class="w-fl" id="w-fl" style="width:0%"></div></div>
           </div>
-          <div class="water-checks">
-            <span class="wcheck" id="wc-noon">½ by noon (64oz)</span>
-            <span class="wcheck" id="wc-eod">Full gallon</span>
+          <div class="w-chks">
+            <span class="wck" id="wck-noon">½ by noon (64 oz)</span>
+            <span class="wck" id="wck-eod">Full gallon</span>
           </div>
         </div>
 
-        <div class="sec">MEALS</div>
+        <div class="eyebrow">Meals</div>
         <div id="meal-cards"></div>
       </div>
 
-      <!-- TRAINING -->
+      <!-- ══ TRAINING ════════════════════════════ -->
       <div class="tab" id="tab-training">
-        <div class="train-summary-card">
-          <div>
-            <div style="font:700 9px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--orange);margin-bottom:6px">THIS WEEK</div>
-            <div style="display:flex;align-items:baseline;gap:8px">
-              <span class="tsm-num" id="tsm-num">0</span>
-              <span class="tsm-of">/ 4 sessions</span>
+        <div class="train-hero">
+          <div class="th-left">
+            <div class="th-eyebrow">This Week</div>
+            <div class="th-count">
+              <span class="th-num" id="th-num">0</span>
+              <span class="th-of">/ 4 sessions</span>
             </div>
-            <div class="tsm-status" id="tsm-status">TARGET: 4 THIS WEEK</div>
+            <div class="th-status" id="th-status">Target: 4 this week</div>
           </div>
-          <div style="text-align:right">
-            <div style="font:700 9px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);margin-bottom:5px">STREAK</div>
-            <div style="font:700 32px/1 var(--mono);color:var(--orange)" id="train-streak">0</div>
-            <div style="font:500 9px/1 var(--mono);color:var(--text-2)">perfect weeks</div>
+          <div class="th-right">
+            <div class="th-slbl">Perfect Weeks</div>
+            <div class="th-snum" id="th-snum">0</div>
+            <div class="th-ssub">week streak</div>
           </div>
         </div>
 
-        <div class="sec">LOG SESSIONS</div>
-        <div class="training-day-grid" id="training-day-grid"></div>
+        <div class="eyebrow">Log Sessions — Los Campiones</div>
+        <div class="sess-list" id="sess-list"></div>
 
-        <div class="sec">TRAINING WINDOWS</div>
-        <div class="card" style="padding:12px 14px">
-          <div style="display:flex;flex-direction:column;gap:7px" id="train-windows"></div>
+        <div class="eyebrow">Weekly Windows</div>
+        <div class="card" style="padding:10px 14px">
+          <div class="win-list" id="win-list"></div>
         </div>
-        <button class="reset-link" onclick="resetTraining()">RESET WEEK'S SESSIONS</button>
+
+        <button class="rst-btn" onclick="resetTraining()">RESET WEEK'S SESSIONS</button>
       </div>
 
-      <!-- WEEK REVIEW -->
+      <!-- ══ WEEK REVIEW ═════════════════════════ -->
       <div class="tab" id="tab-week">
-        <div class="card card-flush" style="padding:12px 14px;margin-bottom:8px">
-          <div style="font:500 10px/1.5 var(--mono);color:var(--text-3)">Run every Sunday. Be honest. No skipping.</div>
+        <div class="rev-intro">
+          <div class="rev-intro-h">Sunday Audit — Every Week, No Skipping</div>
+          <div class="rev-intro-b">Be ruthless. The man you're becoming doesn't lie to himself.</div>
         </div>
-        <div class="review-list" id="review-list"></div>
-        <button class="btn-primary" onclick="saveReview()">SAVE REVIEW</button>
+        <div id="rev-body"></div>
+        <button class="save-btn" onclick="saveRev()">SAVE REVIEW</button>
       </div>
-    </div>
 
-    <nav class="mob-nav">
-      <button class="mob-nav-btn active" data-tab="today"    onclick="switchTab('today')"><span class="icon">⚡</span><span class="label">Today</span></button>
-      <button class="mob-nav-btn"        data-tab="nn"       onclick="switchTab('nn')"><span class="icon">✓</span><span class="label">Non-Neg</span></button>
-      <button class="mob-nav-btn"        data-tab="meals"    onclick="switchTab('meals')"><span class="icon">🍽</span><span class="label">Meals</span></button>
-      <button class="mob-nav-btn"        data-tab="training" onclick="switchTab('training')"><span class="icon">🔥</span><span class="label">Training</span></button>
-      <button class="mob-nav-btn"        data-tab="week"     onclick="switchTab('week')"><span class="icon">📅</span><span class="label">Review</span></button>
+    </div><!-- /scroll -->
+
+    <!-- BOTTOM NAV -->
+    <nav class="bot-nav">
+      <button class="bot-btn on" data-tab="today"    onclick="go('today')"><span class="i">⚡</span><span class="l">Today</span></button>
+      <button class="bot-btn"    data-tab="nn"       onclick="go('nn')"><span class="i">✓</span><span class="l">Non-Neg</span></button>
+      <button class="bot-btn"    data-tab="meals"    onclick="go('meals')"><span class="i">🍽</span><span class="l">Meals</span></button>
+      <button class="bot-btn"    data-tab="training" onclick="go('training')"><span class="i">🔥</span><span class="l">Training</span></button>
+      <button class="bot-btn"    data-tab="week"     onclick="go('week')"><span class="i">📅</span><span class="l">Review</span></button>
     </nav>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const NN_ITEMS = [
-  { text:'32oz water + L-Tyrosine 500mg + L-Theanine 200mg upon waking', cat:'MORNING' },
-  { text:'Prayer — 10 min, intentional, uninterrupted',                   cat:'MORNING' },
-  { text:'20 min non-fiction reading',                                     cat:'MORNING' },
-  { text:'25 Cold DMs — Bear Fitness',                                     cat:'WORK' },
-  { text:'Meal 1 eaten before leaving the house',                          cat:'NUTRITION' },
-  { text:'4 meals hit — 200P / 400C / 90F',                               cat:'NUTRITION' },
-  { text:'1 gallon of water — 64oz by noon, full by EOD',                 cat:'HYDRATION' },
+/* ═══════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════ */
+const NN = [
+  { t:'Water (2 glasses) + Smoothie (Meal 1) + L-Tyrosine 500mg + L-Theanine 200mg upon waking', c:'MORNING' },
+  { t:'Walk + Prayer — 20 min outside, uninterrupted, no phone',                                  c:'MORNING' },
+  { t:'One full chapter of non-fiction reading',                                                   c:'MORNING' },
+  { t:'25 Cold DMs — lunch hour at work, every shift',                                            c:'WORK' },
+  { t:'4 meals — 200P / 400C / 90F',                                                              c:'NUTRITION' },
+  { t:'1 gallon water — ½ by noon, full gallon by end of day',                                   c:'HYDRATION' },
 ];
 
-const MEAL_INFO = [
-  { name:'MEAL 1', mth:'8:20 AM',  fs:'8:20 AM',  sun:'Flexible' },
-  { name:'MEAL 2', mth:'11:30 AM', fs:'12:00 PM', sun:'Flexible' },
-  { name:'MEAL 3', mth:'2:30 PM',  fs:'3:00 PM',  sun:'Flexible' },
-  { name:'MEAL 4', mth:'9:00 PM',  fs:'6:00 PM',  sun:'Flexible' },
+const MEALS = [
+  { n:'MEAL 1 — SMOOTHIE', early:'5:30 AM (home)', late:'6:30 AM (home)', off:'6:30 AM (home)' },
+  { n:'MEAL 2',            early:'~11:00 AM',       late:'9:30 AM (home)', off:'Post-training' },
+  { n:'MEAL 3',            early:'~1:00 PM — Lunch', late:'~2:00 PM',     off:'~1:00 PM' },
+  { n:'MEAL 4',            early:'Home after work',  late:'~9:00 PM',     off:'~5:00 PM' },
 ];
 
-const SCHEDULES = {
-  weekday:[
-    {t:'6:30 AM',   task:'Wake',                       note:'32oz water + L-Tyrosine + L-Theanine',   h:6.5,  nn:0},
-    {t:'6:30–6:40', task:'Prayer',                     note:'10 min — phone stays down',              h:6.5,  nn:1},
-    {t:'6:40–7:00', task:'Shower + Get Ready',         note:'20 minutes',                             h:6.67, nn:-1},
-    {t:'7:00–7:20', task:'Non-Fiction Reading',        note:'One full chapter — coffee in hand',      h:7.0,  nn:2},
-    {t:'7:20–8:20', task:'Media Hour + 25 Cold DMs',   note:'Music or podcast + outreach',            h:7.33, nn:3},
-    {t:'8:20–9:00', task:'Meal 1',                     note:'Sit down. Eat fully before leaving.',    h:8.33, nn:4},
-    {t:'9:00–9:30', task:'Buffer Block',               note:'Bag packed. Mentally locked in.',        h:9.0,  nn:-1},
-    {t:'9:30 AM',   task:'LEAVE',                      note:null,                                     h:9.5,  nn:-1},
-    {t:'10:00 AM',  task:'Arrive — Locked In',         note:null,                                     h:10.0, nn:-1},
-    {t:'11:30 AM',  task:'Meal 2',                     note:'Hydration check: 64oz hit?',             h:11.5, nn:-1},
-    {t:'2:30 PM',   task:'Meal 3',                     note:null,                                     h:14.5, nn:-1},
-    {t:'8:00 PM',   task:'Off Work',                   note:'Hydration check: full gallon hit?',      h:20.0, nn:-1},
-    {t:'8:30–9:00', task:'Decompress',                 note:'No screen spiral',                       h:20.5, nn:-1},
-    {t:'9:00 PM',   task:'Meal 4',                     note:null,                                     h:21.0, nn:-1},
-    {t:'9:00–10:00',task:'Relationship / Admin / Free',note:null,                                     h:21.0, nn:-1},
-    {t:'10:00 PM',  task:'Wind-Down',                  note:'Screens down — red light',               h:22.0, nn:-1},
-    {t:'10:30 PM',  task:'BED',                        note:null,                                     h:22.5, nn:-1},
+const SCH = {
+  late:[
+    {t:'6:30 AM',   n:'Wake',                    d:'2 glasses water + Smoothie + L-Tyrosine + L-Theanine', h:6.5,  nn:0},
+    {t:'6:40–7:00', n:'Walk + Prayer',             d:'20 min outside — no phone, uninterrupted',            h:6.67, nn:1},
+    {t:'7:00–7:20', n:'Shower',                   d:'Fully ready before sitting down',                      h:7.0,  nn:-1},
+    {t:'7:20–7:45', n:'Non-Fiction Reading',       d:'One full chapter — coffee in hand',                   h:7.33, nn:2},
+    {t:'7:45–9:30', n:'Admin / Free Block',        d:'Bear Fitness admin, messages, personal tasks',        h:7.75, nn:-1},
+    {t:'9:30',      n:'Meal 2 at home',            d:'Real food — hit macros',                              h:9.5,  nn:-1},
+    {t:'10:10 AM',  n:'Leave — gym first',         d:'Home → Los Campiones (20 min)',                       h:10.17,nn:-1},
+    {t:'10:30',     n:'Lift at Los Campiones',     d:'45 min session',                                      h:10.5, nn:-1},
+    {t:'11:25 AM',  n:'Drive to McCarthy',         d:'35 min — change at gym first',                        h:11.42,nn:-1},
+    {t:'12:00 PM',  n:'Arrive — Locked In',        d:'Ready to sell',                                       h:12.0, nn:-1},
+    {t:'~2:00 PM',  n:'Meal 3',                    d:'At dealership',                                       h:14.0, nn:-1},
+    {t:'~5:00 PM',  n:'Lunch — Meal 4 + 25 DMs', d:'Media break + cold outreach',                         h:17.0, nn:3},
+    {t:'8:00 PM',   n:'Off Work',                  d:'Hydration check: full gallon hit?',                   h:20.0, nn:-1},
+    {t:'8:35 PM',   n:'Home',                      d:null,                                                  h:20.58,nn:-1},
+    {t:'9:00 PM',   n:'Meal 4 / Wind-down fuel',   d:'If needed',                                           h:21.0, nn:-1},
+    {t:'10:00 PM',  n:'Wind-Down',                 d:'Screens down — red light on',                         h:22.0, nn:-1},
+    {t:'10:30 PM',  n:'Bed',                       d:null,                                                  h:22.5, nn:-1},
   ],
-  weekend:[
-    {t:'6:30 AM',   task:'Wake',                       note:'32oz water + L-Tyrosine + L-Theanine',   h:6.5,  nn:0},
-    {t:'6:30–6:40', task:'Prayer',                     note:'10 min — phone stays down',              h:6.5,  nn:1},
-    {t:'6:40–7:00', task:'Shower + Get Ready',         note:null,                                     h:6.67, nn:-1},
-    {t:'7:00–7:20', task:'Non-Fiction Reading',        note:'One full chapter',                       h:7.0,  nn:2},
-    {t:'7:20–8:20', task:'Media Hour + 25 Cold DMs',   note:null,                                     h:7.33, nn:3},
-    {t:'8:20–9:00', task:'Meal 1',                     note:'Eat fully before leaving',               h:8.33, nn:4},
-    {t:'9:00–9:30', task:'Buffer Block',               note:null,                                     h:9.0,  nn:-1},
-    {t:'9:30 AM',   task:'LEAVE',                      note:null,                                     h:9.5,  nn:-1},
-    {t:'10:00 AM',  task:'Arrive — Locked In',         note:null,                                     h:10.0, nn:-1},
-    {t:'12:00 PM',  task:'Meal 2',                     note:'Hydration check: 64oz hit?',             h:12.0, nn:-1},
-    {t:'2:00 PM',   task:'Off Work',                   note:'Hydration check: full gallon hit?',      h:14.0, nn:-1},
-    {t:'3:00 PM',   task:'Meal 3',                     note:null,                                     h:15.0, nn:-1},
-    {t:'2:30–6:00', task:'Open Block',                 note:'Relationship / recovery',                h:14.5, nn:-1},
-    {t:'6:00 PM',   task:'Meal 4',                     note:null,                                     h:18.0, nn:-1},
-    {t:'10:00 PM',  task:'Wind-Down',                  note:null,                                     h:22.0, nn:-1},
-    {t:'10:30 PM',  task:'BED',                        note:null,                                     h:22.5, nn:-1},
+  earlyShort:[
+    {t:'5:30 AM',   n:'Wake',                    d:'2 glasses water + Smoothie + L-Tyrosine + L-Theanine', h:5.5,  nn:0},
+    {t:'5:40–6:00', n:'Walk + Prayer',             d:'20 min outside — no phone, uninterrupted',            h:5.67, nn:1},
+    {t:'6:00–6:20', n:'Shower',                   d:'Fully ready before sitting down',                      h:6.0,  nn:-1},
+    {t:'6:20–6:45', n:'Non-Fiction Reading',       d:'One full chapter — coffee in hand',                   h:6.33, nn:2},
+    {t:'6:45–7:45', n:'Pack meals + admin',        d:'Bear Fitness admin, messages — 60 min',               h:6.75, nn:-1},
+    {t:'7:50 AM',   n:'Leave — direct to work',    d:'35 min commute',                                      h:7.83, nn:-1},
+    {t:'8:30 AM',   n:'Arrive — Locked In',        d:'Ready to sell',                                       h:8.5,  nn:-1},
+    {t:'~11:00 AM', n:'Meal 2',                   d:'Hydration check: ½ gallon hit?',                      h:11.0, nn:-1},
+    {t:'~1:00 PM',  n:'Lunch — Meal 3 + 25 DMs', d:'Media break + cold outreach',                         h:13.0, nn:3},
+    {t:'4:00 PM',   n:'Off Work',                  d:'Hydration check: full gallon hit?',                   h:16.0, nn:-1},
+    {t:'~4:35 PM',  n:'Home',                     d:'Meal 4 — intentional recovery',                       h:16.58,nn:-1},
+    {t:'10:00 PM',  n:'Wind-Down',                 d:'Screens down — red light on',                         h:22.0, nn:-1},
+    {t:'10:30 PM',  n:'Bed',                       d:null,                                                  h:22.5, nn:-1},
   ],
-  sunday:[
-    {t:'6:30 AM',    task:'Wake',                         note:'Full morning routine',               h:6.5,  nn:0},
-    {t:'6:30–6:40',  task:'Prayer',                       note:'10 min',                             h:6.5,  nn:1},
-    {t:'6:40–7:00',  task:'Shower + Get Ready',           note:null,                                 h:6.67, nn:-1},
-    {t:'7:00–7:20',  task:'Non-Fiction Reading',          note:null,                                 h:7.0,  nn:2},
-    {t:'7:20–8:20',  task:'Media Hour + 25 Cold DMs',     note:null,                                 h:7.33, nn:3},
-    {t:'8:20–9:00',  task:'Meal 1',                       note:null,                                 h:8.33, nn:4},
-    {t:'Mid-Morning',task:'CHURCH',                       note:'Non-negotiable — every week',        h:10.5, nn:-1},
-    {t:'Afternoon',  task:'Meal Prep + Recovery',         note:null,                                 h:13.0, nn:-1},
-    {t:'Evening',    task:'WEEKLY REVIEW',                note:'Every week. No skipping.',           h:18.0, nn:-1},
-    {t:'10:00 PM',   task:'Wind-Down',                    note:null,                                 h:22.0, nn:-1},
-    {t:'10:30 PM',   task:'BED',                          note:null,                                 h:22.5, nn:-1},
+  earlyLong:[
+    {t:'5:30 AM',   n:'Wake',                    d:'2 glasses water + Smoothie + L-Tyrosine + L-Theanine', h:5.5,  nn:0},
+    {t:'5:40–6:00', n:'Walk + Prayer',             d:'20 min outside — no phone, uninterrupted',            h:5.67, nn:1},
+    {t:'6:00–6:20', n:'Shower',                   d:'Fully ready before sitting down',                      h:6.0,  nn:-1},
+    {t:'6:20–6:45', n:'Non-Fiction Reading',       d:'One full chapter — coffee in hand',                   h:6.33, nn:2},
+    {t:'6:45–7:45', n:'Pack meals + admin',        d:'Bear Fitness admin, messages — 60 min',               h:6.75, nn:-1},
+    {t:'7:50 AM',   n:'Leave — direct to work',    d:'35 min commute',                                      h:7.83, nn:-1},
+    {t:'8:30 AM',   n:'Arrive — Locked In',        d:'Ready to sell',                                       h:8.5,  nn:-1},
+    {t:'~11:00 AM', n:'Meal 2',                   d:'Hydration check: ½ gallon hit?',                      h:11.0, nn:-1},
+    {t:'~1:00 PM',  n:'Lunch — Meal 3 + 25 DMs', d:'Media break + cold outreach',                         h:13.0, nn:3},
+    {t:'6:00 PM',   n:'Off Work',                  d:'Hydration check: full gallon hit?',                   h:18.0, nn:-1},
+    {t:'~6:35 PM',  n:'Home',                     d:'Meal 4 — intentional recovery',                       h:18.58,nn:-1},
+    {t:'10:00 PM',  n:'Wind-Down',                 d:'Screens down — red light on',                         h:22.0, nn:-1},
+    {t:'10:30 PM',  n:'Bed',                       d:null,                                                  h:22.5, nn:-1},
+  ],
+  thu:[
+    {t:'6:30 AM',    n:'Wake',                    d:'Full morning routine',                                 h:6.5,  nn:0},
+    {t:'6:40–7:00',  n:'Walk + Prayer',             d:'20 min outside — no phone',                          h:6.67, nn:1},
+    {t:'7:00–7:20',  n:'Shower',                   d:null,                                                  h:7.0,  nn:-1},
+    {t:'7:20–7:45',  n:'Non-Fiction Reading',       d:'One full chapter',                                   h:7.33, nn:2},
+    {t:'~8:00 AM',   n:'Leave — Los Campiones',    d:'20 min drive',                                        h:8.0,  nn:-1},
+    {t:'~8:30 AM',   n:'Lift — 45 min',            d:'Full session',                                        h:8.5,  nn:-1},
+    {t:'~9:30 AM',   n:'Home — shower + Meal 2',   d:null,                                                  h:9.5,  nn:-1},
+    {t:'Afternoon',  n:'Recovery + Admin + Free',   d:'Full day — use it right',                             h:11.0, nn:-1},
+    {t:'~1:00 PM',   n:'Meal 3',                   d:null,                                                  h:13.0, nn:-1},
+    {t:'~5:00 PM',   n:'Meal 4',                   d:null,                                                  h:17.0, nn:-1},
+    {t:'10:00 PM',   n:'Wind-Down',                d:'Screens down — red light on',                         h:22.0, nn:-1},
+    {t:'10:30 PM',   n:'Bed',                      d:null,                                                  h:22.5, nn:-1},
+  ],
+  sun:[
+    {t:'6:30 AM',    n:'Wake',                    d:'Full morning routine',                                 h:6.5,  nn:0},
+    {t:'6:40–7:00',  n:'Walk + Prayer',             d:'20 min outside — no phone',                          h:6.67, nn:1},
+    {t:'7:00–7:20',  n:'Shower',                   d:null,                                                  h:7.0,  nn:-1},
+    {t:'7:20–7:45',  n:'Non-Fiction Reading',       d:'One full chapter',                                   h:7.33, nn:2},
+    {t:'Mid-morning',n:'Church',                   d:'Non-negotiable — every week',                         h:10.0, nn:-1},
+    {t:'Flexible',   n:'Train',                    d:'Before or after church — your call',                  h:12.0, nn:-1},
+    {t:'Afternoon',  n:'Meal prep + Recovery',     d:null,                                                  h:13.0, nn:-1},
+    {t:'~1:00 PM',   n:'Meal 2',                   d:null,                                                  h:13.0, nn:-1},
+    {t:'~5:00 PM',   n:'Meal 3',                   d:null,                                                  h:17.0, nn:-1},
+    {t:'Evening',    n:'Weekly Review',            d:'Every week. No skipping.',                            h:18.0, nn:-1},
+    {t:'10:00 PM',   n:'Wind-Down',                d:null,                                                  h:22.0, nn:-1},
+    {t:'10:30 PM',   n:'Bed',                      d:null,                                                  h:22.5, nn:-1},
   ],
 };
 
-const TRAINING_WINDOWS = [
-  {day:'Tuesday',  win:'9:30 – 10:30 AM', note:'Before work window'},
-  {day:'Wednesday',win:'10:00 – 11:00 AM',note:'Off day — use it'},
-  {day:'Friday',   win:'7:00 – 8:00 PM',  note:'Post-shift'},
-  {day:'Saturday', win:'6:00 – 7:00 PM',  note:'Post-shift'},
+const TRAIN_WIN = [
+  { day:'Monday',    t:'10:30–11:15 AM', note:'Before work — Los Campiones → McCarthy' },
+  { day:'Wednesday', t:'10:30–11:15 AM', note:'Before work — same route' },
+  { day:'Thursday',  t:'~8:30 AM',       note:'Off day — recover fully after' },
+  { day:'Sunday',    t:'Flexible',        note:'Before or after church — your call' },
 ];
 
-const REVIEW_QS = [
-  {q:'Training sessions completed this week?',               type:'number', ph:'0–7'},
-  {q:'Days hitting all 4 meals + macro targets?',            type:'number', ph:'0–7'},
-  {q:'Days hitting 1 gallon of water?',                      type:'number', ph:'0–7'},
-  {q:'Days all morning non-negotiables complete?',           type:'number', ph:'0–7'},
-  {q:'Made it to church this week?',                         type:'text',   ph:'Yes / No'},
-  {q:'Total DMs sent this week? (Target: 175)',              type:'number', ph:'0'},
-  {q:'New clients closed this week?',                        type:'number', ph:'0'},
-  {q:'One thing that slipped most this week?',               type:'ta',     ph:'Be specific. Be honest.'},
-  {q:'One thing to lock in tighter next week?',              type:'ta',     ph:'One. Not five.'},
-  {q:'Am I closer to my identity this week than last? Why?', type:'ta',     ph:'Answer honestly.'},
+const REVIEW = [
+  { sec:'METRICS — No Rounding Up' },
+  { q:'Training sessions this week?',                  ctx:'Target: 4. Completed sessions only.',                       type:'n', ph:'0' },
+  { q:'Days all 4 meals + macros hit?',                ctx:'Target: 7. Miss one meal = that day doesn\'t count.',       type:'n', ph:'0' },
+  { q:'Days hitting full gallon of water?',             ctx:'Target: 7.',                                                type:'n', ph:'0' },
+  { q:'Days all morning non-negotiables done in full?', ctx:'Target: 7. Partial completion = 0.',                        type:'n', ph:'0' },
+  { q:'At work on time every shift?',                   ctx:null,                                                        type:'t', ph:'Yes / No — if no, why' },
+  { q:'Church this week?',                              ctx:null,                                                        type:'t', ph:'Yes / No' },
+  { q:'Total DMs sent this week?',                      ctx:'Target: 175. 25 per shift.',                                type:'n', ph:'0' },
+  { sec:'ACCOUNTABILITY — Be Brutal' },
+  { q:'Where did you specifically fail this week?',     ctx:'Name it exactly. Don\'t soften it. No one\'s reading this but you.',        type:'ta', ph:'Be specific. Not vague.' },
+  { q:'Was your attitude and effort on the floor worthy of the income you want?', ctx:'$10K/month men don\'t have off days. Did you show up like that?', type:'ta', ph:'Honest answer.' },
+  { q:'Did you follow your schedule or your feelings?', ctx:'If you deviated, what caused it and was it justified?',     type:'ta', ph:'Be specific.' },
+  { q:'What excuse did you use that needs to be permanently eliminated?', ctx:'There\'s always one. Find it and kill it.', type:'ta', ph:'Name the excuse.' },
+  { q:'Did you do or say anything the man you\'re becoming would be ashamed of?', ctx:'As a man of God, a professional, a future husband and father.', type:'ta', ph:'Honest answer.' },
+  { q:'One specific, measurable action to lock in next week.',  ctx:'Not a vague intention. If you can\'t measure it, it\'s not a commitment.', type:'ta', ph:'One thing. Make it concrete.' },
+  { q:'Am I closing the gap to my ideal self or maintaining distance? Prove it.', ctx:'Your metrics and your honesty above are the answer.', type:'ta', ph:'Show your work.' },
 ];
 
 const QUOTES = [
-  {t:'Comfort is never the goal. Progress is.',                            s:'— MR. GORDON'},
-  {t:'I can do all things through Christ who strengthens me.',             s:'— PHILIPPIANS 4:13'},
-  {t:'Discipline is choosing what you want most over what you want now.',  s:null},
-  {t:'For God gave us a spirit not of fear but of power and self-control.',s:'— 2 TIMOTHY 1:7'},
-  {t:'Win the morning. Win the day.',                                       s:null},
-  {t:'Be strong and courageous. Do not be afraid.',                        s:'— JOSHUA 1:9'},
-  {t:'The man who moves a mountain begins by carrying away small stones.', s:'— CONFUCIUS'},
+  { t:'Comfort is never the goal. Progress is.',                             s:'— MR. GORDON' },
+  { t:'I can do all things through Christ who strengthens me.',              s:'— PHILIPPIANS 4:13' },
+  { t:'Discipline is choosing what you want most over what you want now.',   s:null },
+  { t:'For God gave us a spirit not of fear but of power and self-control.', s:'— 2 TIMOTHY 1:7' },
+  { t:'Win the morning. Win the day.',                                        s:null },
+  { t:'Be strong and courageous. Do not be afraid.',                         s:'— JOSHUA 1:9' },
+  { t:'The man who moves a mountain begins by carrying away small stones.',  s:'— CONFUCIUS' },
 ];
 
-// STATE
-const S = {
-  nn: new Array(7).fill(false),
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+const D = {
+  nn: new Array(6).fill(false),
   meals: Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0})),
-  morningWater: false,
-  bottleFills: 0,
-  training: {weekStart:'', sessions:[]},
-  trainStreak: 0,
-  review: {},
-  streak: 0,
-  clients: 0,
-  date: '',
+  mw: false, bf: 0,
+  training: {ws:'', sessions:[]}, ts: 0,
+  review: {}, streak: 0, clients: 0, date: '',
 };
 
-function weekStart() {
-  const d = new Date(), day = d.getDay();
-  const nd = new Date(d);
-  nd.setDate(d.getDate() - day + (day === 0 ? -6 : 1));
+const dayType = () => {
+  const d = new Date().getDay();
+  if (d===1||d===3) return 'late';
+  if (d===2) return 'earlyShort';
+  if (d===5||d===6) return 'earlyLong';
+  if (d===4) return 'thu';
+  return 'sun';
+};
+const dayLabel = () => {
+  const t = dayType();
+  if (t==='late') return { l:'Late Start', cls:'badge-late' };
+  if (t==='thu')  return { l:'Train Day',  cls:'badge-off' };
+  if (t==='sun')  return { l:'Reset Day',  cls:'badge-off' };
+  return { l:'Early Start', cls:'badge-early' };
+};
+const ws = () => {
+  const d=new Date(),day=d.getDay(),nd=new Date(d);
+  nd.setDate(d.getDate()-day+(day===0?-6:1));
   return nd.toDateString();
-}
-function todayStr() { return new Date().toDateString(); }
-function totalOz() { return (S.morningWater ? 32 : 0) + S.bottleFills * 64; }
+};
+const today = () => new Date().toDateString();
+const oz = () => (D.mw?32:0) + D.bf*64;
 
 function load() {
-  S.streak      = +(localStorage.getItem('mg_streak')      || 0);
-  S.trainStreak = +(localStorage.getItem('mg_trainStreak') || 0);
-  S.clients     = +(localStorage.getItem('mg_clients')     || 0);
+  D.streak  = +(localStorage.getItem('mg_streak')||0);
+  D.ts      = +(localStorage.getItem('mg_ts')||0);
+  D.clients = +(localStorage.getItem('mg_clients')||0);
   const saved = localStorage.getItem('mg_date');
-  if (saved !== todayStr()) {
-    const prev = JSON.parse(localStorage.getItem('mg_nn') || '[]');
-    if (prev.length === 7 && prev.every(Boolean)) S.streak++;
-    else if (saved) S.streak = 0;
-    localStorage.setItem('mg_date',   todayStr());
-    localStorage.setItem('mg_streak', S.streak);
-    S.nn = new Array(7).fill(false);
-    S.meals = Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0}));
-    S.morningWater = false;
-    S.bottleFills  = 0;
+  if (saved !== today()) {
+    const prev = JSON.parse(localStorage.getItem('mg_nn')||'[]');
+    if (prev.length===6 && prev.every(Boolean)) D.streak++;
+    else if (saved) D.streak = 0;
+    localStorage.setItem('mg_date',today());
+    localStorage.setItem('mg_streak',D.streak);
+    D.nn    = new Array(6).fill(false);
+    D.meals = Array.from({length:4},()=>({logged:false,p:0,c:0,f:0}));
+    D.mw = false; D.bf = 0;
   } else {
-    S.nn           = JSON.parse(localStorage.getItem('mg_nn')     || '[]') || new Array(7).fill(false);
-    S.meals        = JSON.parse(localStorage.getItem('mg_meals')  || '[]') || Array.from({length:4}, () => ({logged:false,p:0,c:0,f:0}));
-    S.morningWater = JSON.parse(localStorage.getItem('mg_mwater') || 'false');
-    S.bottleFills  = +(localStorage.getItem('mg_bottle')          || 0);
+    D.nn    = JSON.parse(localStorage.getItem('mg_nn')   ||'[]') || new Array(6).fill(false);
+    D.meals = JSON.parse(localStorage.getItem('mg_meals')||'[]') || Array.from({length:4},()=>({logged:false,p:0,c:0,f:0}));
+    D.mw    = JSON.parse(localStorage.getItem('mg_mw')  ||'false');
+    D.bf    = +(localStorage.getItem('mg_bf')||0);
   }
-  const t = JSON.parse(localStorage.getItem('mg_training') || 'null');
-  S.training = (t && t.weekStart === weekStart()) ? t : {weekStart:weekStart(), sessions:[]};
-  S.review   = JSON.parse(localStorage.getItem('mg_review') || '{}');
-  S.date     = todayStr();
+  const t = JSON.parse(localStorage.getItem('mg_training')||'null');
+  D.training = (t && t.ws===ws()) ? t : {ws:ws(),sessions:[]};
+  D.review   = JSON.parse(localStorage.getItem('mg_review')||'{}');
+  D.date = today();
 }
 
 function save() {
-  localStorage.setItem('mg_date',       S.date);
-  localStorage.setItem('mg_nn',         JSON.stringify(S.nn));
-  localStorage.setItem('mg_meals',      JSON.stringify(S.meals));
-  localStorage.setItem('mg_mwater',     JSON.stringify(S.morningWater));
-  localStorage.setItem('mg_bottle',     S.bottleFills);
-  localStorage.setItem('mg_training',   JSON.stringify(S.training));
-  localStorage.setItem('mg_streak',     S.streak);
-  localStorage.setItem('mg_trainStreak',S.trainStreak);
-  localStorage.setItem('mg_clients',    S.clients);
+  localStorage.setItem('mg_date',    D.date);
+  localStorage.setItem('mg_nn',      JSON.stringify(D.nn));
+  localStorage.setItem('mg_meals',   JSON.stringify(D.meals));
+  localStorage.setItem('mg_mw',      JSON.stringify(D.mw));
+  localStorage.setItem('mg_bf',      D.bf);
+  localStorage.setItem('mg_training',JSON.stringify(D.training));
+  localStorage.setItem('mg_streak',  D.streak);
+  localStorage.setItem('mg_ts',      D.ts);
+  localStorage.setItem('mg_clients', D.clients);
 }
 
+/* ═══════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════ */
 function renderAll() {
-  renderHeader(); renderStats(); renderClientGoal();
-  renderNN(); renderNNRing();
-  renderMacros(); renderWater(); renderMeals();
-  renderTraining(); renderTrainWindows();
-  renderReview(); renderSchedule(); renderNow(); renderQuote();
+  renderHead(); renderStats(); renderGoal();
+  renderNN(); renderRing();
+  renderMacros(); renderWater(); renderMealCards();
+  renderTraining(); renderWins();
+  renderReview(); renderSched(); renderNow(); renderQuote();
 }
 
-function renderHeader() {
-  const n = S.nn.filter(Boolean).length, pct = Math.round(n/7*100);
-  el('mh-bar').style.width     = pct+'%';
-  el('mh-bar-lbl').textContent = n+' / 7';
-  el('mh-streak').textContent  = S.streak;
-  el('sb-streak').textContent  = S.streak;
-  el('sb-nn-fill').style.width = pct+'%';
-  el('sb-nn-text').textContent = n+' / 7 non-negotiables';
+function renderHead() {
+  const n = D.nn.filter(Boolean).length;
+  const pct = Math.round(n/6*100);
+  G('mh-prog').style.width = pct+'%';
+  G('mh-plbl').textContent = n+' / 6';
+  G('mh-snum').textContent = D.streak;
+  G('sb-snum').textContent = D.streak;
+  G('sb-fill').style.width = pct+'%';
+  G('sb-nn').textContent   = n+' / 6 non-negotiables';
+  const {l,cls} = dayLabel();
+  const b = G('day-badge');
+  b.textContent = l; b.className = 'day-badge '+cls;
 }
 
 function renderStats() {
-  el('stat-nn').textContent       = S.nn.filter(Boolean).length;
-  el('stat-water-oz').textContent = totalOz();
-  el('stat-meals').textContent    = S.meals.filter(m => m.logged).length;
-  el('stat-sessions').textContent = S.training.sessions.length;
+  G('s-nn').textContent = D.nn.filter(Boolean).length;
+  G('s-oz').textContent = oz();
+  G('s-ml').textContent = D.meals.filter(m=>m.logged).length;
+  G('s-tr').textContent = D.training.sessions.length;
 }
 
-function renderClientGoal() {
-  const dots = el('goal-dots');
-  dots.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
+function renderGoal() {
+  const dots = G('g-dots'); dots.innerHTML = '';
+  for (let i=0;i<3;i++) {
     const d = document.createElement('div');
-    d.className = 'goal-dot'+(i < S.clients ? ' won' : '');
-    d.textContent = i < S.clients ? '✓' : '';
-    d.onclick = () => tapClient(i);
+    d.className = 'gdot'+(i<D.clients?' on':'');
+    d.textContent = '✓';
+    d.onclick = () => tapGoal(i);
     dots.appendChild(d);
   }
-  el('goal-sub').textContent = S.clients+' of 3 closed';
+  G('g-sub').textContent = D.clients+' of 3 closed';
 }
 
-function tapClient(i) {
-  S.clients = i < S.clients ? i : i+1;
-  save(); renderClientGoal();
-  toast(S.clients >= 3 ? '🏆 MARCH GOAL HIT!' : '✓ '+S.clients+' client'+(S.clients!==1?'s':'')+' closed');
+function tapGoal(i) {
+  D.clients = i<D.clients ? i : i+1;
+  save(); renderGoal();
+  toast(D.clients>=3 ? '🏆 Monthly goal hit!' : '✓ '+D.clients+' client'+(D.clients!==1?'s':'')+' closed', 'fire');
 }
 
 function renderNN() {
-  const list = el('nn-list');
-  list.innerHTML = '';
-  NN_ITEMS.forEach((item,i) => {
-    const done = S.nn[i];
-    const div = document.createElement('div');
-    div.className = 'nn-row'+(done?' done':'');
-    div.innerHTML = `<span class="nn-num-lbl">${String(i+1).padStart(2,'0')}</span><div class="nn-box">${done?'✓':''}</div><div style="flex:1"><div class="nn-text">${item.text}</div><div class="nn-cat">${item.cat}</div></div>`;
-    div.onclick = () => toggleNN(i);
-    list.appendChild(div);
+  const list = G('nn-list'); list.innerHTML = '';
+  NN.forEach((item,i) => {
+    const done = D.nn[i];
+    const row = document.createElement('div');
+    row.className = 'nn-row'+(done?' done':'');
+    row.innerHTML = `
+      <span class="nn-idx">${String(i+1).padStart(2,'0')}</span>
+      <div class="nn-box">✓</div>
+      <div class="nn-info">
+        <div class="nn-txt">${item.t}</div>
+        <div class="nn-cat">${item.c}</div>
+      </div>`;
+    row.onclick = () => toggleNN(i);
+    list.appendChild(row);
   });
 }
 
-function renderNNRing() {
-  const n = S.nn.filter(Boolean).length;
-  el('nn-ring').style.strokeDashoffset = 314.2 - (n/7)*314.2;
-  el('ring-num').textContent = n;
+function renderRing() {
+  const n = D.nn.filter(Boolean).length;
+  G('ring-arc').style.strokeDashoffset = 339.3 - (n/6)*339.3;
+  G('ring-n').textContent = n;
 }
 
 function toggleNN(i) {
-  S.nn[i] = !S.nn[i]; save();
-  renderNN(); renderNNRing(); renderStats(); renderHeader(); renderSchedule();
-  if (S.nn[i]) {
-    toast('✓ Done');
-    if (S.nn.every(Boolean)) { S.streak++; save(); setTimeout(()=>toast('🔥 ALL 7 — PERFECT DAY'),600); }
+  D.nn[i] = !D.nn[i]; save();
+  renderNN(); renderRing(); renderStats(); renderHead(); renderSched();
+  if (D.nn[i]) {
+    toast('✓ Done', 'ok');
+    if (D.nn.every(Boolean)) { D.streak++; save(); setTimeout(()=>toast('🔥 All 6 — Perfect day',  'fire'), 500); }
   }
 }
 
-function tapSchedNN(nnIdx) { toggleNN(nnIdx); }
+function tapSchedNN(idx) { toggleNN(idx); }
 
 function renderWater() {
-  const oz = totalOz();
-  el('morning-water').className = 'water-unit'+(S.morningWater?' full':'');
-  el('bottle-fills').textContent  = S.bottleFills;
-  el('bottle-oz').textContent     = (S.bottleFills*64)+' oz from bottle';
-  el('water-oz-total').textContent = oz+' oz';
-  el('water-prog-fill').style.width = Math.min(100,(oz/128)*100)+'%';
-  const now = new Date(), pastNoon = now.getHours() >= 12;
-  const halfHit = oz >= 64, fullHit = oz >= 128;
-  const nc = el('wc-noon');
-  nc.className = 'wcheck'+(halfHit?' hit':(pastNoon&&!halfHit?' miss':''));
-  nc.textContent = (halfHit?'✓ ':(pastNoon&&!halfHit?'✗ ':'' ))+'½ by noon (64oz)';
-  const ec = el('wc-eod');
-  ec.className = 'wcheck'+(fullHit?' hit':'');
-  ec.textContent = (fullHit?'✓ ':'')+'Full gallon';
-  if (fullHit && !S.nn[6]) { S.nn[6]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); toast('💧 Gallon hit!'); }
-  el('stat-water-oz').textContent = oz;
+  const total = oz();
+  G('w-morning').className = 'w-morning'+(D.mw?' on':'');
+  G('b-fills').textContent  = D.bf;
+  G('b-oz').textContent     = (D.bf*64)+' oz from bottle';
+  G('w-tot').textContent    = total+' oz';
+  G('w-fl').style.width     = Math.min(100,(total/128)*100)+'%';
+  const now = new Date(), pNoon = now.getHours()>=12;
+  const h = total>=64, f = total>=128;
+  const nc = G('wck-noon');
+  nc.className = 'wck'+(h?' hit':(pNoon&&!h?' miss':''));
+  nc.textContent = (h?'✓ ':(pNoon&&!h?'✗ ':'' ))+'½ by noon (64 oz)';
+  const ec = G('wck-eod');
+  ec.className = 'wck'+(f?' hit':'');
+  ec.textContent = (f?'✓ Full gallon':'Full gallon');
+  if (f && !D.nn[5]) { D.nn[5]=true; save(); renderNN(); renderRing(); renderHead(); renderSched(); toast('💧 Gallon hit!','ok'); }
+  G('s-oz').textContent = total;
 }
 
-function toggleMorningWater() {
-  S.morningWater = !S.morningWater; save(); renderWater(); renderStats();
-  if (S.morningWater && !S.nn[0]) { S.nn[0]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); toast('✓ Morning 32oz — NN done'); }
+function tapMorning() {
+  D.mw = !D.mw; save(); renderWater(); renderStats();
+  if (D.mw) toast('✓ Morning water logged','ok');
 }
 
-function adjBottle(d) { S.bottleFills=Math.max(0,S.bottleFills+d); save(); renderWater(); renderStats(); }
+function adjB(d) { D.bf = Math.max(0,D.bf+d); save(); renderWater(); renderStats(); }
 
 function renderMacros() {
   let p=0,c=0,f=0;
-  S.meals.forEach(m => { if(m.logged){p+=m.p;c+=m.c;f+=m.f;} });
-  el('tot-p').textContent = p; el('tot-c').textContent = c; el('tot-f').textContent = f;
-  el('bar-p').style.width = Math.min(100,(p/200)*100)+'%';
-  el('bar-c').style.width = Math.min(100,(c/400)*100)+'%';
-  el('bar-f').style.width = Math.min(100,(f/90)*100)+'%';
+  D.meals.forEach(m => { if(m.logged){p+=m.p;c+=m.c;f+=m.f;} });
+  G('tp').textContent = p; G('tc').textContent = c; G('tf').textContent = f;
+  G('bp').style.width = Math.min(100,(p/200)*100)+'%';
+  G('bc').style.width = Math.min(100,(c/400)*100)+'%';
+  G('bf_').style.width = Math.min(100,(f/90)*100)+'%';
 }
 
-function renderMeals() {
-  const dt = (() => { const d=new Date().getDay(); return d===0?'sun':d>=5?'fs':'mth'; })();
-  const cnt = el('meal-cards'); cnt.innerHTML = '';
-  MEAL_INFO.forEach((info,i) => {
-    const m = S.meals[i];
-    const card = document.createElement('div');
-    card.className = 'meal-card'+(m.logged?' logged':''); card.id='mc-'+i;
-    card.innerHTML = `<div class="meal-hdr" onclick="toggleMeal(${i})"><div class="meal-circle">${m.logged?'✓':''}</div><div class="meal-info"><div class="meal-name">${info.name}</div><div class="meal-target">Target: ${info[dt]}</div></div>${m.logged?`<div class="meal-macros-mini">${m.p}P ${m.c}C ${m.f}F</div>`:''}</div><div class="meal-expand"><div class="macro-inputs"><div class="macro-inp-grp"><div class="macro-inp-lbl">Protein</div><input class="macro-inp" type="number" id="p-${i}" value="${m.p||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div><div class="macro-inp-grp"><div class="macro-inp-lbl">Carbs</div><input class="macro-inp" type="number" id="c-${i}" value="${m.c||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div><div class="macro-inp-grp"><div class="macro-inp-lbl">Fat</div><input class="macro-inp" type="number" id="f-${i}" value="${m.f||''}" placeholder="0" min="0" inputmode="numeric"><div class="macro-inp-unit">g</div></div></div><button class="log-btn" onclick="logMeal(${i})">LOG MEAL ${i+1}</button></div>`;
-    cnt.appendChild(card);
+function renderMealCards() {
+  const dt = dayType()==='late'?'late':
+             dayType()==='sun'||dayType()==='thu'?'off':'early';
+  const el = G('meal-cards'); el.innerHTML = '';
+  MEALS.forEach((info,i) => {
+    const m = D.meals[i];
+    const c = document.createElement('div');
+    c.className = 'mc-card'+(m.logged?' logged':''); c.id='m'+i;
+    c.innerHTML = `
+      <div class="mc-hdr" onclick="toggleMeal(${i})">
+        <div class="mc-circle">✓</div>
+        <div class="mc-info">
+          <div class="mc-name">${info.n}</div>
+          <div class="mc-tgt">Target: ${info[dt]}</div>
+        </div>
+        ${m.logged?`<div class="mc-logged-macros">${m.p}P ${m.c}C ${m.f}F</div>`:''}
+      </div>
+      <div class="mc-expand">
+        <div class="mac-grid">
+          ${['Protein','Carbs','Fat'].map((nm,j)=>`
+          <div class="mac-grp">
+            <div class="mac-lbl">${nm}</div>
+            <input class="mac-inp" type="number" id="i${j}${i}" value="${[m.p,m.c,m.f][j]||''}" placeholder="0" min="0" inputmode="numeric">
+            <div class="mac-unit">g</div>
+          </div>`).join('')}
+        </div>
+        <button class="log-btn" onclick="logMeal(${i})">Log Meal ${i+1}</button>
+      </div>`;
+    el.appendChild(c);
   });
 }
 
-function toggleMeal(i) { document.getElementById('mc-'+i).classList.toggle('open'); }
+function toggleMeal(i) { document.getElementById('m'+i).classList.toggle('open'); }
 
 function logMeal(i) {
-  const p=+(document.getElementById('p-'+i).value)||0;
-  const c=+(document.getElementById('c-'+i).value)||0;
-  const f=+(document.getElementById('f-'+i).value)||0;
-  S.meals[i]={logged:true,p,c,f}; save(); renderMeals(); renderMacros(); renderStats();
-  toast('✓ Meal '+(i+1)+' logged');
-  if (i===0 && !S.nn[4]) { S.nn[4]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); }
-  if (S.meals.every(m=>m.logged) && !S.nn[5]) { S.nn[5]=true; save(); renderNN(); renderNNRing(); renderHeader(); renderSchedule(); setTimeout(()=>toast('✓ 4 meals — NN auto-complete'),500); }
-}
-
-function renderTraining() {
-  const cnt = S.training.sessions.length;
-  el('tsm-num').textContent      = cnt;
-  el('train-streak').textContent = S.trainStreak;
-  el('tsm-status').textContent   = cnt>=4 ? '✓ WEEK TARGET HIT' : (4-cnt)+' MORE NEEDED';
-  const grid = el('training-day-grid'); grid.innerHTML = '';
-  for (let i=0;i<4;i++) {
-    const done = i<cnt;
-    const row = document.createElement('div');
-    row.className = 'training-day-row'+(done?' done':'');
-    const dateStr = done && S.training.sessions[i] ? new Date(S.training.sessions[i]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) : '';
-    row.innerHTML = `<div class="td-check" onclick="tapSession(${i})">${done?'🔥':''}</div><div class="td-info"><div class="td-day">Session ${i+1}</div><div class="td-win">${done?(dateStr||'Logged'):'Not yet logged'}</div></div>${done?'<span class="td-badge done-badge">DONE</span>':(i===cnt?'<span class="td-badge today">LOG IT</span>':'')}`;
-    grid.appendChild(row);
+  const p=+(document.getElementById('i0'+i).value)||0;
+  const c=+(document.getElementById('i1'+i).value)||0;
+  const f=+(document.getElementById('i2'+i).value)||0;
+  D.meals[i]={logged:true,p,c,f}; save();
+  renderMealCards(); renderMacros(); renderStats();
+  toast('✓ Meal '+(i+1)+' logged','ok');
+  if (D.meals.every(m=>m.logged) && !D.nn[4]) {
+    D.nn[4]=true; save(); renderNN(); renderRing(); renderHead(); renderSched();
+    setTimeout(()=>toast('✓ 4 meals — NN complete','ok'),400);
   }
 }
 
-function renderTrainWindows() {
-  const box = el('train-windows'); if(!box) return; box.innerHTML='';
-  const todayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
-  TRAINING_WINDOWS.forEach(w => {
-    const isToday = w.day===todayName;
+function renderTraining() {
+  const cnt = D.training.sessions.length;
+  G('th-num').textContent  = cnt;
+  G('th-snum').textContent = D.ts;
+  G('th-status').textContent = cnt>=4 ? '✓ Week target hit' : (4-cnt)+' more needed';
+  const list = G('sess-list'); list.innerHTML = '';
+  for (let i=0;i<4;i++) {
+    const done = i<cnt;
     const row = document.createElement('div');
-    row.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border-2)';
-    row.innerHTML=`<div><div style="font:700 13px/1 var(--display);color:${isToday?'var(--orange)':'var(--text)'}">${w.day}${isToday?' ◀':''}</div><div style="font:500 10px/1 var(--mono);color:var(--text-2);margin-top:3px">${w.note}</div></div><div style="font:700 11px/1 var(--mono);color:${isToday?'var(--orange)':'var(--text-2)'}">${w.win}</div>`;
-    box.appendChild(row);
+    row.className = 'sess-row'+(done?' done':'');
+    const ds = done && D.training.sessions[i]
+      ? new Date(D.training.sessions[i]).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})
+      : '';
+    row.innerHTML = `
+      <div class="sess-chk" onclick="tapSession(${i})">✓</div>
+      <div class="sess-info">
+        <div class="sess-name">Session ${i+1}</div>
+        <div class="sess-date">${done?(ds||'Logged'):'Not yet logged'}</div>
+      </div>
+      ${done?'<span class="sess-badge badge-done">Done</span>':(i===cnt?'<span class="sess-badge badge-log">Log it</span>':'')}`;
+    list.appendChild(row);
+  }
+}
+
+function renderWins() {
+  const el = G('win-list'); el.innerHTML = '';
+  const todayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+  TRAIN_WIN.forEach(w => {
+    const isT = w.day===todayName;
+    const row = document.createElement('div');
+    row.className = 'win-row';
+    row.innerHTML = `
+      <div>
+        <div class="win-day${isT?' today':''}">${w.day}${isT?' ◀':''}</div>
+        <div class="win-note">${w.note}</div>
+      </div>
+      <div class="win-time${isT?' today':''}">${w.t}</div>`;
+    el.appendChild(row);
   });
 }
 
 function tapSession(i) {
-  const cnt = S.training.sessions.length;
-  if (i<cnt) S.training.sessions = S.training.sessions.slice(0,i);
+  const cnt = D.training.sessions.length;
+  if (i<cnt) D.training.sessions = D.training.sessions.slice(0,i);
   else {
-    S.training.sessions.push(new Date().toISOString());
-    if (S.training.sessions.length>=4) { S.trainStreak++; save(); toast('🔥 4 sessions — week target hit!'); }
+    D.training.sessions.push(new Date().toISOString());
+    if (D.training.sessions.length>=4) {
+      D.ts++; save(); toast('🔥 4 sessions — week target hit!','fire');
+    }
   }
   save(); renderTraining(); renderStats();
 }
 
-function getSchedule() {
-  const d = new Date().getDay();
-  return d===0 ? SCHEDULES.sunday : d>=5 ? SCHEDULES.weekend : SCHEDULES.weekday;
-}
-function nowH() { const n=new Date(); return n.getHours()+n.getMinutes()/60; }
+function getSch() { return SCH[dayType()]; }
+function nowH()   { const n=new Date(); return n.getHours()+n.getMinutes()/60; }
 
-function renderSchedule() {
-  const sched=getSchedule(), h=nowH();
-  let ci=-1; sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
-  const list=el('sched-list'); list.innerHTML='';
-  sched.forEach((row,i) => {
-    const d=document.createElement('div');
-    d.className='sched-row'+(i<ci?' is-past':'')+(i===ci?' is-now':'');
-    const hasNN=row.nn>=0, nnDone=hasNN&&S.nn[row.nn];
-    d.innerHTML=`<div class="sched-dot"></div><div class="sched-time">${row.t}</div><div class="sched-body"><div class="sched-name">${row.task}</div>${row.note?`<div class="sched-note">${row.note}</div>`:''}</div>${hasNN?`<button class="sched-nn-btn${nnDone?' done':''}" onclick="event.stopPropagation();tapSchedNN(${row.nn})">${nnDone?'✓':''}</button>`:''}`;
-    list.appendChild(d);
+function renderSched() {
+  const sch=getSch(), h=nowH();
+  let ci=-1; sch.forEach((r,i)=>{if(r.h<=h)ci=i;});
+  const el=G('sched'); el.innerHTML='';
+  sch.forEach((row,i) => {
+    const wrap = document.createElement('div');
+    wrap.className='srow'+(i<ci?' past-row':'')+(i===ci?' now-row':'');
+    const hasNN = row.nn>=0, nnDone = hasNN&&D.nn[row.nn];
+    wrap.innerHTML=`
+      <div class="srow-inner">
+        <div class="sdot-col"><div class="sdot"></div></div>
+        <div class="stime">${row.t}</div>
+        <div class="sbody">
+          <div class="sname">${row.n}</div>
+          ${row.d?`<div class="snote">${row.d}</div>`:''}
+        </div>
+        ${hasNN?`<button class="snn-btn${nnDone?' done':''}" onclick="event.stopPropagation();tapSchedNN(${row.nn})">✓</button>`:''}
+      </div>`;
+    el.appendChild(wrap);
   });
 }
 
 function renderNow() {
-  const sched=getSchedule(), h=nowH();
-  let ci=-1; sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
-  if(ci>=0) {
-    el('now-task').textContent=sched[ci].task;
-    const nxt=sched[ci+1];
-    el('now-next').textContent=nxt?'Next: '+nxt.task+' — '+nxt.t:'Last block of the day';
+  const sch=getSch(), h=nowH();
+  let ci=-1; sch.forEach((r,i)=>{if(r.h<=h)ci=i;});
+  if (ci>=0) {
+    G('now-task').textContent = sch[ci].n;
+    const nxt = sch[ci+1];
+    G('now-next').textContent = nxt ? 'Next: '+nxt.n+' — '+nxt.t : 'Last block of the day.';
   } else {
-    el('now-task').textContent='Pre-schedule';
-    el('now-next').textContent='First block: '+sched[0].task+' at '+sched[0].t;
+    G('now-task').textContent = 'Pre-schedule';
+    G('now-next').textContent = 'First block: '+sch[0].n+' at '+sch[0].t;
   }
 }
 
 function renderQuote() {
-  const q=QUOTES[new Date().getDay()%QUOTES.length];
-  el('quote-text').textContent='"'+q.t+'"';
-  el('quote-src').textContent=q.s||'';
+  const q = QUOTES[new Date().getDay()%QUOTES.length];
+  G('q-txt').textContent = '"'+q.t+'"';
+  G('q-src').textContent = q.s||'';
 }
 
 function renderReview() {
-  const list=el('review-list'); list.innerHTML='';
-  REVIEW_QS.forEach((q,i)=>{
-    const saved=S.review[i]||'';
-    let inp = q.type==='number'
-      ? `<input class="rev-input rev-num" type="number" id="rq-${i}" value="${saved}" placeholder="${q.ph}" min="0" inputmode="numeric">`
-      : q.type==='ta'
-      ? `<textarea class="rev-input" id="rq-${i}" rows="3" placeholder="${q.ph}">${saved}</textarea>`
-      : `<input class="rev-input" type="text" id="rq-${i}" value="${saved}" placeholder="${q.ph}">`;
-    const d=document.createElement('div'); d.className='rev-item';
-    d.innerHTML=`<div class="rev-q">${String(i+1).padStart(2,'0')}. ${q.q}</div>${inp}`;
-    list.appendChild(d);
+  const el = G('rev-body'); el.innerHTML = '';
+  let qn = 0;
+  REVIEW.forEach((item,i) => {
+    if (item.sec) {
+      const h = document.createElement('div');
+      h.className='rev-section'; h.textContent=item.sec;
+      el.appendChild(h); return;
+    }
+    if (!item.q) return;
+    qn++;
+    const saved = D.review[i]||'';
+    const inp = item.type==='n'
+      ? `<input class="rev-inp rev-num" type="number" id="rq${i}" value="${saved}" placeholder="${item.ph}" min="0" inputmode="numeric">`
+      : item.type==='ta'
+      ? `<textarea class="rev-inp" id="rq${i}" rows="3" placeholder="${item.ph}">${saved}</textarea>`
+      : `<input class="rev-inp" type="text" id="rq${i}" value="${saved}" placeholder="${item.ph}">`;
+    const card = document.createElement('div');
+    card.className='rev-card';
+    card.innerHTML=`<div class="rev-qn">Q${String(qn).padStart(2,'0')}</div><div class="rev-q">${item.q}</div>${item.ctx?`<div class="rev-ctx">${item.ctx}</div>`:''}${inp}`;
+    el.appendChild(card);
   });
 }
 
-function saveReview() {
-  REVIEW_QS.forEach((_,i)=>{ const e=document.getElementById('rq-'+i); if(e) S.review[i]=e.value; });
-  localStorage.setItem('mg_review',JSON.stringify(S.review));
-  toast('✓ Review saved');
+function saveRev() {
+  REVIEW.forEach((_,i)=>{ const e=document.getElementById('rq'+i); if(e) D.review[i]=e.value; });
+  localStorage.setItem('mg_review',JSON.stringify(D.review));
+  toast('✓ Review saved','ok');
 }
 
+/* ═══════════════════════════════════════════════════
+   CLOCK
+═══════════════════════════════════════════════════ */
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function updateClock() {
-  const n=new Date();
-  const h12=n.getHours()%12||12, ampm=n.getHours()>=12?'PM':'AM';
-  const timeStr=h12+':'+n.getMinutes().toString().padStart(2,'0')+' '+ampm;
-  el('mh-day').textContent=DAYS[n.getDay()];
-  el('mh-time').textContent=timeStr;
-  el('sb-day').textContent=DAYS[n.getDay()];
-  el('sb-time').textContent=timeStr;
-  el('sb-date').textContent=MONTHS[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+  const n = new Date();
+  const h12 = n.getHours()%12||12, ampm = n.getHours()>=12?'PM':'AM';
+  const tm = h12+':'+n.getMinutes().toString().padStart(2,'0')+' '+ampm;
+  G('mh-day').textContent  = DAYS[n.getDay()];
+  G('mh-time').textContent = tm;
+  G('sb-day').textContent  = DAYS[n.getDay()];
+  G('sb-time').textContent = tm;
+  G('sb-date').textContent = MONTHS[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
   renderNow();
-  const sched=getSchedule(), h=nowH(); let ci=-1;
-  sched.forEach((r,i)=>{ if(r.h<=h) ci=i; });
-  document.querySelectorAll('.sched-row').forEach((r,i)=>{ r.classList.remove('is-past','is-now'); if(i<ci)r.classList.add('is-past'); if(i===ci)r.classList.add('is-now'); });
+  // live schedule highlight
+  const sch=getSch(),h=nowH(); let ci=-1;
+  sch.forEach((r,i)=>{if(r.h<=h)ci=i;});
+  document.querySelectorAll('.srow').forEach((r,i)=>{
+    r.classList.remove('past-row','now-row');
+    if(i<ci)r.classList.add('past-row');
+    if(i===ci)r.classList.add('now-row');
+  });
 }
 
-function switchTab(id) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el('tab-'+id).classList.add('active');
-  document.querySelectorAll('.mob-nav-btn,.sb-nav-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('[data-tab="'+id+'"]').forEach(b=>b.classList.add('active'));
-  el('content').scrollTo({top:0,behavior:'smooth'});
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+function go(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  G('tab-'+id).classList.add('on');
+  document.querySelectorAll('.sb-btn,.bot-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('[data-tab="'+id+'"]').forEach(b=>b.classList.add('on'));
+  G('scroll').scrollTo({top:0,behavior:'smooth'});
 }
 
-function confirmResetNN() {
-  if(confirm("Reset today's non-negotiables?")) {
-    S.nn=new Array(7).fill(false); save();
-    renderNN(); renderNNRing(); renderStats(); renderHeader(); renderSchedule();
-    toast('Reset complete');
-  }
+/* ═══════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════ */
+let _tt;
+function toast(msg, type='ok') {
+  const t=G('toast');
+  t.textContent=msg; t.className='toast show '+(type||'ok');
+  clearTimeout(_tt); _tt=setTimeout(()=>t.className='toast',2400);
 }
 
+/* ═══════════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════════ */
+function resetNN() {
+  if (!confirm("Reset today's non-negotiables?")) return;
+  D.nn=new Array(6).fill(false); save();
+  renderNN(); renderRing(); renderStats(); renderHead(); renderSched();
+  toast('Reset complete','ok');
+}
 function resetTraining() {
-  if(confirm("Reset all sessions for this week?")) {
-    S.training={weekStart:weekStart(),sessions:[]}; save();
-    renderTraining(); renderStats(); toast('Week reset');
-  }
+  if (!confirm("Reset all sessions for this week?")) return;
+  D.training={ws:ws(),sessions:[]}; save();
+  renderTraining(); renderStats(); toast('Week reset','ok');
 }
 
-let toastTimer;
-function toast(msg) {
-  const t=el('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
-}
+/* ═══════════════════════════════════════════════════
+   UTIL
+═══════════════════════════════════════════════════ */
+function G(id) { return document.getElementById(id); }
 
-function el(id) { return document.getElementById(id); }
-
+/* fix fat bar id conflict */
 document.addEventListener('DOMContentLoaded', () => {
+  // rename bf element since bf is also a variable
+  const fatBar = document.querySelector('.mbar-fl.mf');
+  if (fatBar) fatBar.id = 'bf_';
   load(); renderAll(); updateClock();
   setInterval(updateClock, 30000);
 });
